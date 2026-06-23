@@ -73,12 +73,12 @@
                 <div class="card custom-form-card">
                     <div class="card-header">
                         <i class="la la-search"></i>
-                        <span>مرحله ۱: انتخاب ساکن</span>
+                        <span> انتخاب شخص موردنظر</span>
                     </div>
                     <div class="card-body py-4">
                         <p class="text-muted font-small-3 mb-3">بر اساس کد شخص، اطلاعات به‌صورت خودکار پر می‌شود.</p>
                         <div class="row align-items-end">
-                            <div class="col-lg-9 form-group mb-lg-0">
+                            <div class="col-lg-12 form-group mb-lg-0">
                                 <label class="flabel" for="userSelect">کد و نام شخص</label>
                                 <select class="finput w-100" id="userSelect">
                                     <option value="">— لطفاً یک شخص انتخاب کنید —</option>
@@ -112,117 +112,19 @@
                                     >1002 — علی رحیمی</option>
                                 </select>
                             </div>
-                            <div class="col-lg-3 form-group mb-0">
-                                <button type="button" class="btn btn-primary btn-block" style="background:#1a56db; border:none; border-radius:8px; height: 44px; font-size: 14px;" onclick="document.getElementById('userSelect').focus()">
-                                    <i class="la la-search"></i> جستجو
-                                </button>
-                            </div>
                         </div>
-                    </div>
-                </div>
-
-                {{-- پیش‌نمایش انتخاب‌شده (با همان استایل کادرها ولی ساده‌تر) --}}
-                <div class="card custom-form-card">
-                    <div class="card-header" style="background: #ffffff; padding: 12px 20px;">
-                        <i class="la la-info-circle" style="color: #64748b;"></i>
-                        <span style="font-size: 13px; color: #64748b;">پیش‌نمایش انتخاب‌شده</span>
-                    </div>
-                    <div id="userPreview" class="card-body text-center py-3 text-muted">
-                        <span><i class="la la-meh-o"></i> هنوز شخصی انتخاب نشده است</span>
                     </div>
                 </div>
 
                 {{-- ردیف دو ستونه برای مراحل ۲، ۳ و ۴ --}}
                 <div class="row">
                     {{-- سمت راست: اطلاعات شخصی و شغلی --}}
-                    <div class="col-lg-8">
+                    <div class="col-lg-12">
 
-                        {{-- مرحله ۲: اطلاعات شخصی --}}
-                        <div class="card custom-form-card">
-                            <div class="card-header">
-                                <i class="la la-id-card"></i>
-                                <span>مرحله ۲: اطلاعات شخصی</span>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label class="flabel" for="name"><i class="la la-user"></i> نام کامل</label>
-                                        <input type="text" id="name" class="finput w-100 bg-light" placeholder="نام کامل" readonly>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label class="flabel" for="father_name"><i class="la la-male"></i> نام پدر</label>
-                                        <input type="text" id="father_name" class="finput w-100 bg-light" placeholder="نام پدر" readonly>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label class="flabel" for="phone_number"><i class="la la-phone"></i> شماره تلیفون</label>
-                                        <input type="text" id="phone_number" class="finput w-100 bg-light" placeholder="شماره تماس" readonly>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label class="flabel" for="city_name"><i class="la la-map-marker"></i> شهر</label>
-                                        <input type="text" id="city_name" class="finput w-100 bg-light" placeholder="نام شهر" readonly>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
-                        {{-- مرحله ۳: اطلاعات شغلی و اتاق --}}
-                        <div class="card custom-form-card">
-                            <div class="card-header">
-                                <i class="la la-briefcase"></i>
-                                <span>مرحله ۳: اطلاعات شغلی و اتاق</span>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label class="flabel" for="room_number"><i class="la la-home"></i> نمبر اتاق</label>
-                                        <input type="text" id="room_number" class="finput w-100 bg-light" placeholder="نمبر اتاق" readonly>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label class="flabel" for="occupation"><i class="la la-graduation-cap"></i> شغل</label>
-                                        <input type="text" id="occupation" class="finput w-100 bg-light" placeholder="شغل" readonly>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label class="flabel" for="work_phone"><i class="la la-phone-square"></i> شماره محل کار</label>
-                                        <input type="text" id="work_phone" class="finput w-100 bg-light" placeholder="شماره محل کار" readonly>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label class="flabel" for="occupation_location"><i class="la la-map-pin"></i> موقعیت شغل</label>
-                                        <input type="text" id="occupation_location" class="finput w-100 bg-light" placeholder="موقعیت شغل" readonly>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="card custom-form-card">
-                            <div class="card-header">
-                                <i class="la la-user-secret"></i>
-                                <span>اطلاعات ضامن</span>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label class="flabel" for="guarantor_name"><i class="la la-user"></i> نام ضامن</label>
-                                        <input type="text" id="guarantor_name" name="guarantor_name" class="finput w-100 bg-light" placeholder="نام ضامن" readonly>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label class="flabel" for="guarantor_father_name"><i class="la la-male"></i> نام پدر ضامن</label>
-                                        <input type="text" id="guarantor_father_name" name="guarantor_father_name" class="finput w-100 bg-light" placeholder="نام پدر ضامن" readonly>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label class="flabel" for="guarantor_phone"><i class="la la-phone"></i> تلفن ضامن</label>
-                                        <input type="text" id="guarantor_phone" name="guarantor_phone" class="finput w-100 bg-light" placeholder="شماره تلفن ضامن" readonly>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label class="flabel" for="guarantor_occupation"><i class="la la-briefcase"></i> موقعیت شغلی ضامن</label>
-                                        <input type="text" id="guarantor_occupation" name="guarantor_occupation" class="finput w-100 bg-light" placeholder="موقعیت شغلی ضامن" readonly>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
                     {{-- سمت چپ: جزئیات قرارداد (Sidebar) --}}
-                    <div class="col-lg-4">
+                    <div class="col-lg-12">
                         {{-- مرحله ۴: جزئیات قرارداد --}}
                         <div class="card custom-form-card sticky-top" style="top: 20px;">
                             <div class="card-header">
@@ -231,7 +133,11 @@
                             </div>
                             <div class="card-body">
                                 <div class="form-group mb-3">
-                                    <label class="flabel"><i class="la la-calendar-check-o"></i> تاریخ قرارداد</label>
+                                    <label class="flabel"><i class="la la-calendar-check-o"></i> تاریخ شروع قرارداد</label>
+                                    <input type="date" class="finput w-100">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label class="flabel"><i class="la la-calendar-check-o"></i> تاریخ احتمالی پایان قرارداد</label>
                                     <input type="date" class="finput w-100">
                                 </div>
                                 <div class="form-group mb-3">
@@ -259,7 +165,7 @@
                 </div>
 
                 {{-- مرحله ۶: متن قرارداد و قوانین --}}
-                <div class="card custom-form-card">
+                <div class="card col-lg-12 custom-form-card">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <div class="d-flex align-items-center">
                             <i class="la la-shield"></i>
@@ -289,7 +195,7 @@
                 </div>
 
                 {{-- بخش دکمه‌های عملیاتی انتهای فرم --}}
-                <div class="card custom-form-card" style="background: #f8fafc; margin-bottom: 0;">
+                <div class="card col-lg-12 custom-form-card" style="background: #f8fafc; margin-bottom: 0;">
                     <div class="card-body d-flex justify-content-between align-items-center py-3">
                         <small class="text-muted"><i class="la la-info-circle text-success" style="font-size: 16px;"></i> قبل از ثبت، اطلاعات را یک‌بار مرور کنید.</small>
                         <div class="d-flex">
