@@ -1,0 +1,11 @@
+@font-face {
+  font-family: 'Samim';
+  src: url('/app-assets/fonts/samim/fonts/Samim.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+html, body, input, textarea, select, button, a, span, div, p, label {
+  font-family: 'Samim', sans-serif !important;
+}
