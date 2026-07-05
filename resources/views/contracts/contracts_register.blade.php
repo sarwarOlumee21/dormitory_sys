@@ -2,220 +2,170 @@
 
 @section('content')
 
-<div class="row justify-content-center" style="direction: rtl;">
-    <div class="col-12">
-
-        {{-- بنر بالایی صفحه با استایل مدرن و یکپارچه --}}
-        <div class="top-banner mb-4" style="border-radius: 12px; padding: 20px; color: #ffffff;">
-            <div class="d-flex align-items-center">
-                <div class="banner-icon ml-3" style="background: rgba(255,255,255,0.2); width: 45px; height: 45px; border-radius: 10px; d-flex: flex; align-items: center; justify-content: center; text-align: center; line-height: 45px;">
-                    <i class="la la-file-text text-white" style="font-size:22px; vertical-align: middle;"></i>
+    <div class="row justify-content-center" style="direction: rtl;">
+        <div class="col-12">
+            @if(session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
                 </div>
-                <div>
-                    <h5 class="text-white mb-1 font-weight-bold">ثبت قرارداد جدید</h5>
-                    <p class="mb-0" style="color:rgba(255,255,255,.75); font-size:13px;">لطفاً اطلاعات قرارداد ساکن را با دقت پُر و تنظیم کنید</p>
+            @endif
+            @if(session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
+
+            {{-- بنر بالایی صفحه با استایل مدرن و یکپارچه --}}
+            <div class="top-banner mb-4" style="border-radius: 12px; padding: 20px; color: #ffffff;">
+                <div class="d-flex align-items-center">
+                    <div class="banner-icon ml-3"
+                        style="background: rgba(255,255,255,0.2); width: 45px; height: 45px; border-radius: 10px; d-flex: flex; align-items: center; justify-content: center; text-align: center; line-height: 45px;">
+                        <i class="la la-file-text text-white" style="font-size:22px; vertical-align: middle;"></i>
+                    </div>
+                    <div>
+                        <h5 class="text-white mb-1 font-weight-bold">ثبت قرارداد جدید</h5>
+                        <p class="mb-0" style="color:rgba(255,255,255,.75); font-size:13px;">لطفاً اطلاعات قرارداد ساکن را
+                            با دقت پُر و تنظیم کنید</p>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        {{-- بدنه اصلی فرم --}}
-        <div class="form-outer">
-            <form>
+            {{-- بدنه اصلی فرم --}}
+            <div class="form-outer">
+                <form method="post" action="{{ route('contracts.store') }}">
+                    @csrf
+                    <style>
+                        .custom-form-card {
+                            background: #ffffff;
+                            border: 1px solid #e2e8f0 !important;
+                            border-radius: 12px !important;
+                            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+                            margin-bottom: 25px;
+                            overflow: hidden;
+                        }
 
-                {{-- استایل مشترک کاردها: کلاس custom-form-card --}}
-                <style>
-                    .custom-form-card {
-                        background: #ffffff;
-                        border: 1px solid #e2e8f0 !important;
-                        border-radius: 12px !important;
-                        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-                        margin-bottom: 25px;
-                        overflow: hidden;
-                    }
-                    .custom-form-card .card-header {
-                        background: #f8fafc;
-                        border-bottom: 1px solid #e2e8f0;
-                        padding: 15px 20px;
-                        font-weight: bold;
-                        color: #1e293b;
-                        display: flex;
-                        align-items: center;
-                    }
-                    .custom-form-card .card-header i {
-                        font-size: 20px;
-                        color: #1a56db;
-                        margin-left: 10px;
-                    }
-                    .finput, .form-control {
-                        border-radius: 8px !important;
-                        border: 1px solid #cbd5e1 !important;
-                        height: 44px;
-                        padding: 0 12px;
-                        transition: all 0.2s;
-                    }
-                    .finput:focus, .form-control:focus {
-                        border-color: #1a56db !important;
-                        box-shadow: 0 0 0 3px rgba(26, 86, 219, 0.1) !important;
-                    }
-                    .flabel {
-                        font-weight: 600;
-                        color: #475569;
-                        font-size: 13px;
-                        margin-bottom: 8px;
-                    }
-                    .flabel i {
-                        color: #64748b;
-                        margin-left: 4px;
-                    }
-                </style>
+                        .card-header {
+                            background: #f8fafc;
+                            border-bottom: 1px solid #e2e8f0;
+                            padding: 15px 20px;
+                            font-weight: bold;
+                            color: #1e293b;
+                            display: flex;
+                            align-items: center;
+                        }
 
-                {{-- مرحله ۱: انتخاب ساکن --}}
-                <div class="card custom-form-card">
-                    <div class="card-header">
-                        <i class="la la-search"></i>
-                        <span> انتخاب شخص موردنظر</span>
-                    </div>
-                    <div class="card-body py-4">
-                        <p class="text-muted font-small-3 mb-3">بر اساس کد شخص، اطلاعات به‌صورت خودکار پر می‌شود.</p>
-                        <div class="row align-items-end">
-                            <div class="col-lg-12 form-group mb-lg-0">
-                                <label class="flabel" for="userSelect">کد و نام شخص</label>
-                                <select class="finput w-100" id="userSelect">
-                                    <option value="">— لطفاً یک شخص انتخاب کنید —</option>
-                                    <option
-                                        data-name="احمد نوری"
-                                        data-father="محمد نوری"
-                                        data-phone="0700123456"
-                                        data-city="کابل"
-                                        data-room="A-12"
-                                        data-occupation="محصل"
-                                        data-workphone="0799887766"
-                                        data-location="پوهنتون کابل"
-                                        data-guarantor-name="سید حامد"
-                                        data-guarantor-father="سلیمان"
-                                        data-guarantor-phone="0799123456"
-                                        data-guarantor-occupation="کارمند بانک"
-                                    >1001 — احمد نوری</option>
-                                    <option
-                                        data-name="علی رحیمی"
-                                        data-father="عبدالرحیم"
-                                        data-phone="0700554433"
-                                        data-city="هرات"
-                                        data-room="B-07"
-                                        data-occupation="کارمند"
-                                        data-workphone="0788112233"
-                                        data-location="شرکت خصوصی"
-                                        data-guarantor-name="مریم احمدی"
-                                        data-guarantor-father="کرامت"
-                                        data-guarantor-phone="0799001122"
-                                        data-guarantor-occupation="معلم"
-                                    >1002 — علی رحیمی</option>
-                                </select>
-                            </div>
+                        .card-header i {
+                            font-size: 20px;
+                            color: #1a56db;
+                            margin-left: 10px;
+                        }
+
+                        .finput,
+                        .form-control {
+                            border-radius: 8px !important;
+                            border: 1px solid #cbd5e1 !important;
+                            height: 44px;
+                            padding: 0 12px;
+                        }
+
+                        .flabel {
+                            font-weight: 600;
+                            color: #475569;
+                            font-size: 13px;
+                            margin-bottom: 8px;
+                        }
+                    </style>
+
+                    <!-- 🔵 ONE BIG CARD -->
+                    <div class="card custom-form-card">
+
+                        <div class="card-header">
+                            <i class="la la-file-text"></i>
+                            <span>فرم قرارداد</span>
                         </div>
-                    </div>
-                </div>
 
-                {{-- ردیف دو ستونه برای مراحل ۲، ۳ و ۴ --}}
-                <div class="row">
-                    {{-- سمت راست: اطلاعات شخصی و شغلی --}}
-                    <div class="col-lg-12">
+                        <div class="card-body">
+                            <!-- جزئیات قرارداد -->
+                            <div class="row">
 
-
-
-                    {{-- سمت چپ: جزئیات قرارداد (Sidebar) --}}
-                    <div class="col-lg-12">
-                        {{-- مرحله ۴: جزئیات قرارداد --}}
-                        <div class="card custom-form-card sticky-top" style="top: 20px;">
-                            <div class="card-header">
-                                <i class="la la-calendar"></i>
-                                <span>مرحله ۴: جزئیات قرارداد</span>
-                            </div>
-                            <div class="card-body">
-                                <div class="form-group mb-3">
-                                    <label class="flabel"><i class="la la-calendar-check-o"></i> تاریخ شروع قرارداد</label>
-                                    <input type="date" class="finput w-100">
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label class="flabel"><i class="la la-calendar-check-o"></i> تاریخ احتمالی پایان قرارداد</label>
-                                    <input type="date" class="finput w-100">
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label class="flabel"><i class="la la-toggle-on"></i> وضعیت قرارداد</label>
-                                    <select class="finput w-100" name="contract_status" id="contract_status">
-                                        <option selected>فعال</option>
-                                        <option>غیرفعال</option>
-                                        <option>در انتظار</option>
+                                <div class="col-lg-6 mb-3">
+                                    <!-- <label class="flabel">تاریخ پایان قرارداد</label>
+                                        <input type="date" class="finput w-100"> -->
+                                    <label class="flabel">کد و نام شخص</label>
+                                    <select class="finput w-100" id="userSelect" name="resident_id">
+                                        <option value="">— لطفاً یک شخص انتخاب کنید —</option>
+                                        @foreach($residents as $resident)
+                                            <option value="{{ $resident->id }}">
+                                                {{ $resident->id }} - {{ $resident->name }}
+                                            </option>
+                                            @endforeach
                                     </select>
                                 </div>
-                                <hr class="my-3" style="border-color: #e2e8f0;">
-                                <h6 class="font-weight-bold font-small-3 mb-3" style="color: #1a56db;">
-                                    <i class="la la-money"></i> پرداخت اجاره
-                                </h6>
-                                <div class="form-group mb-3">
-                                    <label class="flabel" for="contract_amount">اصل مبلغ قرارداد (افغانی)</label>
-                                    <input type="number" id="contract_amount" name="contract_amount" class="finput w-100" placeholder="مثلاً 45000" min="0" step="100">
+                                <div class="col-lg-6 mb-3">
+                                    <label class="flabel">تاریخ شروع قرارداد</label>
+                                    <input type="date" name="contract_date" class="finput w-100">
                                 </div>
-                                <div class="alert alert-warning mt-3 mb-0 py-2 font-small-3" role="alert" style="border-radius: 8px; background: #fffbeb; border: 1px solid #fef3c7; color: #b45309;">
-                                    <i class="la la-lightbulb-o"></i> پس از انتخاب ساکن، فیلدهای سمت راست به‌طور خودکار پر می‌شوند.
+
+
+                                <div class="col-lg-6 mb-3">
+                                    <label class="flabel">مبلغ قرارداد (افغانی)</label>
+                                    <input type="number" name="contract_amount" class="finput w-100" placeholder="45000">
+                                </div>
+
+                                <div class="col-lg-6 mb-3">
+                                    <label class="flabel">شماره اتاق</label>
+                                    <select class="finput w-100" name="room_id">
+
+                                        <option>انتخاب کنید</option>
+                                        @foreach($rooms as $room)
+                                            <option value="{{ $room->id }}">{{ $room->room_number }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-lg-6 mb-3">
+                                    <label class="flabel">توضیحات</label>
+                                    <textarea class="finput w-100" placeholder="توضیحات" name="notes"></textarea>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
 
-                {{-- مرحله ۶: متن قرارداد و قوانین --}}
-                <div class="card col-lg-12 custom-form-card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center">
-                            <i class="la la-shield"></i>
-                            <span>مرحله ۵: قرارداد و قوانین</span>
-                        </div>
-                        <span class="badge badge-light px-3 py-1 font-small-2" style="border-radius: 20px; color: #64748b; background: #f1f5f9;">پیش‌نویس</span>
-                    </div>
-                    <div class="card-body">
-                        
-                        @if(!empty($storedRules))
-                            <div class="alert alert-neutral my-2 p-3" style="border-radius: 10px; background: #f8fafc; border: 1px solid #e2e8f0;">
-                                <div class="d-flex justify-content-between align-items-start flex-wrap">
-                                    <div>
-                                        <h6 class="font-weight-bold mb-1 text-dark" style="font-size: 14px;">قوانین قرارداد ثبت‌شده</h6>
-                                        <p class="mb-0 text-muted font-small-3">این متن از صفحه ثبت قوانین بارگذاری شده است.</p>
+                            <hr>
+
+                            <!-- قوانین -->
+                            @if(!empty($storedRules))
+                                <div class="p-3 bg-light rounded">
+                                    <h6>قوانین قرارداد</h6>
+                                    <div style="white-space: pre-wrap;">
+                                        {!! nl2br(e($storedRules)) !!}
                                     </div>
-                                    <a href="{{ route('contracts.rules') }}" class="btn btn-sm btn-outline-primary mt-2" style="border-radius: 8px;">ویرایش قوانین</a>
                                 </div>
-                                <div class="mt-3 p-3 bg-white text-dark rounded" style="white-space: pre-wrap; word-break: break-word; border: 1px solid #e2e8f0; font-size: 13px;">
-                                    {!! nl2br(e($storedRules)) !!}
-                                </div>
-                            </div>
-                        @endif
+                            @endif
 
-
-                    </div>
-                </div>
-
-                {{-- بخش دکمه‌های عملیاتی انتهای فرم --}}
-                <div class="card col-lg-12 custom-form-card" style="background: #f8fafc; margin-bottom: 0;">
-                    <div class="card-body d-flex justify-content-between align-items-center py-3">
-                        <small class="text-muted"><i class="la la-info-circle text-success" style="font-size: 16px;"></i> قبل از ثبت، اطلاعات را یک‌بار مرور کنید.</small>
-                        <div class="d-flex">
-                            <button type="reset" class="btn btn-outline-secondary px-4 ml-2" style="border-radius:8px; height: 40px; font-size: 14px;">
-                                لغو
-                            </button>
-                            <button type="submit" class="btn btn-primary px-4" style="background:#1a56db; border:none; border-radius:8px; height: 40px; font-size: 14px;">
-                                <i class="la la-check-square-o"></i> ثبت قرارداد
-                            </button>
                         </div>
+
+                        <!-- دکمه‌ها -->
+                        <div class="card-body d-flex justify-content-between align-items-center"
+                            style="background:#f8fafc; border-top:1px solid #e2e8f0;">
+                            <small class="text-muted">قبل از ثبت، اطلاعات را مرور کنید</small>
+
+                            <div>
+                                <button type="reset" class="btn btn-outline-secondary">لغو</button>
+                                <button type="submit" class="btn btn-primary">
+                                    ثبت قرارداد
+                                </button>
+                            </div>
+                        </div>
+
                     </div>
-                </div>
 
-            </form>
+                </form>
+            </div>
+
         </div>
-
     </div>
-</div>
+@endsection
 
-{{-- اسکریپت‌ها بدون تغییر منطقی --}}
+
+<!-- {{-- اسکریپت‌ها بدون تغییر منطقی --}}
 <script>
 document.getElementById('userSelect').addEventListener('change', function () {
     const selected = this.options[this.selectedIndex];
@@ -297,6 +247,4 @@ function contractClear() {
         contractTa.dispatchEvent(new Event('input'));
     }
 }
-</script>
-
-@endsection
+</script> -->

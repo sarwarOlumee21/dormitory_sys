@@ -70,13 +70,6 @@
                     <span>ورود متن قوانین</span>
                 </div>
                 <div class="card-body py-4">
-                    
-                    @if(session('status'))
-                        <div class="alert alert-success border-0 mb-4" style="background: #ecfdf5; color: #047857; border-radius: 8px;">
-                            <i class="la la-check-circle"></i> {{ session('status') }}
-                        </div>
-                    @endif
-
                     <div class="form-group mb-4">
                         <label class="flabel" for="contractRulesTextarea">متن قوانین قرارداد</label>
                         <textarea id="contractRulesTextarea" name="contract_rules" rows="12" class="form-control" placeholder="قوانین کلی و مفاد قرارداد را اینجا بنویسید..." style="resize: vertical;">{{ old('contract_rules', $rulesText ?? '') }}</textarea>
@@ -100,21 +93,6 @@
 
                 </div>
             </div>
-
-            {{-- کارد پیش‌نمایش: فقط در صورت وجود متن قبلی نمایش داده می‌شود --}}
-            @if(!empty($rulesText))
-                <div class="card custom-form-card">
-                    <div class="card-header" style="background: #ffffff; padding: 12px 20px;">
-                        <i class="la la-eye" style="color: #64748b;"></i>
-                        <span style="font-size: 13px; color: #64748b;">پیش‌نمایش متن ثبت‌شده فعلی</span>
-                    </div>
-                    <div class="card-body" style="background: #f8fafc;">
-                        <div class="p-3 bg-white text-dark rounded shadow-sm" style="white-space: pre-wrap; word-break: break-word; border: 1px solid #e2e8f0; font-size: 13px; line-height: 1.8;">
-                            {!! nl2br(e($rulesText)) !!}
-                        </div>
-                    </div>
-                </div>
-            @endif
 
         </form>
 
