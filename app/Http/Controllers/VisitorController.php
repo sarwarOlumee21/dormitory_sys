@@ -1,12 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Resident;
 
 class VisitorController extends Controller
 {
     public function register()
     {
-        return view('visitors.visitor_register');
+        $residents = Resident::all();
+        return view('visitors.visitor_register', compact('residents'));
     }
 
     public function list()

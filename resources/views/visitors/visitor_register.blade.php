@@ -77,8 +77,10 @@
                         <div class="col-md-6 form-group mb-4">
                             <label class="flabel"><i class="la la-user text-primary"></i> ساکن میزبان</label>
                             <select class="form-control">
-                                <option>احمد نوری — A-12</option>
-                                <option>علی رحیمی — B-07</option>
+                                <option selected disabled>انتخاب ساکن میزبان</option>
+                                @foreach ($residents as $resident)
+                                    <option value="{{ $resident->id }}">{{ $resident->name }} - {{ $resident->room_id }}</option>
+                                @endforeach
                             </select>
                         </div>
 
