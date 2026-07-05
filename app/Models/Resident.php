@@ -12,7 +12,6 @@ class Resident extends Model
         'father_name',
         'phone_number',
         'city_name',
-        'room_id',
         'occupation',
         'work_phone',
         'occupation_location',

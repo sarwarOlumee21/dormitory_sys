@@ -184,99 +184,46 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>کد</th>
+                            <th>کد قرارداد</th>
                             <th>نام کامل</th>
-                            <th>نام پدر</th>
-                            <th>شهر</th>
                             <th>نمبر اتاق</th>
-                            <th>شغل</th>
-                            <th>شماره تلیفون</th>
-                            <th>موقعیت شغل</th>
                             <th>تاریخ قرارداد</th>
-                            <th>مدت</th>
-                            <th>وضعیت</th>
                             <th>مبلغ پرداختی</th>
-                            <th>ماه پرداخت</th>
-                            <th>وضعیت پرداخت</th>
+                            <th>وضعیت</th>
                             <th class="text-center">عملیات</th>
                         </tr>
                     </thead>
                     <tbody id="contractsBody">
-                        {{-- ردیف نمونه ۱ --}}
-                        <tr data-code="1001" data-name="احمد نوری" data-father="محمد نوری" data-city="کابل" data-room="A-12" data-occupation="محصل" data-phone="0700123456" data-location="پوهنتون کابل" data-date="1404/02/15" data-duration="۱ سال" data-status="فعال" data-payment-amount="3500" data-months-paid="2" data-payment-status="پرداخت شده">
-                            <td>۱</td>
-                            <td><span class="badge-custom-blue">1001</span></td>
-                            <td class="font-weight-bold">احمد نوری</td>
-                            <td>محمد نوری</td>
-                            <td>کابل</td>
-                            <td><span class="badge-custom-blue">A-12</span></td>
-                            <td>محصل</td>
-                            <td dir="ltr" class="text-right">0700123456</td>
-                            <td>پوهنتون کابل</td>
-                            <td>1404/02/15</td>
-                            <td>۱ سال</td>
-                            <td><span class="badge-custom-green">فعال</span></td>
-                            <td>۳,۵۰۰ افغانی</td>
-                            <td>۲ ماه</td>
-                            <td><span class="badge-custom-green">پرداخت شده</span></td>
-                            <td class="text-center text-nowrap">
-                                <div class="btn-group btn-group-sm" role="group">
-                                    <button type="button" class="btn btn-outline-primary btn-demo-view" style="border-radius: 6px 0 0 6px;" title="مشاهده"><i class="la la-eye"></i></button>
-                                    <button type="button" class="btn btn-outline-info" title="ویرایش"><i class="la la-edit"></i></button>
-                                    <button type="button" class="btn btn-outline-danger btn-delete" style="border-radius: 0 6px 6px 0;" title="حذف"><i class="la la-trash"></i></button>
-                                </div>
-                            </td>
-                        </tr>
-                        {{-- ردیف نمونه ۲ --}}
-                        <tr data-code="1002" data-name="علی رحیمی" data-father="عبدالرحیم" data-city="هرات" data-room="B-07" data-occupation="کارمند" data-phone="0700554433" data-location="شرکت خصوصی" data-date="1404/01/20" data-duration="۶ ماه" data-status="فعال" data-payment-amount="3500" data-months-paid="1" data-payment-status="پرداخت شده">
-                            <td>۲</td>
-                            <td><span class="badge-custom-blue">1002</span></td>
-                            <td class="font-weight-bold">علی رحیمی</td>
-                            <td>عبدالرحیم</td>
-                            <td>هرات</td>
-                            <td><span class="badge-custom-blue">B-07</span></td>
-                            <td>کارمند</td>
-                            <td dir="ltr" class="text-right">0700554433</td>
-                            <td>شرکت خصوصی</td>
-                            <td>1404/01/20</td>
-                            <td>۶ ماه</td>
-                            <td><span class="badge-custom-green">فعال</span></td>
-                            <td>۳,۵۰۰ افغانی</td>
-                            <td>۱ ماه</td>
-                            <td><span class="badge-custom-green">پرداخت شده</span></td>
-                            <td class="text-center text-nowrap">
-                                <div class="btn-group btn-group-sm" role="group">
-                                    <button type="button" class="btn btn-outline-primary btn-demo-view" style="border-radius: 6px 0 0 6px;" title="مشاهده"><i class="la la-eye"></i></button>
-                                    <button type="button" class="btn btn-outline-info" title="ویرایش"><i class="la la-edit"></i></button>
-                                    <button type="button" class="btn btn-outline-danger btn-delete" style="border-radius: 0 6px 6px 0;" title="حذف"><i class="la la-trash"></i></button>
-                                </div>
-                            </td>
-                        </tr>
-                        {{-- ردیف نمونه ۳ --}}
-                        <tr data-code="1003" data-name="حسین احمدی" data-father="کریم احمدی" data-city="کابل" data-room="C-03" data-occupation="دانشجو" data-phone="0788991122" data-location="پوهنتون پلی‌تکنیک" data-date="1404/03/01" data-duration="۲ سال" data-status="در انتظار" data-payment-amount="0" data-months-paid="0" data-payment-status="معوق">
-                            <td>۳</td>
-                            <td><span class="badge-custom-blue">1003</span></td>
-                            <td class="font-weight-bold">حسین احمدی</td>
-                            <td>کریم احمدی</td>
-                            <td>کابل</td>
-                            <td><span class="badge-custom-blue">C-03</span></td>
-                            <td>دانشجو</td>
-                            <td dir="ltr" class="text-right">0788991122</td>
-                            <td>پوهنتون پلی‌تکنیک</td>
-                            <td>1404/03/01</td>
-                            <td>۲ سال</td>
-                            <td><span class="badge-custom-orange">در انتظار</span></td>
-                            <td>—</td>
-                            <td>۰ ماه</td>
-                            <td><span class="badge-custom-red">معوق</span></td>
-                            <td class="text-center text-nowrap">
-                                <div class="btn-group btn-group-sm" role="group">
-                                    <button type="button" class="btn btn-outline-primary btn-demo-view" style="border-radius: 6px 0 0 6px;" title="مشاهده"><i class="la la-eye"></i></button>
-                                    <button type="button" class="btn btn-outline-info" title="ویرایش"><i class="la la-edit"></i></button>
-                                    <button type="button" class="btn btn-outline-danger btn-delete" style="border-radius: 0 6px 6px 0;" title="حذف"><i class="la la-trash"></i></button>
-                                </div>
-                            </td>
-                        </tr>
+                        @forelse($contracts as $index => $contract)
+                            <tr data-code="{{ $contract->id }}" data-name="{{ $contract->resident->name ?? '' }}" data-room="{{ $contract->room->room_number ?? '' }}" data-status="{{ $contract->contract_status ?? '' }}">
+                                <td>{{ $index + 1 }}</td>
+                                <td>{{ $contract->id }}</td>
+                                <td>{{ $contract->resident->name ?? '—' }}</td>
+                                <td>{{ $contract->room->room_number ?? '—' }}</td>
+                                <td>{{ \Carbon\Carbon::parse($contract->contract_date)->format('Y-m-d') }}</td>
+                                <td>{{ number_format($contract->contract_amount, 0, '.', ',') }} افغانی</td>
+                                <td><span class="badge {{ $contract->contract_status == 'فعال' ? 'badge-custom-green' : ($contract->contract_status == 'غيرفعال' ? 'badge-custom-red' : 'badge-custom-orange') }}">{{ $contract->contract_status }}</span></td>
+                                <td class="text-center">
+                                    <div class="btn-group" role="group">
+                                        <a href="" class="btn btn-outline-primary btn-sm" title="ویرایش"><i class="la la-edit"></i></a>
+                                        <button type="button" class="btn btn-outline-success btn-sm btn-payment-open" title="پرداخت"
+                                            data-resident-id="{{ $contract->resident_id }}"
+                                            data-resident-name="{{ $contract->resident->name ?? '' }}"
+                                            data-contract-amount="{{ (float) $contract->contract_amount }}"
+                                            data-paid-amount="{{ (float) ($paymentTotals[$contract->resident_id] ?? 0) }}">
+                                            <i class="la la-credit-card"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-outline-danger btn-sm btn-delete" title="حذف"><i class="la la-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr id="emptyFilterRow">
+                                <td colspan="8" class="text-center text-muted py-4">
+                                    <i class="la la-inbox font-large-2 d-block mb-1 text-primary"></i> هیچ قراردادی یافت نشد
+                                </td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
@@ -290,270 +237,103 @@
 
         <div id="paymentModalOverlay" class="payment-modal-overlay"></div>
         <div id="paymentModal" class="payment-modal" role="dialog" aria-modal="true" aria-labelledby="paymentModalTitle">
-            <div class="d-flex align-items-start justify-content-between mb-3">
-                <div>
-                    <h5 id="paymentModalTitle">پرداخت قرارداد</h5>
-                    <div class="text-muted" style="font-size: 13px;">در اینجا مقدار پرداخت شده برای قرارداد را وارد و ذخیره کنید.</div>
+            <form id="paymentForm" method="post" action="{{ route('contracts.payment.store') }}" novalidate>
+                @csrf
+                <div class="d-flex align-items-start justify-content-between mb-3">
+                    <div>
+                        <h5 id="paymentModalTitle">پرداخت قرارداد</h5>
+                        <div class="text-muted" style="font-size: 13px;">در اینجا مقدار پرداخت شده برای قرارداد را وارد و ذخیره کنید.</div>
+                    </div>
+                    <button type="button" id="paymentModalClose" class="btn btn-sm btn-link text-dark" style="font-size: 22px; line-height: 1;">×</button>
                 </div>
-                <button type="button" id="paymentModalClose" class="btn btn-sm btn-link text-dark" style="font-size: 22px; line-height: 1;">×</button>
-            </div>
-            <div class="mb-3" style="border-radius: 12px; background: #f8fafc; padding: 14px;">
-                <div class="font-weight-bold mb-1" id="paymentContractName">قرارداد انتخاب‌شده</div>
-                <div class="text-muted" style="font-size: 13px;">کد قرارداد: <span id="paymentContractCode">—</span></div>
-            </div>
-            <div class="form-group mb-3">
-                <label class="flabel" for="paymentAmountInput">مبلغ جدید پرداختی (افغانی)</label>
-                <input type="number" id="paymentAmountInput" class="form-control" placeholder="مثلاً 2500" min="1" step="100">
-            </div>
-            <div class="d-flex justify-content-between flex-wrap mb-3" style="gap: 10px;">
-                <div class="payment-summary-item"><strong>کل پرداختی تاکنون:</strong> <span id="paymentInfoTotal">0 افغانی</span></div>
-                <div class="payment-summary-item"><strong>ماه‌های ثبت شده:</strong> <span id="paymentInfoMonths">0</span></div>
-                <div class="payment-summary-item"><strong>وضعیت پرداخت:</strong> <span id="paymentInfoStatus">پرداخت نشده</span></div>
-            </div>
-            <div class="mb-4">
-                <h6 class="font-weight-bold mb-2">سوابق پرداخت‌های ثبت‌شده</h6>
-                <div id="paymentListContainer" class="px-3 py-3" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; min-height: 120px;">
-                    <div class="text-muted" style="font-size: 14px;">هیچ پرداختی ثبت نشده است.</div>
+                <input type="hidden" id="contractIdInput" name="resident_id">
+                <div class="mb-3" style="border-radius: 12px; background: #f8fafc; padding: 14px;">
+                    <div class="font-weight-bold mb-1" id="paymentContractName">اقامت‌کننده انتخاب‌شده</div>
+                    <div class="text-muted" style="font-size: 13px;">آیدی اقامت‌کننده: <span id="paymentContractCode">—</span></div>
                 </div>
-            </div>
-            <div class="d-flex justify-content-between align-items-center flex-wrap" style="gap: 10px;">
-                <button type="button" id="paymentModalCancel" class="btn btn-secondary">انصراف</button>
-                <button type="button" id="paymentSaveButton" class="btn btn-primary btn-payment-save">ثبت پرداخت</button>
-            </div>
+                <div class="mb-3" style="border-radius: 12px; background: #eef8f2; padding: 14px; border: 1px solid #c8ebd6;">
+                    <div class="font-weight-bold mb-1" style="color: #047857;">اطلاعات پرداخت</div>
+                    <div class="text-muted" style="font-size: 13px; margin-bottom: 4px;">مبلغ قرارداد: <span id="paymentContractAmount" style="font-weight: 700; color: #1f2937;">۰</span> افغانی</div>
+                    <div class="text-muted" style="font-size: 13px; margin-bottom: 4px;">پرداخت شده این ماه: <span id="paymentResidentPaidTotal" style="font-weight: 700; color: #047857;">۰</span> افغانی</div>
+                    <div class="text-muted" style="font-size: 13px;">مانده: <span id="paymentRemainingAmount" style="font-weight: 700; color: #dc2626;">۰</span> افغانی</div>
+                </div>
+                <div class="form-group mb-3">
+                    <label class="flabel" for="paymentAmountInput">مبلغ جدید پرداختی (افغانی)</label>
+                    <input type="number" id="paymentAmountInput" name="amount" class="form-control" placeholder="مثلاً 2500" min="1" step="100" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label class="flabel" for="paymentDateInput">تاریخ پرداخت</label>
+                    <input type="date" id="paymentDateInput" name="payment_date" class="form-control" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label class="flabel" for="notes">توضیحات</label>
+                    <input type="text" id="notes" name="notes" class="form-control" placeholder="توضیحات اختیاری">
+                </div>
+                <div class="d-flex justify-content-end align-items-center flex-wrap" style="gap: 10px;">
+                    <button type="button" id="paymentModalCancel" class="btn btn-secondary">انصراف</button>
+                    <button type="submit" class="btn btn-primary btn-payment-save">ثبت پرداخت</button>
+                </div>
+            </form>
         </div>
 
     </div>
 </div>
 
 <script>
-(function () {
-    const rows = Array.from(document.querySelectorAll('#contractsBody tr[data-code]'));
-    const totalRows = rows.length;
+    document.addEventListener('DOMContentLoaded', function () {
+        const paymentModalOverlay = document.getElementById('paymentModalOverlay');
+        const paymentModal = document.getElementById('paymentModal');
+        const paymentForm = document.getElementById('paymentForm');
+        const paymentContractName = document.getElementById('paymentContractName');
+        const paymentContractCode = document.getElementById('paymentContractCode');
+        const paymentContractAmount = document.getElementById('paymentContractAmount');
+        const paymentResidentPaidTotal = document.getElementById('paymentResidentPaidTotal');
+        const paymentRemainingAmount = document.getElementById('paymentRemainingAmount');
+        const contractIdInput = document.getElementById('contractIdInput');
+        const paymentModalClose = document.getElementById('paymentModalClose');
+        const paymentModalCancel = document.getElementById('paymentModalCancel');
 
-    const filterSearch = document.getElementById('filterSearch');
-    const filterStatus = document.getElementById('filterStatus');
-    const filterCity = document.getElementById('filterCity');
-    const filterRoom = document.getElementById('filterRoom');
-    const tableInfo = document.getElementById('tableInfo');
-    const paymentModalOverlay = document.getElementById('paymentModalOverlay');
-    const paymentModal = document.getElementById('paymentModal');
-    const paymentContractName = document.getElementById('paymentContractName');
-    const paymentContractCode = document.getElementById('paymentContractCode');
-    const paymentAmountInput = document.getElementById('paymentAmountInput');
-    const paymentInfoTotal = document.getElementById('paymentInfoTotal');
-    const paymentInfoMonths = document.getElementById('paymentInfoMonths');
-    const paymentInfoStatus = document.getElementById('paymentInfoStatus');
-    const paymentListContainer = document.getElementById('paymentListContainer');
-    const paymentSaveButton = document.getElementById('paymentSaveButton');
-    const paymentModalClose = document.getElementById('paymentModalClose');
-    const paymentModalCancel = document.getElementById('paymentModalCancel');
-    let currentPaymentCode = null;
-    const paymentData = {};
+        function openPaymentModal(residentId, residentName, contractAmount, paidAmount) {
+            if (!paymentModal || !paymentModalOverlay) return;
+            const parsedContractAmount = parseFloat(contractAmount) || 0;
+            const parsedPaidAmount = parseFloat(paidAmount) || 0;
 
-    function applyFilter() {
-        const q = (filterSearch.value || '').trim().toLowerCase();
-        const status = filterStatus.value;
-        const city = filterCity.value;
-        const room = (filterRoom.value || '').trim().toLowerCase();
-        let visible = 0;
+            paymentContractName.textContent = residentName || 'اقامت‌کننده انتخاب‌شده';
+            paymentContractCode.textContent = residentId || '—';
+            contractIdInput.value = residentId || '';
+            paymentContractAmount.textContent = parsedContractAmount.toLocaleString('fa-IR');
+            paymentResidentPaidTotal.textContent = parsedPaidAmount.toLocaleString('fa-IR');
+            const remaining = parsedContractAmount - parsedPaidAmount;
+            paymentRemainingAmount.textContent = remaining.toLocaleString('fa-IR');
+            paymentModal.style.display = 'block';
+            paymentModalOverlay.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
 
-        rows.forEach(function (row) {
-            const matchSearch = !q || [
-                row.dataset.code,
-                row.dataset.name,
-                row.dataset.father,
-                row.dataset.room,
-                row.dataset.phone,
-                row.dataset.occupation,
-                row.dataset.location
-            ].some(function (v) { return (v || '').toLowerCase().indexOf(q) !== -1; });
+        function closePaymentModal() {
+            if (!paymentModal || !paymentModalOverlay) return;
+            paymentModal.style.display = 'none';
+            paymentModalOverlay.style.display = 'none';
+            document.body.style.overflow = '';
+        }
 
-            const matchStatus = !status || row.dataset.status === status;
-            const matchCity = !city || row.dataset.city === city;
-            const matchRoom = !room || (row.dataset.room || '').toLowerCase().indexOf(room) !== -1;
-
-            const show = matchSearch && matchStatus && matchCity && matchRoom;
-            row.style.display = show ? '' : 'none';
-            if (show) {
-                visible++;
-                row.cells[0].textContent = visible;
-            }
+        document.querySelectorAll('.btn-payment-open').forEach(function (button) {
+            button.addEventListener('click', function () {
+                const residentId = this.getAttribute('data-resident-id') || this.dataset.residentId;
+                const residentName = this.getAttribute('data-resident-name') || this.dataset.residentName;
+                const contractAmount = this.getAttribute('data-contract-amount') || this.dataset.contractAmount;
+                const paidAmount = this.getAttribute('data-paid-amount') || this.dataset.paidAmount;
+                openPaymentModal(residentId, residentName, contractAmount, paidAmount);
+            });
         });
 
-        tableInfo.textContent = 'نمایش ' + visible.toLocaleString('fa-IR') + ' قرارداد از ' + totalRows.toLocaleString('fa-IR');
-
-        let emptyRow = document.getElementById('emptyFilterRow');
-        if (visible === 0) {
-            if (!emptyRow) {
-                emptyRow = document.createElement('tr');
-                emptyRow.id = 'emptyFilterRow';
-                emptyRow.innerHTML = '<td colspan="16" class="text-center text-muted py-4">' +
-                    '<i class="la la-inbox font-large-2 d-block mb-1 text-primary"></i>قراردادی با این فیلتر یافت نشد</td>';
-                document.getElementById('contractsBody').appendChild(emptyRow);
-            }
-            emptyRow.style.display = '';
-        } else if (emptyRow) {
-            emptyRow.style.display = 'none';
-        }
-    }
-
-    document.getElementById('btnFilter').addEventListener('click', applyFilter);
-    filterSearch.addEventListener('keyup', function (e) {
-        if (e.key === 'Enter') applyFilter();
-    });
-    [filterStatus, filterCity].forEach(function (el) {
-        el.addEventListener('change', applyFilter);
-    });
-    filterRoom.addEventListener('keyup', function (e) {
-        if (e.key === 'Enter') applyFilter();
-    });
-
-    document.querySelectorAll('.btn-delete').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-            if (confirm('آیا از حذف این قرارداد مطمئن هستید؟')) {
-                alert('حذف قرارداد — پس از اتصال به سرور فعال می‌شود.');
-            }
+        if (paymentModalClose) paymentModalClose.addEventListener('click', closePaymentModal);
+        if (paymentModalCancel) paymentModalCancel.addEventListener('click', closePaymentModal);
+        if (paymentModalOverlay) paymentModalOverlay.addEventListener('click', closePaymentModal);
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') closePaymentModal();
         });
     });
-
-    function formatAmount(value) {
-        return Number(value || 0).toLocaleString('fa-IR') + ' افغانی';
-    }
-
-    function formatCount(value) {
-        return Number(value || 0).toLocaleString('fa-IR');
-    }
-
-    function getBadgeClass(status) {
-        if (status === 'معوق') return 'badge-custom-red';
-        if (status === 'پرداخت نشده') return 'badge-custom-orange';
-        return 'badge-custom-green';
-    }
-
-    function updateRowPaymentCells(row, data) {
-        if (!row) return;
-        row.dataset.paymentAmount = data.total;
-        row.dataset.monthsPaid = data.monthsPaid;
-        row.dataset.paymentStatus = data.status;
-
-        const paymentCell = row.cells[12];
-        const monthsCell = row.cells[13];
-        const statusCell = row.cells[14];
-
-        if (paymentCell) paymentCell.textContent = data.total > 0 ? formatAmount(data.total) : '—';
-        if (monthsCell) monthsCell.textContent = formatCount(data.monthsPaid) + ' ماه';
-        if (statusCell) {
-            statusCell.innerHTML = '<span class="' + getBadgeClass(data.status) + '">' + data.status + '</span>';
-        }
-    }
-
-    function renderPaymentList(code) {
-        const data = paymentData[code];
-        if (!data) return;
-
-        paymentContractName.textContent = data.name || 'قرارداد انتخاب‌شده';
-        paymentContractCode.textContent = code;
-        paymentInfoTotal.textContent = formatAmount(data.total);
-        paymentInfoMonths.textContent = formatCount(data.monthsPaid);
-        paymentInfoStatus.textContent = data.status;
-
-        if (!paymentListContainer) return;
-
-        if (data.payments.length === 0) {
-            paymentListContainer.innerHTML = '<div class="text-muted" style="font-size: 14px;">هیچ پرداختی ثبت نشده است.</div>';
-            return;
-        }
-
-        paymentListContainer.innerHTML = data.payments.map(function (row) {
-            return '<div class="payment-row d-flex justify-content-between align-items-center">' +
-                '<div><strong>' + formatAmount(row.amount) + '</strong><div class="text-muted" style="font-size: 13px;">' + row.date + '</div></div>' +
-                '</div>';
-        }).join('');
-    }
-
-    function openPaymentModal(row) {
-        if (!row) return;
-        currentPaymentCode = row.dataset.code;
-        const code = currentPaymentCode;
-        const data = paymentData[code];
-
-        if (!data) return;
-        data.name = row.dataset.name || 'قرارداد';
-
-        if (paymentAmountInput) paymentAmountInput.value = '';
-        if (paymentModal) paymentModal.style.display = 'block';
-        if (paymentModalOverlay) paymentModalOverlay.style.display = 'block';
-        document.body.style.overflow = 'hidden';
-
-        renderPaymentList(code);
-    }
-
-    function closePaymentModal() {
-        currentPaymentCode = null;
-        if (paymentModal) paymentModal.style.display = 'none';
-        if (paymentModalOverlay) paymentModalOverlay.style.display = 'none';
-        document.body.style.overflow = '';
-    }
-
-    function createPaymentButton(row) {
-        const group = row.querySelector('.btn-group');
-        if (!group || row.querySelector('.btn-pay')) return;
-
-        const payButton = document.createElement('button');
-        payButton.type = 'button';
-        payButton.className = 'btn btn-outline-success btn-pay';
-        payButton.style.borderRadius = '0';
-        payButton.title = 'ثبت پرداخت';
-        payButton.innerHTML = '<i class="la la-credit-card"></i>';
-        payButton.addEventListener('click', function () {
-            openPaymentModal(row);
-        });
-        group.appendChild(payButton);
-    }
-
-    function addPaymentRecord() {
-        if (!currentPaymentCode) return;
-        const amount = Number(paymentAmountInput.value || 0);
-        if (!amount || amount <= 0) {
-            alert('لطفاً مبلغ پرداختی را وارد کنید.');
-            return;
-        }
-
-        const now = new Date();
-        const paymentDate = now.toLocaleDateString('fa-IR');
-        const data = paymentData[currentPaymentCode];
-        data.payments.push({ amount: amount, date: paymentDate });
-        data.total += amount;
-        data.monthsPaid += 1;
-        data.status = data.total > 0 ? 'پرداخت شده' : 'پرداخت نشده';
-
-        const row = document.querySelector('#contractsBody tr[data-code="' + currentPaymentCode + '"]');
-        updateRowPaymentCells(row, data);
-        renderPaymentList(currentPaymentCode);
-        if (paymentAmountInput) paymentAmountInput.value = '';
-    }
-
-    rows.forEach(function (row) {
-        const code = row.dataset.code;
-        paymentData[code] = {
-            payments: [],
-            total: Number(row.dataset.paymentAmount || 0),
-            monthsPaid: Number(row.dataset.monthsPaid || 0),
-            status: row.dataset.paymentStatus || 'پرداخت نشده',
-            name: row.dataset.name || ''
-        };
-        updateRowPaymentCells(row, paymentData[code]);
-        createPaymentButton(row);
-    });
-
-    if (paymentModalClose) paymentModalClose.addEventListener('click', closePaymentModal);
-    if (paymentModalCancel) paymentModalCancel.addEventListener('click', closePaymentModal);
-    if (paymentModalOverlay) paymentModalOverlay.addEventListener('click', closePaymentModal);
-    if (paymentSaveButton) paymentSaveButton.addEventListener('click', addPaymentRecord);
-    document.addEventListener('keydown', function (event) {
-        if (event.key === 'Escape') closePaymentModal();
-    });
-})();
 </script>
 
 @endsection

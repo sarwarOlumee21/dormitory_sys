@@ -20,6 +20,17 @@
           </li>
         </ul>
       </li>
+      <li class="nav-item {{ request()->routeIs('users.*') ? 'active open' : '' }}">
+        <a href="#"><i class="la la-users"></i><span class="menu-title">کاربران</span></a>
+        <ul class="menu-content">
+          <li class="{{ request()->routeIs('users.userRegister') ? 'active' : '' }}">
+            <a href="{{ route('users.userRegister') }}">ثبت کابر</a>
+          </li>
+          <li class="{{ request()->routeIs('users.userList') ? 'active' : '' }}">
+            <a href="{{ route('users.userList') }}">لیست کاربر</a>
+          </li>
+        </ul>
+      </li>
 
       <li class="nav-item {{ request()->routeIs('rooms.*') ? 'active open' : '' }}">
         <a href="#"><i class="la la-bed"></i><span class="menu-title">مدیریت اتاق‌ها</span></a>
@@ -56,6 +67,18 @@
           </li>
           <li class="{{ request()->routeIs('visitors.list') ? 'active' : '' }}">
             <a href="{{ route('visitors.list') }}">لیست مهمان‌ها</a>
+          </li>
+        </ul>
+      </li>
+
+      <li class="nav-item">
+        <a href="#"><i class="la la-user-plus"></i><span class="menu-title">آشپزخانه</span></a>
+        <ul class="menu-content">
+          <li class="">
+            <a href="">ثبت مهمان</a>
+          </li>
+          <li class="">
+            <a href="">لیست مهمان‌ها</a>
           </li>
         </ul>
       </li>
