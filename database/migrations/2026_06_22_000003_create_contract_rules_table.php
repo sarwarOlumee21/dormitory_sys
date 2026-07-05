@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('contract_rules', function (Blueprint $table) {
             $table->id();
-            $table->text('content');
+            $table->text('contract_rules');
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });

@@ -10,5 +10,6 @@ class ContractRules extends Model
 
     protected $fillable = [
         'contract_rules',
+        'is_active'
     ];
 }
