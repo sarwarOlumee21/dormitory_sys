@@ -8,19 +8,18 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('rooms', function (Blueprint $table) {
+        Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->string('room_number', 50)->unique();
-            $table->unsignedTinyInteger('capacity')->default(1);
-            $table->string('room_type', 100)->nullable();
-            $table->string('status', 50)->default('فعال');
+            $table->decimal('amount', 14, 2);
+            $table->date('payment_date');
             $table->text('notes')->nullable();
             $table->timestamps();
+            $table->foreignId('residents_id')->constrained('residents')->noActionOnDelete()->noActionOnUpdate();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('rooms');
+        Schema::dropIfExists('payments');
     }
 };

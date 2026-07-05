@@ -13,13 +13,8 @@ return new class extends Migration
             $table->foreignId('resident_id')->nullable()->constrained('residents')->nullOnDelete();
             $table->foreignId('room_id')->nullable()->constrained('rooms')->nullOnDelete();
             $table->date('contract_date')->nullable();
-            $table->string('duration', 100)->nullable();
             $table->decimal('contract_amount', 14, 2)->default(0.00);
-            $table->decimal('payment_amount', 14, 2)->default(0.00);
-            $table->string('payment_status', 50)->default('پرداخت نشده');
-            $table->unsignedSmallInteger('months_paid')->nullable();
             $table->string('contract_status', 50)->default('فعال');
-            $table->longText('contract_text')->nullable();
             $table->text('notes')->nullable();
             $table->timestamps();
         });

@@ -13,7 +13,6 @@ return new class extends Migration
             $table->text('content');
             $table->boolean('is_active')->default(true);
             $table->timestamps();
-            $table->foreignId('contracts_id')->constrained('contracts')->onDelete('restrict')->onUpdate('restrict');
         });
     }
 

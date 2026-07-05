@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    public function up()
+    public function up(): void
     {
         Schema::create('residents', function (Blueprint $table) {
             $table->id();
@@ -23,12 +23,12 @@ return new class extends Migration
             $table->string('guarantor_phone', 30)->nullable();
             $table->string('guarantor_occupation', 150)->nullable();
             $table->string('status', 50)->default('فعال');
-            $table->string('guarantor_occupation_location', 300);
             $table->timestamps();
+            $table->string('guarantor_occupation_location', 300);
         });
     }
 
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('residents');
     }
