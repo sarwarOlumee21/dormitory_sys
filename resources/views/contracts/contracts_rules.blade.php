@@ -18,48 +18,6 @@
             </div>
         </div>
 
-        {{-- استایل مشترک و یکپارچه کاردها --}}
-        <style>
-            .custom-form-card {
-                background: #ffffff;
-                border: 1px solid #e2e8f0 !important;
-                border-radius: 12px !important;
-                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-                margin-bottom: 25px;
-                overflow: hidden;
-            }
-            .custom-form-card .card-header {
-                background: #f8fafc;
-                border-bottom: 1px solid #e2e8f0;
-                padding: 15px 20px;
-                font-weight: bold;
-                color: #1e293b;
-                display: flex;
-                align-items: center;
-            }
-            .custom-form-card .card-header i {
-                font-size: 20px;
-                color: #1a56db;
-                margin-left: 10px;
-            }
-            .form-control {
-                border-radius: 8px !important;
-                border: 1px solid #cbd5e1 !important;
-                padding: 12px;
-                transition: all 0.2s;
-            }
-            .form-control:focus {
-                border-color: #1a56db !important;
-                box-shadow: 0 0 0 3px rgba(26, 86, 219, 0.1) !important;
-            }
-            .flabel {
-                font-weight: 600;
-                color: #475569;
-                font-size: 13px;
-                margin-bottom: 8px;
-            }
-        </style>
-
         <form method="post" action="{{ route('contracts.rules.save') }}">
             @csrf
 
