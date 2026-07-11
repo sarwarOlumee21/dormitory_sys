@@ -14,6 +14,8 @@ class ContractRegister extends Model
         'contract_date',
         'contract_amount',
         'contract_status',
+        'payment_mounth',
+        'payment_years',
         'notes',
         // Add other fields as necessary
     ];
