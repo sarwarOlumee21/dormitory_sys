@@ -127,8 +127,8 @@
             </div>
         </div>
 
-        <div id="paymentModalOverlay" class="payment-modal-overlay"></div>
-        <div id="paymentModal" class="payment-modal" role="dialog" aria-modal="true" aria-labelledby="paymentModalTitle">
+        <div id="paymentModalOverlay" class="payment-modal-overlay" style="display:none; position:fixed; inset:0; background:rgba(15,23,42,.45); z-index:1040; backdrop-filter:blur(2px);"></div>
+        <div id="paymentModal" class="payment-modal" role="dialog" aria-modal="true" aria-labelledby="paymentModalTitle" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); width:min(92vw, 560px); max-height:90vh; overflow:auto; background:#fff; border-radius:16px; box-shadow:0 20px 60px rgba(15,23,42,.25); padding:24px; z-index:1055;">
             <form id="paymentForm" method="post" action="{{ route('contracts.payment.store') }}" novalidate>
                 @csrf
                 <div class="d-flex align-items-start justify-content-between mb-3">
@@ -155,7 +155,7 @@
                 </div>
                 <div class="form-group mb-3">
                     <label class="flabel" for="paymentDateInput">تاریخ پرداخت</label>
-                    <input type="date" id="paymentDateInput" name="payment_date" class="form-control" required>
+                    <input type="text" id="paymentDateInput" name="payment_date" class="form-control" placeholder="انتخاب تاریخ" data-jdp required>
                 </div>
                 <div class="form-group mb-3">
                     <label class="flabel" for="notes">توضیحات</label>
@@ -171,7 +171,18 @@
     </div>
 </div>
 
+<style>
+    .jdp-container {
+        z-index: 1100 !important;
+    }
+</style>
+
 <script>
+    jalaliDatepicker.startWatch({
+        zIndex: 1100,
+        persianDigits: true,
+        months: ['حمل', 'ثور', 'جوزا', 'سرطان', 'اسد', 'سنبله', 'میزان', 'عقرب', 'قوس', 'جدی', 'دلو', 'حوت']
+    });
     document.addEventListener('DOMContentLoaded', function () {
         const paymentModalOverlay = document.getElementById('paymentModalOverlay');
         const paymentModal = document.getElementById('paymentModal');

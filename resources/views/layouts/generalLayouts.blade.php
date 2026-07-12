@@ -12,6 +12,13 @@
   <title>Dashboard sales - Modern Admin - Clean Bootstrap 4 Dashboard HTML Template + Bitcoin
     Dashboard
   </title>
+  <!-- datepicker test -->
+     <link rel="stylesheet" href="{{ asset('assets/datepicker/jalalidatepicker.css') }}"/>
+     <link rel="stylesheet" href="{{ asset('assets/datepicker/jalalidatepicker.min.css') }}"/>
+     <script src="{{ asset('app-assets/vendors/js/jquery/jquery.min.js') }}"></script>
+     <script src="{{ asset('assets/datepicker/jalalidatepicker.min.js') }}"></script>
+     <script src="{{ asset('assets/datepicker/jalalidatepicker.js') }}"></script>
+  <!-- datepicker test -->
   <link rel="apple-touch-icon" href="{{ asset('app-assets/images/ico/apple-icon-120.png') }}">
   <link rel="shortcut icon" type="image/x-icon" href="{{ asset('app-assets/images/ico/favicon.ico') }}">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Quicksand:300,400,500,700"
