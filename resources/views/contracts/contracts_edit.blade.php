@@ -23,7 +23,7 @@
                         <i class="la la-file-text text-white" style="font-size:22px; vertical-align: middle;"></i>
                     </div>
                     <div>
-                        <h5 class="text-white mb-1 font-weight-bold">ثبت قرارداد جدید</h5>
+                        <h5 class="text-white mb-1 font-weight-bold">{{ isset($contract) ? 'ویرایش قرارداد' : 'ثبت قرارداد جدید' }}</h5>
                         <p class="mb-0" style="color:rgba(255,255,255,.75); font-size:13px;">لطفاً اطلاعات قرارداد ساکن را
                             با دقت پُر و تنظیم کنید</p>
                     </div>
@@ -32,8 +32,9 @@
 
             {{-- بدنه اصلی فرم --}}
             <div class="form-outer">
-                <form method="post" action="{{ route('contracts.store') }}">
+                <form method="post" action="{{ isset($contract) ? route('contracts.update', $contract->id) : route('contracts.store') }}">
                     @csrf
+                    @if(isset($contract)) @method('PUT') @endif
 
                     <!-- 🔵 ONE BIG CARD -->
                     <div class="card custom-form-card">
@@ -54,34 +55,34 @@
                                     <select class="finput w-100" id="userSelect" name="resident_id">
                                         <option value="">— لطفاً یک شخص انتخاب کنید —</option>
                                         @foreach($residents as $resident)
-                                            <option value="{{ $resident->id }}">
+                                            <option value="{{ $resident->id }}" {{ (old('resident_id', $contract->resident_id ?? '') == $resident->id) ? 'selected' : '' }}>
                                                 {{ $resident->id }} - {{ $resident->name }}
                                             </option>
-                                            @endforeach
+                                        @endforeach
                                     </select>
                                 </div>
                                 <div class="col-lg-6 mb-3">
                                     <label class="flabel">تاریخ شروع قرارداد</label>
-                                    <input type="date" name="contract_date" class="finput w-100">
+                                    <input type="date" name="contract_date" class="finput w-100" value="{{ old('contract_date', isset($contract->contract_date) ? \Carbon\Carbon::parse($contract->contract_date)->format('Y-m-d') : '') }}">
                                 </div>
 
 
                                 <div class="col-lg-6 mb-3">
                                     <label class="flabel">مبلغ قرارداد (افغانی)</label>
-                                    <input type="number" name="contract_amount" class="finput w-100" placeholder="45000">
+                                    <input type="number" name="contract_amount" class="finput w-100" placeholder="45000" value="{{ old('contract_amount', $contract->contract_amount ?? '') }}">
                                 </div>
 
                                 <div class="col-lg-6 mb-3">
                                     <label class="flabel">وضعیت قرارداد</label>
                                     <select class="finput w-100" name="contract_status">
-                                        <option value="فعال">فعال</option>
-                                        <option value="تمدید نشده">تمدید نشده</option>
-                                        <option value="خاتمه یافته">خاتمه یافته</option>
+                                        <option value="فعال" {{ (old('contract_status', $contract->contract_status ?? '') == 'فعال') ? 'selected' : '' }}>فعال</option>
+                                        <option value="تمدید نشده" {{ (old('contract_status', $contract->contract_status ?? '') == 'تمدید نشده') ? 'selected' : '' }}>تمدید نشده</option>
+                                        <option value="خاتمه یافته" {{ (old('contract_status', $contract->contract_status ?? '') == 'خاتمه یافته') ? 'selected' : '' }}>خاتمه یافته</option>
                                     </select>
                                 </div>
                                 <div class="col-lg-6 mb-3">
                                     <label class="flabel">توضیحات</label>
-                                    <textarea class="finput w-100" placeholder="توضیحات" name="notes"></textarea>
+                                    <textarea class="finput w-100" placeholder="توضیحات" name="notes">{{ old('notes', $contract->notes ?? '') }}</textarea>
                                 </div>
                             </div>
 
@@ -107,7 +108,7 @@
                             <div>
                                 <button type="reset" class="btn btn-outline-secondary">لغو</button>
                                 <button type="submit" class="btn btn-primary">
-                                    ثبت قرارداد
+                                    ویرایش قرارداد
                                 </button>
                             </div>
                         </div>

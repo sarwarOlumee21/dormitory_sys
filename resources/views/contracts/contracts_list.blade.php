@@ -80,24 +80,27 @@
                             <th>نام کامل</th>
                             <th>نمبر اتاق</th>
                             <th>تاریخ قرارداد</th>
-                            <th>مبلغ پرداختی</th>
+                                <th>مبلغ پرداختی</th>
+                                <th>مبلغ پرداخت شده</th>
                             <th>وضعیت</th>
                             <th class="text-center">عملیات</th>
                         </tr>
                     </thead>
                     <tbody id="contractsBody">
                         @forelse($contracts as $index => $contract)
-                            <tr data-code="{{ $contract->id }}" data-name="{{ $contract->resident->name ?? '' }}" data-room="{{ $contract->room->room_number ?? '' }}" data-status="{{ $contract->contract_status ?? '' }}">
+                            <tr data-code="{{ $contract->id }}" data-name="{{ $contract->resident->name ?? '' }}" data-room="{{ $contract->resident->room->room_number ?? '' }}" data-status="{{ $contract->contract_status ?? '' }}">
                                 <td>{{ $index + 1 }}</td>
                                 <td>{{ $contract->id }}</td>
                                 <td>{{ $contract->resident->name ?? '—' }}</td>
-                                <td>{{ $contract->room->room_number ?? '—' }}</td>
+                                <td>{{ $contract->resident->room->room_number ?? '—' }}</td>
                                 <td>{{ \Carbon\Carbon::parse($contract->contract_date)->format('Y-m-d') }}</td>
                                 <td>{{ number_format($contract->contract_amount, 0, '.', ',') }} افغانی</td>
+                                <td>{{ number_format($paymentTotals[$contract->resident_id] ?? 0, 0, '.', ',') }} افغانی</td>
                                 <td><span class="badge {{ $contract->contract_status == 'فعال' ? 'badge-custom-green' : ($contract->contract_status == 'غيرفعال' ? 'badge-custom-red' : 'badge-custom-orange') }}">{{ $contract->contract_status }}</span></td>
                                 <td class="text-center">
                                     <div class="btn-group" role="group">
-                                        <a href="" class="btn btn-outline-primary btn-sm" title="ویرایش"><i class="la la-edit"></i></a>
+                                        <a href="{{ route('contracts.edit', $contract->id) }}" class="btn btn-outline-primary btn-sm" title="ویرایش"><i class="la la-edit"></i></a>
+                                        <a href="{{ route('contracts.show', $contract->id) }}" class="btn btn-outline-info btn-sm" title="نمایش"><i class="la la-eye"></i></a>
                                         <button type="button" class="btn btn-outline-success btn-sm btn-payment-open" title="پرداخت"
                                             data-resident-id="{{ $contract->resident_id }}"
                                             data-resident-name="{{ $contract->resident->name ?? '' }}"
@@ -105,7 +108,12 @@
                                             data-paid-amount="{{ (float) ($paymentTotals[$contract->resident_id] ?? 0) }}">
                                             <i class="la la-credit-card"></i>
                                         </button>
-                                        <button type="button" class="btn btn-outline-danger btn-sm btn-delete" title="حذف"><i class="la la-trash"></i></button>
+                                        <form method="post" action="{{ route('contracts.toggle', $contract->id) }}" style="display:inline-block;">
+                                            @csrf
+                                            <button type="submit" class="btn btn-outline-secondary btn-sm" title="غیرفعال/فعال">
+                                                <i class="la la-toggle-off"></i>
+                                            </button>
+                                        </form>
                                     </div>
                                 </td>
                             </tr>
@@ -181,6 +189,9 @@
     jalaliDatepicker.startWatch({
         zIndex: 1100,
         persianDigits: true,
+        showDays: false,
+        targetValueType: 'gregorian',
+        targetValueInput: '#paymentDateInput',
         months: ['حمل', 'ثور', 'جوزا', 'سرطان', 'اسد', 'سنبله', 'میزان', 'عقرب', 'قوس', 'جدی', 'دلو', 'حوت']
     });
     document.addEventListener('DOMContentLoaded', function () {

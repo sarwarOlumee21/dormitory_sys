@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
+use Carbon\Carbon;
 use App\Models\ContractRules;
-use App\Models\Room;
 use App\Models\Resident;
 use App\Models\ContractRegister;
 use App\Models\payment;
@@ -15,8 +15,7 @@ class ContractsController extends Controller
     public function ContractsRegister(Request $request)
     {
         $residents = Resident::all();
-        $rooms = Room::all();
-        return view('contracts.contracts_register', compact('rooms'), compact('residents'));
+        return view('contracts.contracts_register', compact('residents'));
     }
 
     public function ContractsRules(Request $request)
@@ -28,7 +27,6 @@ class ContractsController extends Controller
     public function contractStore(Request $request)
     {
         $validatedData = $request->validate([
-            'room_id' => 'required|exists:rooms,id',
             'resident_id' => 'required|exists:residents,id',
             'contract_date' => 'required|date',
             'contract_amount' => 'required|numeric|min:0',
@@ -48,7 +46,7 @@ class ContractsController extends Controller
 
     public function ContractsList()
     {
-        $contracts = ContractRegister::with(['room', 'resident'])->simplePaginate(10);
+        $contracts = ContractRegister::with('resident.room')->simplePaginate(10);
 
         $startOfMonth = now()->startOfMonth()->toDateString();
         $endOfMonth = now()->endOfMonth()->toDateString();
@@ -93,13 +91,24 @@ class ContractsController extends Controller
         $validatedData = $request->validate([
             'resident_id' => 'required|exists:residents,id',
             'amount' => 'required|numeric|min:0',
-            'payment_date' => 'required|date',
+            'payment_date' => 'required',
             'notes' => 'nullable|string',
         ]);
 
+        // Normalize payment_date: support 'YYYY-MM' (year-month) by appending day = 01
+        $rawDate = $validatedData['payment_date'];
+        if (is_string($rawDate) && preg_match('/^\d{4}-\d{2}$/', $rawDate)) {
+            $rawDate = $rawDate . '-01';
+        }
+        try {
+            $normalizedDate = Carbon::parse($rawDate)->toDateString();
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'تاریخ پرداخت نامعتبر است.');
+        }
+
         $paymentData = [
             'amount' => $validatedData['amount'],
-            'payment_date' => $validatedData['payment_date'],
+            'payment_date' => $normalizedDate,
             'notes' => $validatedData['notes'] ?? null,
         ];
 
@@ -117,5 +126,54 @@ class ContractsController extends Controller
         }
 
         return redirect()->back()->with('success', 'Payment recorded successfully.');
+    }
+
+    public function showContract($id)
+    {
+        $contract = ContractRegister::with('resident.room')->findOrFail($id);
+        $rules = ContractRules::orderBy('created_at', 'desc')->first();
+        return view('contracts.contracts_show', compact('contract', 'rules'));
+    }
+
+    public function toggleStatus(Request $request, $id)
+    {
+        $contract = ContractRegister::findOrFail($id);
+        $current = $contract->contract_status;
+        $contract->contract_status = ($current === 'فعال') ? 'غيرفعال' : 'فعال';
+        $contract->save();
+        return redirect()->back()->with('success', 'وضعیت قرارداد بروز شد.');
+    }
+    public function ContractsEdit($id)
+    {
+        $contract = ContractRegister::with('resident.room')->findOrFail($id);
+        $residents = Resident::all();
+        return view('contracts.contracts_edit', compact('contract', 'residents'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'resident_id' => 'required|exists:residents,id',
+            'contract_date' => 'required|date',
+            'contract_amount' => 'required|numeric|min:0',
+            'contract_status' => 'required|string',
+            'notes' => 'nullable|string',
+        ]);
+
+        $contract = ContractRegister::findOrFail($id);
+
+        // Normalize date
+        try {
+            $validatedData['contract_date'] = Carbon::parse($validatedData['contract_date'])->toDateString();
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'تاریخ قرارداد نامعتبر است.');
+        }
+
+        $updated = $contract->update($validatedData);
+        if (!$updated) {
+            return redirect()->back()->with('error', 'به‌روزرسانی قرارداد انجام نشد. لطفاً دوباره تلاش کنید.');
+        }
+
+        return redirect()->route('contracts.show', $contract->id)->with('success', 'قرارداد با موفقیت بروزرسانی شد.');
     }
 }
