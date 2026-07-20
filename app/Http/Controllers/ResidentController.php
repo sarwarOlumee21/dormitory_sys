@@ -4,19 +4,35 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Resident;
+use App\Models\Room;
 
 class ResidentController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         return view('home');
     }
-    public function ResidentRegister(){
-        return view('resident.resident_register');
+
+    public function ResidentRegister()
+    {
+        $rooms = Room::all();
+        return view('resident.resident_register', compact('rooms'));
     }
-    public function ResidentList(){
-        $residents = Resident::simplePaginate(10);
+
+    public function ResidentList()
+    {
+        $residents = Resident::with('room')->simplePaginate(10);
+
         return view('resident.resident_list', compact('residents'));
     }
+
+    public function ResidentListDetails($id)
+    {
+        $residentDetails = Resident::with('room')->findOrFail($id);
+
+        return view('resident.resident_list_details', compact('residentDetails'));
+    }
+
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -33,15 +49,15 @@ class ResidentController extends Controller
             'guarantor_phone' => 'required|string|max:20',
             'guarantor_occupation' => 'nullable|string|max:255',
             'guarantor_occupation_location' => 'nullable|string|max:255',
-            // Add other fields as necessary
+            'room_id' => 'required|exists:rooms,id',
         ]);
 
         $resident = Resident::create($validatedData);
-        if (!$resident) {
-            return redirect()->back()->with('error', 'Failed to register resident. Please try again.');
+
+        if (! $resident) {
+            return redirect()->back()->with('error', 'ثبت ساکن انجام نشد. لطفاً دوباره تلاش کنید.');
         }
 
-        return redirect()->route('resident.list')->with('success', 'Resident registered successfully.');
+        return redirect()->route('resident.list')->with('success', 'ساکن با موفقیت ثبت شد.');
     }
-
 }

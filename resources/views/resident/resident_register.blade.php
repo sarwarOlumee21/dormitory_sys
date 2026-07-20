@@ -52,6 +52,15 @@
             <label class="flabel"><i class="la la-map-marker"></i> شهر / ولایت</label>
             <input type="text" class="finput" name="city_name" placeholder="نام شهر یا ولایت">
           </div>
+          <div class="col-md-6 mb-3">
+            <label class="flabel"><i class="la la-home"></i> شماره اتاق <span class="required-star">*</span></label>
+            <select class="finput" name="room_id">
+                <option value="">انتخاب کنید</option>
+                @foreach($rooms as $room)
+                    <option value="{{ $room->id }}">{{ $room->room_number }} - {{ $room->room_type }}</option>
+                @endforeach
+            </select>
+          </div>
         </div>
 
         <div class="sep"></div>
