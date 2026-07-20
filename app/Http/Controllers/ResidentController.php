@@ -60,4 +60,39 @@ class ResidentController extends Controller
 
         return redirect()->route('resident.list')->with('success', 'ساکن با موفقیت ثبت شد.');
     }
+    public function ResidentListEdit($id)
+    {
+        $resident = Resident::with('room')->findOrFail($id);
+        $rooms = Room::all();
+
+        return view('resident.resident_edit', compact('resident', 'rooms'));
+    }
+    public function update(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'resident_code' => 'required|unique:residents,resident_code,' . $id,
+            'name' => 'required|string|max:255',
+            'father_name' => 'required|string|max:255',
+            'phone_number' => 'required|string|max:20',
+            'city_name' => 'required|string|max:255',
+            'occupation' => 'nullable|string|max:255',
+            'work_phone' => 'nullable|string|max:20',
+            'occupation_location' => 'nullable|string|max:255',
+            'guarantor_name' => 'required|string|max:255',
+            'guarantor_father_name' => 'required|string|max:255',
+            'guarantor_phone' => 'required|string|max:20',
+            'guarantor_occupation' => 'nullable|string|max:255',
+            'guarantor_occupation_location' => 'nullable|string|max:255',
+            'room_id' => 'required|exists:rooms,id',
+        ]);
+
+        $resident = Resident::findOrFail($id);
+        $updated = $resident->update($validatedData);
+
+        if (! $updated) {
+            return redirect()->back()->with('error', 'به‌روزرسانی ساکن انجام نشد. لطفاً دوباره تلاش کنید.');
+        }
+
+        return redirect()->route('resident.list.details', ['id' => $resident->id])->with('success', 'اطلاعات ساکن با موفقیت بروزرسانی شد.');
+    }
 }

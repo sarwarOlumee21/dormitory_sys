@@ -17,6 +17,8 @@ Route::prefix('resident')->name('resident.')->group(function () {
     Route::get('/resident_register', [ResidentController::class, 'ResidentRegister'])->name('register')->middleware('auth');
     Route::get('/resident_list', [ResidentController::class, 'ResidentList'])->name('list')->middleware('auth');
     Route::get('/resident_list/{id}', [ResidentController::class, 'ResidentListDetails'])->name('list.details')->middleware('auth');
+    Route::get('/resident_list/{id}/edit', [ResidentController::class, 'ResidentListEdit'])->name('list.edit')->middleware('auth');
+    Route::post('/resident_list/{id}/update', [ResidentController::class, 'update'])->name('update')->middleware('auth');
 });
 Route::prefix('rooms')->name('rooms.')->group(function () {
     Route::get('/room_register', [RoomController::class, 'RoomRegister'])->name('register')->middleware('auth');

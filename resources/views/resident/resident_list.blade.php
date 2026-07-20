@@ -78,6 +78,9 @@
                                     <a href="{{ route('resident.list.details', ['id' => $resident->id]) }}" class="btn btn-sm btn-outline-primary">
                                         <i class="la la-eye"></i> جزئیات
                                     </a>
+                                    <a href="{{ route('resident.list.edit', ['id' => $resident->id]) }}" class="btn btn-sm btn-outline-primary">
+                                        <i class="la la-edit"></i> ویرایش
+                                    </a>
                                 </td>
                             </tr>
                         @empty
