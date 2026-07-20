@@ -44,4 +44,32 @@ class UserController extends Controller
         $users = User::all();
         return view('users.userList', compact('users'));
     }
+    public function userEdit($id)
+    {
+        $user = User::findOrFail($id);
+        return view('users.userEdit', compact('user'));
+    }
+    public function userUpdate(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        $validatedData = $request->validate([
+            'code' => 'required|string|max:255|unique:users,code,' . $user->id,
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'role' => 'required|string|in:admin,manager,staff',
+            'username' => 'required|string|max:255|unique:users,username,' . $user->id,
+            'password' => 'nullable|string|min:8|confirmed',
+            'number' => 'required|string|max:255',
+        ]);
+        $user->update([
+            'code' => $validatedData['code'],
+            'name' => $validatedData['name'],
+            'email' => $validatedData['email'],
+            'role' => $validatedData['role'],
+            'username' => $validatedData['username'],
+            'password' => isset($validatedData['password']) ? Hash::make($validatedData['password']) : $user->password,
+            'number' => $validatedData['number'],
+        ]);
+        return redirect()->route('users.userList')->with('success', 'User updated successfully.');
+    }
 }

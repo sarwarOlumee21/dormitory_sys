@@ -55,7 +55,9 @@
                                 <td>{{ $user->number }}</td>
                                 <td>{{ ucfirst($user->role) }}</td>
                                 <td class="text-center">
-                                    <!-- Add action buttons here if needed -->
+                                    <a href="{{ route('users.userEdit', ['id' => $user->id]) }}" class="btn btn-sm btn-outline-primary">
+                                        <i class="la la-edit"></i> ویرایش
+                                    </a>
                                 </td>
                             </tr>
                         @endforeach

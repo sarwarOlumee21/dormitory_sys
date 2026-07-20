@@ -60,4 +60,6 @@ Route::prefix('users')->name('users.')->group(function () {
     Route::get('/userRegister', [UserController::class, 'userRegister'])->name('userRegister')->middleware('auth');
     Route::post('/store', [UserController::class, 'userStore'])->name('store');
     Route::get('/userList', [UserController::class, 'userList'])->name('userList')->middleware('auth');
+    Route::get('/userEdit/{id}', [UserController::class, 'userEdit'])->name('userEdit')->middleware('auth');
+    Route::put('/userUpdate/{id}', [UserController::class, 'userUpdate'])->name('userUpdate')->middleware('auth');
 });
