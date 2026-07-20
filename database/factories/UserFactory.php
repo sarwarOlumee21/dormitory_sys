@@ -26,6 +26,7 @@ class UserFactory extends Factory
     {
         return [
             'code' => fake()->unique()->randomNumber(5, true),
+            'number' => fake()->unique()->phoneNumber(),
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),

@@ -16,18 +16,23 @@ Route::get('/', [ResidentController::class, 'index'])->name('home')->middleware(
 Route::prefix('resident')->name('resident.')->group(function () {
     Route::get('/resident_register', [ResidentController::class, 'ResidentRegister'])->name('register')->middleware('auth');
     Route::get('/resident_list', [ResidentController::class, 'ResidentList'])->name('list')->middleware('auth');
+    Route::get('/resident_list/{id}', [ResidentController::class, 'ResidentListDetails'])->name('list.details')->middleware('auth');
 });
 Route::prefix('rooms')->name('rooms.')->group(function () {
     Route::get('/room_register', [RoomController::class, 'RoomRegister'])->name('register')->middleware('auth');
     Route::get('/room_list', [RoomController::class, 'RoomList'])->name('list')->middleware('auth');
 });
 Route::prefix('contracts')->name('contracts.')->group(function () {
+    Route::get('/contracts_edit/{id}', [ContractsController::class, 'ContractsEdit'])->name('edit')->middleware('auth');
     Route::get('/contracts_register', [ContractsController::class, 'ContractsRegister'])->name('register')->middleware('auth');
     Route::get('/contracts_rules', [ContractsController::class, 'ContractsRules'])->name('rules')->middleware('auth');
     Route::post('/rules/save', [ContractsController::class, 'storeRules'])->name('rules.save')->middleware('auth');
     Route::get('/contracts_list', [ContractsController::class, 'ContractsList'])->name('list')->middleware('auth');
     Route::post('/store', [ContractsController::class, 'contractStore'])->name('store')->middleware('auth');
     Route::post('/payment/store', [ContractsController::class, 'storePayment'])->name('payment.store')->middleware('auth');
+    Route::get('/{id}/show', [ContractsController::class, 'showContract'])->name('show')->middleware('auth');
+    Route::post('/{id}/toggle', [ContractsController::class, 'toggleStatus'])->name('toggle')->middleware('auth');
+    Route::put('/{id}', [ContractsController::class, 'update'])->name('update')->middleware('auth');
 });
 Route::prefix('visitors')->name('visitors.')->group(function () {
     Route::get('/register', [VisitorController::class, 'register'])->name('register')->middleware('auth');

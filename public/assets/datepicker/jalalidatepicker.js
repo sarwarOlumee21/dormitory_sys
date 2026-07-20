@@ -182,6 +182,9 @@
     return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   };
   var getDateStringLength = function getDateStringLength(jdp) {
+    if (!jdp.options.showDays) {
+      return 6 + jdp.options.separatorChars.date.length;
+    }
     return 8 + jdp.options.separatorChars.date.length * 2;
   };
   var hasValidPartLengths = function hasValidPartLengths(parts, lengths) {
@@ -330,7 +333,10 @@
     var dateSeparator = escapeRegex(sepOpt.date);
     var timeSeparator = escapeRegex(sepOpt.time);
     var betweenSeparator = escapeRegex(sepOpt.between);
-    var datePattern = jdp.options.date ? "\\d{4}" + dateSeparator + "\\d{2}" + dateSeparator + "\\d{2}" : "";
+    var datePattern = "";
+    if (jdp.options.date) {
+      datePattern = "\\d{4}" + dateSeparator + "\\d{2}" + (jdp.options.showDays ? dateSeparator + "\\d{2}" : "");
+    }
     var timePattern = jdp.options.time ? "\\d{2}" + timeSeparator + "\\d{2}" + (jdp.options.hasSecond ? timeSeparator + "\\d{2}" : "") : "";
     var regex = new RegExp("^" + datePattern + (datePattern && timePattern ? betweenSeparator : "") + timePattern + "$");
     return regex.test(str);
@@ -356,7 +362,7 @@
     return {
       year: parseInt(date[0], 10),
       month: parseInt(date[1], 10),
-      day: parseInt(date[2], 10),
+      day: parseInt(date[2], 10) || 1,
       hour: parseInt(time[0], 10) || 0,
       minute: parseInt(time[1], 10) || 0,
       second: parseInt(time[2], 10) || 0
@@ -368,13 +374,22 @@
     var date = forTarget ? separatorChars.targetDate : separatorChars.date;
     var time = forTarget ? separatorChars.targetTime : separatorChars.time;
     var between = forTarget ? separatorChars.targetBetween : separatorChars.between;
-    var dateStr = opt.date ? "" + obj.year + date + addLeadingZero(obj.month) + date + addLeadingZero(obj.day) : "";
+    var dateStr = "";
+    if (opt.date) {
+      dateStr = "" + obj.year + date + addLeadingZero(obj.month);
+      if (opt.showDays) {
+        dateStr += date + addLeadingZero(obj.day);
+      }
+    }
     var timeStr = opt.time ? "" + addLeadingZero(obj.hour) + time + addLeadingZero(obj.minute) + (opt.hasSecond ? time + addLeadingZero(obj.second) : "") : "";
     var betweenStr = dateStr && timeStr ? between : "";
     return dateStr + betweenStr + timeStr;
   };
   var getDateOnlyValueStringWithSep = function getDateOnlyValueStringWithSep(jdp, obj, forTarget) {
     var dateSeparator = forTarget ? jdp.options.separatorChars.targetDate : jdp.options.separatorChars.date;
+    if (!jdp.options.showDays) {
+      return "" + obj.year + dateSeparator + addLeadingZero(obj.month);
+    }
     return "" + obj.year + dateSeparator + addLeadingZero(obj.month) + dateSeparator + addLeadingZero(obj.day);
   };
   var getValueStringFromValueObject = function getValueStringFromValueObject(jdp, obj) {
@@ -429,7 +444,8 @@
     if (!str) {
       return false;
     }
-    return hasValidPartLengths(getDatePartsFromString(jdp, str), [4, 2, 2]);
+    var partsLength = jdp.options.showDays ? [4, 2, 2] : [4, 2];
+    return hasValidPartLengths(getDatePartsFromString(jdp, str), partsLength);
   };
   var isValidTimeString = function isValidTimeString(jdp, str) {
     if (!str) {
@@ -927,7 +943,9 @@
   var renderDatePicker = function renderDatePicker(jdp) {
     renderYear(jdp);
     renderMonths(jdp);
-    renderDays(jdp);
+    if (jdp.options.showDays) {
+      renderDays(jdp);
+    }
   };
   var renderFooter = function renderFooter(jdp) {
     var _jdp$input2;
@@ -935,7 +953,17 @@
     if (jdp.options.showTodayBtn && jdp.options.date) {
       var isActiveToday = isValidDateToday(jdp);
       createElement(TODAY_BUTTON_ELEMENT_QUERY + (isActiveToday ? "" : ".disabled-btn"), footerContainer, EVENT_CLICK_STR, function () {
-        if (isActiveToday) jdp.setValue(jdp.today);
+        if (isActiveToday) {
+          if (jdp.options.showDays) {
+            jdp.setValue(jdp.today);
+          } else {
+            jdp.setValue({
+              year: jdp.today.year,
+              month: jdp.today.month,
+              day: 1
+            });
+          }
+        }
       }, "امروز");
     }
     if (!jdp.options.date && jdp.options.time && (!((_jdp$input2 = jdp.input) != null && _jdp$input2.value) || !!jdp.options.showSelectTimeBtnAlways)) {
@@ -1098,6 +1126,7 @@
     setDefaultValue("hasSecond", true);
     setDefaultValue("date", true);
     setDefaultValue("time", false);
+    setDefaultValue("showDays", true);
     setDefaultValue("days", DEFAULT_DAYS);
     setDefaultValue("months", DEFAULT_MONTHS);
     setDefaultValue("separatorChars", DEFAULT_SEPARATOR_CHARS);
@@ -1382,6 +1411,14 @@
       this._initDate = normalizeMinMaxDate(this, this._initDate, {
         month: month
       });
+      if (!this.options.showDays) {
+        this.setValue({
+          year: this._initDate.year,
+          month: this._initDate.month,
+          day: 1
+        });
+        return;
+      }
       this._draw();
     },
     increaseYear: function increaseYear() {
@@ -1397,6 +1434,14 @@
       this._initDate = normalizeMinMaxDate(this, this._initDate, {
         year: year
       });
+      if (!this.options.showDays) {
+        this.setValue({
+          year: this._initDate.year,
+          month: this._initDate.month,
+          day: 1
+        });
+        return;
+      }
       this._draw();
     },
     _dpContainer: void 0,

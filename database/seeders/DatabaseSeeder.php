@@ -15,11 +15,25 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // ایجاد یا بروزرسانی کاربر تست
+        User::updateOrCreate(
+            ['email' => 'test@example.com'],
+            [
+                'code' => fake()->unique()->randomNumber(5, true),
+                'number' => fake()->unique()->phoneNumber(),
+                'name' => 'Test User',
+                'email_verified_at' => now(),
+                'password' => bcrypt('password'),
+                'remember_token' => \Illuminate\Support\Str::random(10),
+                'username' => 'testuser',
+                'role' => 'admin',
+            ]
+        );
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // ایجاد اتاق‌ها
+        \App\Models\Room::factory()->count(20)->create();
+
+        // ایجاد ساکنین نمونه
+        $this->call(ResidentSeeder::class);
     }
 }
