@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
                 'role' => 'admin',
             ]
         );
+    User::factory(100)->create();
 
         // ایجاد اتاق‌ها
         \App\Models\Room::factory()->count(20)->create();
