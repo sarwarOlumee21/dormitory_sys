@@ -4,7 +4,6 @@
 
     <div class="row" style="direction: rtl; text-align: right;">
         <div class="col-12">
-
             {{-- بنر خوش‌آمدگویی و عنوان بالای صفحه --}}
             <div class="top-banner mb-4"
                 style="border-radius: 12px; padding: 22px 20px; color: #ffffff; box-shadow: 0 4px 12px rgba(26, 86, 219, 0.15);">
