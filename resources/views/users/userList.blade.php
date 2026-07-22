@@ -15,58 +15,7 @@
         </div>
 
         <div class="card-soft">
-
-            <div class="filter-card p-3 mb-4">
-                <div class="row gx-2 gy-2 align-items-end">
-                    <div class="col-md-10">
-                        <label class="form-label fw-bold" style="direction:rtl;">جستجو</label>
-                        <input type="text" id="filterResident" class="form-control border-primary" placeholder="نام، اتاق، تلفن...">
-                    </div>
-                    <div class="col-md-2">
-                        <button type="button" class="btn btn-primary btn-block" id="btnFilterResident">
-                            <i class="la la-search"></i> جستجو
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="table-responsive" style="overflow-x:auto !important;">
-                <table class="table table-hover mb-0">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>کد</th>
-                            <th>نام کامل</th>
-                            <th>ایمیل</th>
-                            <th>نام کاربری</th>
-                            <th>شماره تلیفون</th>
-                            <th>نقش </th>
-                            <th class="text-center">عملیات</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($users as $index => $user)
-                            <tr data-search="{{ $user->name }} {{ $user->email }} {{ $user->username }}">
-                                <td>{{ $index + 1 }}</td>
-                                <td>{{ $user->code }}</td>
-                                <td>{{ $user->name }}</td>
-                                <td>{{ $user->email }}</td>
-                                <td>{{ $user->username }}</td>
-                                <td>{{ $user->number }}</td>
-                                <td>{{ ucfirst($user->role) }}</td>
-                                <td class="text-center">
-                                    <a href="{{ route('users.userEdit', ['id' => $user->id]) }}" class="btn btn-sm btn-outline-primary">
-                                        <i class="la la-edit"></i> ویرایش
-                                    </a>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                <div class="mt-3 mb-3 d-flex justify-content-center">
-                </div>
-            </div>
-
+            @livewire('user-list')
         </div>
 
     </div>
