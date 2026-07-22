@@ -162,7 +162,7 @@
                     <input type="number" id="paymentAmountInput" name="amount" class="form-control" placeholder="مثلاً 2500" min="1" step="100" required>
                 </div>
                 <div class="form-group mb-3">
-                    <label class="flabel" for="paymentDateInput">تاریخ پرداخت</label>
+                    <label class="flabel" for="paymentDateInput"> انتخاب ماه</label>
                     <input type="text" id="paymentDateInput" name="payment_date" class="form-control" placeholder="انتخاب تاریخ" data-jdp required>
                 </div>
                 <div class="form-group mb-3">
