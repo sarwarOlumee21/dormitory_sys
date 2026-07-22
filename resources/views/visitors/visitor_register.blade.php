@@ -67,10 +67,9 @@
                         </div>
 
                         <div class="col-md-4 form-group mb-4">
-                            <label class="flabel"><i class="la la-toggle-on text-primary"></i> وضعیت حضور</label>
+                            <label class="flabel"><i class="la la-toggle-on text-primary"></i> انتخاب اتاق</label>
                             <select class="form-control">
-                                <option selected>داخل خوابگاه</option>
-                                <option>خروج کرده</option>
+                                
                             </select>
                         </div>
 
