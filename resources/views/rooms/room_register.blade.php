@@ -46,30 +46,6 @@
             <input type="number" id="room_capacity" class="finput" placeholder="تعداد نفرات" name="capacity" min="1">
           </div>
 
-          <div class="col-md-6 mb-3 mb-md-0">
-            <label class="flabel">
-              <i class="la la-th-large"></i> نوع اتاق <span class="required-star">*</span>
-            </label>
-            <select id="room_type" class="finput" name="room_type">
-              <option value="">-- انتخاب نوع --</option>
-              <option value="study">اتاق مطالعه</option>
-              <option value="sleeping">اتاق خواب</option>
-              <option value="meeting">اتاق جلسه</option>
-            </select>
-          </div>
-
-          <div class="col-md-6 mb-0">
-            <label class="flabel">
-              <i class="la la-toggle-on"></i> وضعیت اتاق <span class="required-star">*</span>
-            </label>
-            <select id="room_status" class="finput" name="status">
-              <option value="">-- انتخاب وضعیت --</option>
-              <option selected value="available">فعال</option>
-              <option value="inactive">غیرفعال</option>
-              <option value="maintenance">در حال تعمیر</option>
-              <option value="occupied">پر</option>
-            </select>
-          </div>
           <div class="col-md-6 mb-0">
             <label class="flabel">
               <i class="la la-toggle-on"></i> نوت  <span class="required-star">*</span>

@@ -22,9 +22,9 @@ class RoomController extends Controller
         $validatedData = $request->validate([
             'room_number' => 'required|unique:rooms,room_number',
             'capacity' => 'required|integer|min:1',
-            'room_type' => 'required|string',
+            // 'room_type' => 'required|string',
             'notes' => 'nullable|string',
-            'status' => 'required|in:available,occupied,maintenance',
+            // 'status' => 'required|in:available,occupied,maintenance',
         ]);
 
         $room = Room::create($validatedData);
