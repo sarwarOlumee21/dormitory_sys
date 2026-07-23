@@ -74,11 +74,14 @@
       <li class="nav-item">
         <a href="#"><i class="la la-user-plus"></i><span class="menu-title">آشپزخانه</span></a>
         <ul class="menu-content">
-          <li class="">
-            <a href="">ثبت مهمان</a>
+          <li class="{{ request()->routeIs('mealplan') ? 'active' : '' }}">
+            <a href="{{ route('mealplan') }}">برنامه غذایی</a>
           </li>
-          <li class="">
-            <a href="">لیست مهمان‌ها</a>
+          <li class="{{ request()->routeIs('registerMealPlan') ? 'active' : '' }}">
+            <a href="{{ route('registerMealPlan') }}">ثبت برنامه غذایی</a>
+          </li>
+          <li class="{{ request()->routeIs('mealFoods') ? 'active' : '' }}">
+            <a href="{{ route('mealFoods') }}">ثبت غذا</a>
           </li>
         </ul>
       </li>

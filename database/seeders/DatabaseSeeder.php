@@ -36,5 +36,8 @@ class DatabaseSeeder extends Seeder
 
         // ایجاد ساکنین نمونه
         $this->call(ResidentSeeder::class);
+        $this->call([
+    MealSeeder::class,
+]);
     }
 }

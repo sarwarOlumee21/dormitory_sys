@@ -10,6 +10,7 @@ use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\KitchenController;
 
 
 Route::get('/', [ResidentController::class, 'index'])->name('home')->middleware(['auth','role:admin,user']);
@@ -63,3 +64,8 @@ Route::prefix('users')->name('users.')->group(function () {
     Route::get('/userEdit/{id}', [UserController::class, 'userEdit'])->name('userEdit')->middleware('auth');
     Route::put('/userUpdate/{id}', [UserController::class, 'userUpdate'])->name('userUpdate')->middleware('auth');
 });
+Route::get('/mealplan', [KitchenController::class, 'mealplan'])->name('mealplan');
+Route::get('/registerMealPlan', [KitchenController::class, 'registerMealPlan'])->name('registerMealPlan');
+Route::get('/mealFoods', [KitchenController::class, 'mealFoods'])->name('mealFoods');
+Route::post('/mealFoods/store', [KitchenController::class, 'storeMealFood'])->name('mealFoods.store');
+Route::post('/registerMealPlan/store', [KitchenController::class, 'registerMealPlans'])->name('registerMealPlan/store');
