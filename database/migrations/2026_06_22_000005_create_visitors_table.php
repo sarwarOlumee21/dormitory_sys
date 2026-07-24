@@ -19,7 +19,6 @@ return new class extends Migration
             $table->text('purpose')->nullable();
             $table->string('attendance_status', 50)->default('داخل خوابگاه');
             $table->string('room_number', 50)->nullable();
-            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }

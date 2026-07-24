@@ -40,6 +40,7 @@ Route::prefix('contracts')->name('contracts.')->group(function () {
 Route::prefix('visitors')->name('visitors.')->group(function () {
     Route::get('/register', [VisitorController::class, 'register'])->name('register')->middleware('auth');
     Route::get('/list', [VisitorController::class, 'list'])->name('list')->middleware('auth');
+    Route::post('/store', [VisitorController::class, 'store'])->name('store')->middleware('auth');
 });
 Route::prefix('maintenance')->name('maintenance.')->group(function () {
     Route::get('/register', [MaintenanceController::class, 'register'])->name('register ')->middleware('auth');
