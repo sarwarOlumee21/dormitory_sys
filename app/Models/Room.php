@@ -21,4 +21,8 @@ class Room extends Model
     {
         return $this->hasMany(Resident::class, 'room_id');
     }
+    public function maintenanceRequests()
+    {
+        return $this->hasMany(MaintenanceRequest::class, 'room_id');
+    }
 }

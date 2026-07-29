@@ -20,7 +20,7 @@
                     </div>
                 </div>
                 <div>
-                    <a href="" class="btn btn-white text-primary font-weight-bold px-4 btn-maintain-white">
+                    <a href="{{ route('maintenance.request') }}" class="btn btn-white text-primary font-weight-bold px-4 btn-maintain-white">
                         <i class="la la-plus ml-1 icon-sm"></i> ثبت درخواست جدید
                     </a>
                 </div>
@@ -47,14 +47,16 @@
                     </thead>
                     <tbody>
                         {{-- ردیف اول --}}
+                        @foreach ($maintenanceRequests as $request)
+                        
                         <tr>
-                            <td>۱</td>
-                            <td class="font-weight-bold">احمد نوری</td>
-                            <td><span class="badge-room">A-12</span></td>
-                            <td>تعمیر برق</td>
-                            <td><span class="badge-prio-danger"><i class="la la-exclamation-circle"></i> فوری</span></td>
-                            <td dir="ltr" class="text-right">1404/03/11</td>
-                            <td><span class="badge-status-pending">در حال بررسی</span></td>
+                            <td>{{ $request->id }}</td>
+                            <td class="font-weight-bold">{{ $request->resident->name ?? 'نام نامشخص' }}</td>
+                            <td><span class="badge-room">{{ $request->room->room_number ?? 'اتاق نامشخص' }}</span></td>
+                            <td>{{ $request->requestType->name ?? 'نوع نامشخص' }}</td>
+                            <td><span class="badge-prio-danger"><i class="la la-exclamation-circle"></i> {{ $request->priority }}</span></td>
+                            <td dir="ltr" class="text-left">{{ $request->created_at->format('Y-m-d H:i') }}</td>
+                            <td><span class="badge-status-pending">{{$request->status}}</span></td>
                             <td class="text-center">
                                 <div class="btn-group btn-group-sm">
                                     <button class="btn btn-outline-success" title="تغییر وضعیت به انجام شده"><i class="la la-check"></i></button>
@@ -62,36 +64,8 @@
                                 </div>
                             </td>
                         </tr>
-                        {{-- ردیف دوم --}}
-                        <tr>
-                            <td>۲</td>
-                            <td class="font-weight-bold">علی رحیمی</td>
-                            <td><span class="badge-room">B-07</span></td>
-                            <td>تعمیر آب</td>
-                            <td><span class="badge-prio-warning">متوسط</span></td>
-                            <td dir="ltr" class="text-right">1404/03/10</td>
-                            <td><span class="badge-status-new">جدید</span></td>
-                            <td class="text-center">
-                                <div class="btn-group btn-group-sm">
-                                    <button class="btn btn-outline-info" title="ویرایش درخواست"><i class="la la-edit"></i></button>
-                                </div>
-                            </td>
-                        </tr>
-                        {{-- ردیف سوم --}}
-                        <tr>
-                            <td>۳</td>
-                            <td class="font-weight-bold">مدیریت</td>
-                            <td><span class="badge-room">D-01</span></td>
-                            <td>نظافت</td>
-                            <td><span class="badge-prio-slate">عادی</span></td>
-                            <td dir="ltr" class="text-right">1404/03/08</td>
-                            <td><span class="badge-status-done"><i class="la la-check-circle"></i> انجام شده</span></td>
-                            <td class="text-center">
-                                <div class="btn-group btn-group-sm">
-                                    <button class="btn btn-outline-primary" title="مشاهده جزئیات"><i class="la la-eye"></i></button>
-                                </div>
-                            </td>
-                        </tr>
+                        @endforeach
+
                     </tbody>
                 </table>
             </div>
