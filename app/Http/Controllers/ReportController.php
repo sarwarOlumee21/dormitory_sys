@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\payment;
+use App\Models\Resident;
+use App\Models\ContractRegister;
+use Carbon\Carbon;
 
 class ReportController extends Controller
 {
@@ -19,6 +23,11 @@ class ReportController extends Controller
         $selectedType = $request->query('type', 'residents');
         if (!array_key_exists($selectedType, $reportTypes)) {
             $selectedType = 'residents';
+        }
+
+        // If the user submitted any payment-related filters, default to payments report
+        if ($request->hasAny(['search', 'resident_code', 'status', 'from', 'to'])) {
+            $selectedType = 'payments';
         }
 
         $reportData = [
@@ -120,6 +129,80 @@ class ReportController extends Controller
         ];
 
         $report = $reportData[$selectedType];
+
+        // If payments report is selected, build real data from DB using filters
+        if ($selectedType === 'payments') {
+            $search = $request->query('search');
+            $resident_code = $request->query('resident_code');
+            $status = $request->query('status');
+            $from = $request->query('from');
+            $to = $request->query('to');
+
+            $paymentsQuery = payment::with(['resident.room']);
+
+            if ($search) {
+                $paymentsQuery->whereHas('resident', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%");
+                });
+            }
+            if ($resident_code) {
+                $paymentsQuery->whereHas('resident', function ($q) use ($resident_code) {
+                    $q->where('resident_code', 'like', "%{$resident_code}%");
+                });
+            }
+            if ($from) {
+                $fromDate = Carbon::parse($from)->startOfDay()->toDateString();
+                $paymentsQuery->where('payment_date', '>=', $fromDate);
+            }
+            if ($to) {
+                $toDate = Carbon::parse($to)->endOfDay()->toDateString();
+                $paymentsQuery->where('payment_date', '<=', $toDate);
+            }
+
+            $payments = $paymentsQuery->orderBy('payment_date', 'desc')->paginate(10)->withQueryString();
+
+            // summary numbers
+            $summaryQuery = payment::query();
+            if ($from) { $summaryQuery->where('payment_date', '>=', $fromDate); }
+            if ($to) { $summaryQuery->where('payment_date', '<=', $toDate); }
+            if ($search) {
+                $summaryQuery->whereHas('resident', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%");
+                });
+            }
+            if ($resident_code) {
+                $summaryQuery->whereHas('resident', function ($q) use ($resident_code) {
+                    $q->where('resident_code', 'like', "%{$resident_code}%");
+                });
+            }
+
+            $totalPaid = $summaryQuery->sum('amount');
+            $paidCount = $summaryQuery->distinct('residents_id')->count('residents_id');
+
+            // partial and overdue counts (resident-level)
+            $residentsWithContracts = Resident::whereHas('contracts', function ($q) {
+                $q->where('contract_status', 'فعال');
+            })->with('latestContract')->get();
+
+            $partialCount = 0;
+            $overdueCount = 0;
+            foreach ($residentsWithContracts as $res) {
+                $paymentsSum = payment::where('residents_id', $res->id)
+                    ->when($from, fn($q) => $q->where('payment_date', '>=', $fromDate))
+                    ->when($to, fn($q) => $q->where('payment_date', '<=', $toDate))
+                    ->sum('amount');
+
+                $contractAmount = $res->latestContract?->contract_amount ?? 0;
+                if ($paymentsSum > 0 && $contractAmount > 0 && $paymentsSum < $contractAmount) {
+                    $partialCount++;
+                }
+                if ($paymentsSum == 0 && $contractAmount > 0) {
+                    $overdueCount++;
+                }
+            }
+
+            return view('reports.index', compact('reportTypes', 'selectedType', 'report', 'payments', 'totalPaid', 'paidCount', 'partialCount', 'overdueCount'));
+        }
 
         return view('reports.index', compact('reportTypes', 'selectedType', 'report'));
     }

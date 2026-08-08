@@ -15,4 +15,9 @@ class payment extends Model
         'notes',
         // Add other fields as necessary
     ];
+
+    public function resident()
+    {
+        return $this->belongsTo(Resident::class, 'residents_id');
+    }
 }

@@ -5,20 +5,27 @@
 <div class="row" style="direction: rtl; text-align: right;">
     <div class="col-12">
 
-        {{-- بنر بالایی صفحه با استایل مدرن، یکپارچه و آبی سازمانی --}}
-        <div class="top-banner mb-4" style="border-radius: 12px; padding: 22px 20px; color: #ffffff; box-shadow: 0 4px 12px rgba(26, 86, 219, 0.15);">
-            <div class="d-flex align-items-center">
-                <div class="banner-icon ml-3" style="background: rgba(255,255,255,0.18); width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
-                    <i class="la la-dashboard text-white" style="font-size:24px;"></i>
+        {{-- بنر بالایی صفحه --}}
+        <div class="top-banner mb-4" style="border-radius: 12px; padding: 22px 20px; color: #ffffff; box-shadow: 0 4px 12px rgba(26, 86, 219, 0.15); background: linear-gradient(135deg, #0f766e, #059669);">
+            <div class="d-flex align-items-center justify-content-between flex-wrap">
+                <div class="d-flex align-items-center">
+                    <div class="banner-icon ml-3" style="background: rgba(255,255,255,0.18); width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+                        <i class="la la-money text-white" style="font-size:24px;"></i>
+                    </div>
+                    <div>
+                        <h5 class="text-white mb-1 font-weight-bold" style="letter-spacing: -0.5px;">بررسی و گزارش پرداخت‌ها</h5>
+                        <p class="mb-0" style="color:rgba(255,255,255,.8); font-size:13px;">مشاهده وضعیت پرداخت‌ها، بدهکاران، رسیدها و درآمد خوابگاه</p>
+                    </div>
                 </div>
                 <div>
-                    <h5 class="text-white mb-1 font-weight-bold" style="letter-spacing: -0.5px;">داشبورد مدیریتی و خلاصه وضعیت خوابگاه</h5>
-                    <p class="mb-0" style="color:rgba(255,255,255,.8); font-size:13px;">مرور سریع آمار ساکنین، وضعیت مالی، ظرفیت اتاق‌ها و درخواست‌های فنی</p>
+                    <span class="badge badge-pill" style="background: rgba(255,255,255,0.2); color:#fff; padding: 8px 14px; font-size: 12.5px;">
+                        <i class="la la-calendar"></i> 1404-05-17
+                    </span>
                 </div>
             </div>
         </div>
 
-        {{-- استایل‌های اختصاصی و حرفه‌ای سیستم یکپارچه --}}
+        {{-- استایل‌های اختصاصی صفحه --}}
         <style>
             .stat-card {
                 background: #ffffff;
@@ -55,19 +62,26 @@
                 color: #1e293b;
                 display: flex;
                 align-items: center;
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+            .custom-card .card-header .title-group {
+                display: flex;
+                align-items: center;
             }
             .custom-card .card-header i {
                 font-size: 18px;
-                color: #1a56db;
+                color: #059669;
                 margin-left: 8px;
             }
             .table thead th {
-                background-color: #1a56db !important;
+                background-color: #059669 !important;
                 color: #ffffff !important;
                 font-weight: 600;
                 font-size: 13px;
                 border: none !important;
                 padding: 12px 10px;
+                white-space: nowrap;
             }
             .table tbody td {
                 padding: 12px 10px;
@@ -79,21 +93,15 @@
             .table tbody tr:hover {
                 background-color: #f8fafc;
             }
-            .progress-custom {
-                height: 8px;
-                background-color: #f1f5f9;
-                border-radius: 20px;
-                overflow: hidden;
-            }
-            .progress-custom .progress-bar {
-                border-radius: 20px;
-            }
             .badge-status-pct {
                 font-weight: 600;
                 border-radius: 6px;
-                padding: 4px 8px;
+                padding: 5px 10px;
                 font-size: 11.5px;
             }
+            .status-paid { background:#dcfce7; color:#15803d; }
+            .status-overdue { background:#fee2e2; color:#b91c1c; }
+            .status-partial { background:#fef9c3; color:#a16207; }
             .btn-export {
                 border-radius: 8px !important;
                 font-size: 13px;
@@ -108,115 +116,187 @@
             }
             .btn-export:hover {
                 background: #f8fafc;
-                color: #1a56db;
-                border-color: #1a56db;
+                color: #059669;
+                border-color: #059669;
             }
+            .btn-filter-apply {
+                background: #059669;
+                color: #fff;
+                border: none;
+                border-radius: 8px;
+                padding: 9px 22px;
+                font-size: 13px;
+                font-weight: 600;
+            }
+            .btn-filter-apply:hover { background:#047857; color:#fff; }
+            .form-control-report {
+                border-radius: 8px;
+                border: 1px solid #cbd5e1;
+                font-size: 13px;
+                padding: 9px 12px;
+                height: auto;
+            }
+            .avatar-circle {
+                width: 34px;
+                height: 34px;
+                border-radius: 50%;
+                background: #d1fae5;
+                color: #059669;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 700;
+                font-size: 13px;
+                margin-left: 8px;
+            }
+            .empty-state {
+                text-align: center;
+                padding: 50px 20px;
+                color: #94a3b8;
+            }
+            .empty-state i { font-size: 42px; margin-bottom: 10px; display:block; }
+            .btn-icon-action {
+                width: 30px;
+                height: 30px;
+                border-radius: 6px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0 2px;
+                border: 1px solid #e2e8f0;
+                background: #fff;
+                color: #475569;
+                font-size: 13px;
+            }
+            .btn-icon-action:hover { background:#f8fafc; }
         </style>
 
-        {{-- بخش اول: انتخاب نوع گزارش --}}
-        <div class="row mb-3">
-            <div class="col-12">
-                <div class="card custom-card">
-                    <div class="card-header">
-                        <i class="la la-filter"></i>
-                        <span>نوع گزارش</span>
+        {{-- بخش اول: فرم فیلتر گزارش پرداخت (در بالای صفحه) --}}
+        <div class="card custom-card mb-4">
+            <div class="card-header">
+                <div class="title-group"><i class="la la-filter"></i><span>فیلتر گزارش پرداخت</span></div>
+            </div>
+            <div class="card-body">
+                <form method="GET" action="{{ route('reports.index') }}">
+                    <div class="row">
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <label class="font-small-3 text-muted mb-1">جستجو با نام ساکن</label>
+                            <input type="text" name="search" value="{{ request('search') }}" class="form-control form-control-report" placeholder="مثلا: احمد رضایی">
+                        </div>
+                        <div class="col-md-2 col-sm-6 mb-3">
+                            <label class="font-small-3 text-muted mb-1">آیدی ساکن</label>
+                            <input type="text" name="resident_code" value="{{ request('resident_code') }}" class="form-control form-control-report" placeholder="مثلا: RES-0021">
+                        </div>
+                        <div class="col-md-2 col-sm-6 mb-3">
+                            <label class="font-small-3 text-muted mb-1">وضعیت پرداخت</label>
+                            <select name="status" class="form-control form-control-report">
+                                <option value="">همه</option>
+                                <option value="paid">پرداخت‌شده</option>
+                                <option value="partial">پرداخت جزئی</option>
+                                <option value="overdue">معوق</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2 col-sm-6 mb-3">
+                            <label class="font-small-3 text-muted mb-1">از تاریخ</label>
+                            <input type="date" name="from" value="{{ request('from') }}" class="form-control form-control-report">
+                        </div>
+                        <div class="col-md-2 col-sm-6 mb-3">
+                            <label class="font-small-3 text-muted mb-1">تا تاریخ</label>
+                            <input type="date" name="to" value="{{ request('to') }}" class="form-control form-control-report">
+                        </div>
+                        <div class="col-md-1 col-sm-6 mb-3 d-flex align-items-end">
+                            <button type="submit" class="btn btn-filter-apply w-100"><i class="la la-search"></i></button>
+                        </div>
                     </div>
-                    <div class="card-body d-flex flex-wrap align-items-center">
-                        @foreach($reportTypes as $key => $type)
-                            <a href="{{ route('reports.index', ['type' => $key]) }}" class="btn btn-sm btn-export mb-2 {{ $selectedType === $key ? 'active' : '' }}" style="background: {{ $selectedType === $key ? '#1a56db' : '#ffffff' }}; color: {{ $selectedType === $key ? '#ffffff' : '#475569' }}; border-color: {{ $selectedType === $key ? '#1a56db' : '#cbd5e1' }}; margin-left: 5px;">
-                                {{ $type['label'] }}
-                            </a>
-                        @endforeach
+                </form>
+
+                {{-- خلاصه نتیجه بازه انتخابی --}}
+                <div class="alert mt-2 mb-0 py-3 px-3" style="background:#ecfdf5; border:1px solid #a7f3d0; border-radius:8px;">
+                    <div class="row text-center">
+                        <div class="col-md-3 col-6 mb-2 mb-md-0">
+                            <span class="d-block font-small-2 text-muted mb-1">مجموع پرداخت‌شده در بازه</span>
+                            <span class="font-weight-bold" style="color:#059669; font-size:16px;">{{ number_format($totalPaid ?? 0) }} افغانی</span>
+                        </div>
+                        <div class="col-md-3 col-6 mb-2 mb-md-0">
+                            <span class="d-block font-small-2 text-muted mb-1">تعداد پرداخت‌کنندگان کامل</span>
+                            <span class="font-weight-bold" style="color:#15803d; font-size:16px;">{{ $paidCount ?? 0 }} نفر</span>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <span class="d-block font-small-2 text-muted mb-1">پرداخت جزئی (کم‌پرداختی)</span>
+                            <span class="font-weight-bold" style="color:#a16207; font-size:16px;">{{ $partialCount ?? 0 }} نفر</span>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <span class="d-block font-small-2 text-muted mb-1">پرداخت‌نشده (معوق)</span>
+                            <span class="font-weight-bold" style="color:#b91c1c; font-size:16px;">{{ $overdueCount ?? 0 }} نفر</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        {{-- بخش دوم: کارت‌های خلاصه گزارش --}}
-        <div class="row mb-2">
-            @foreach($report['summary'] as $summary)
-                <div class="col-xl-3 col-sm-6 mb-3">
-                    <div class="card stat-card">
-                        <div class="card-body p-3 d-flex align-items-center justify-content-between">
-                            <div>
-                                <span class="text-muted font-small-3 d-block mb-1">{{ $summary['title'] }}</span>
-                                <h2 class="font-weight-bold mb-1" style="color: #1e293b;">{{ $summary['value'] }}</h2>
-                                <span class="font-small-2 text-muted font-weight-600">{{ $summary['detail'] }}</span>
-                            </div>
-                            <div class="stat-icon" style="background: {{ $summary['bg'] }}; color: {{ $summary['color'] }};"><i class="{{ $summary['icon'] }}"></i></div>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
-        </div>
-
-        {{-- بخش سوم: جدول گزارش انتخاب شده --}}
+        {{-- بخش دوم: جدول کامل تراکنش‌های پرداخت (داده فیک) --}}
         <div class="card custom-card mb-4">
             <div class="card-header">
-                <i class="la la-table"></i>
-                <span>{{ $reportTypes[$selectedType]['label'] }} - جزئیات</span>
+                <div class="title-group"><i class="la la-table"></i><span>لیست تراکنش‌های پرداخت (8 نتیجه)</span></div>
+                <span class="font-small-2 text-muted">به‌روزرسانی: 1404-05-17 10:42</span>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
                     <table class="table mb-0">
                         <thead>
                             <tr>
-                                @foreach($report['tableHeaders'] as $header)
-                                    <th>{{ $header }}</th>
-                                @endforeach
+                                <th>#</th>
+                                <th>نام ساکن</th>
+                                <th>شماره اتاق</th>
+                                <th>شماره رسید</th>
+                                <th>مبلغ</th>
+                                <th>روش پرداخت</th>
+                                <th>تاریخ پرداخت</th>
+                                <th>وضعیت</th>
+                                <th>عملیات</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($report['tableRows'] as $row)
+                            @if(isset($payments) && $payments->count())
+                                @foreach($payments as $payment)
+                                    <tr>
+                                        <td>{{ $loop->iteration + (($payments->currentPage()-1) * $payments->perPage()) }}</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="avatar-circle">{{ optional($payment->resident)->name ? mb_substr(optional($payment->resident)->name,0,1) : '-' }}</div>
+                                                <span class="font-weight-600">{{ optional($payment->resident)->name ?? '—' }}</span>
+                                            </div>
+                                        </td>
+                                        <td>{{ optional($payment->resident->room)->room_number ?? '—' }}</td>
+                                        <td>{{ 'RCP-' . $payment->id }}</td>
+                                        <td class="font-weight-600">{{ number_format($payment->amount) }} افغانی</td>
+                                        <td>{{ $payment->notes ? $payment->notes : '—' }}</td>
+                                        <td>{{ $payment->payment_date }}</td>
+                                        <td><span class="badge-status-pct status-paid">پرداخت‌شده</span></td>
+                                        <td>
+                                            <a href="#" class="btn-icon-action" title="مشاهده رسید"><i class="la la-eye"></i></a>
+                                            <a href="#" class="btn-icon-action" title="چاپ رسید"><i class="la la-print"></i></a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @else
                                 <tr>
-                                    <td class="font-weight-600">{{ $row['primary'] }}</td>
-                                    <td>{{ $row['secondary'] }}</td>
-                                    <td>{{ $row['status'] }}</td>
-                                    <td>{{ $row['meta'] }}</td>
+                                    <td colspan="9" class="empty-state">نتیجه‌ای یافت نشد</td>
                                 </tr>
-                            @endforeach
+                            @endif
                         </tbody>
                     </table>
                 </div>
             </div>
-        </div>
-
-        {{-- بخش چهارم: کارت‌های تکمیلی گزارش --}}
-        <div class="row mb-4">
-            @foreach($report['detailCards'] as $card)
-                <div class="col-md-6 mb-3">
-                    <div class="card custom-card h-100">
-                        <div class="card-body p-4">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h6 class="mb-1" style="font-weight: 700; color: #1f2937;">{{ $card['title'] }}</h6>
-                                    <p class="mb-0 text-muted" style="font-size: 13px;">{{ $card['hint'] }}</p>
-                                </div>
-                                <div class="badge badge-pill badge-primary" style="background: #e0f2fe; color: #0369a1; padding: 8px 12px; font-size: 14px; font-weight: 700; border-radius: 12px;">{{ $card['value'] }}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
-        </div>
-
-        {{-- بخش پنجم: خروجی گزارش‌ها --}}
-        <div class="card custom-card mb-4">
-            <div class="card-header">
-                <i class="la la-download"></i>
-                <span>خروجی گزارش (دیمو)</span>
-            </div>
-            <div class="card-body">
-                <div class="d-flex flex-wrap align-items-center">
-                    <button class="btn btn-export"><i class="la la-file-pdf-o text-danger"></i> PDF {{ $reportTypes[$selectedType]['label'] }}</button>
-                    <button class="btn btn-export"><i class="la la-file-excel-o text-success"></i> Excel {{ $reportTypes[$selectedType]['label'] }}</button>
-                    <button class="btn btn-export"><i class="la la-file-text-o text-info"></i> خلاصه {{ $reportTypes[$selectedType]['label'] }}</button>
-                    <button class="btn btn-export"><i class="la la-print text-secondary"></i> چاپ خلاصه</button>
-                </div>
-                <div class="alert mt-3 mb-0 py-2 font-small-3 d-flex align-items-center" style="background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; border-radius: 8px;">
-                    <i class="la la-info-circle ml-2" style="font-size: 18px;"></i>
-                    <span>در نسخه نهایی، داده‌های گزارش از دیتابیس بارگذاری می‌شوند و اینجا فقط نمایش دمو است.</span>
-                </div>
+            <div class="card-body border-top d-flex justify-content-between align-items-center">
+                @if(isset($payments))
+                    <span class="font-small-2 text-muted">نمایش {{ $payments->firstItem() ?? 0 }} تا {{ $payments->lastItem() ?? 0 }} از {{ $payments->total() ?? 0 }} نتیجه</span>
+                    <nav>
+                        {!! $payments->appends(request()->query())->links('pagination::bootstrap-4') !!}
+                    </nav>
+                @else
+                    <span class="font-small-2 text-muted">نتیجه‌ای برای نمایش وجود ندارد.</span>
+                @endif
             </div>
         </div>
 

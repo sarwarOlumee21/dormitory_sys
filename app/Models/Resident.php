@@ -44,4 +44,14 @@ class Resident extends Model
     {
         return $this->belongsTo(Room::class, 'room_id');
     }
+
+    public function contracts()
+    {
+        return $this->hasMany(ContractRegister::class, 'resident_id');
+    }
+
+    public function latestContract()
+    {
+        return $this->hasOne(ContractRegister::class, 'resident_id')->latestOfMany();
+    }
 }
