@@ -31,13 +31,18 @@ class DatabaseSeeder extends Seeder
         );
     User::factory(100)->create();
 
-        // ایجاد اتاق‌ها
-        \App\Models\Room::factory()->count(20)->create();
+        // ایجاد اتاق‌ها (فقط در صورتی که هنوز اتاقی در جدول وجود ندارد)
+        if (\App\Models\Room::count() < 1) {
+            \App\Models\Room::factory()->count(20)->create();
+        }
 
         // ایجاد ساکنین نمونه
         $this->call(ResidentSeeder::class);
+        // ایجاد قراردادها و پرداخت‌ها مرتبط با ساکنین
         $this->call([
-    MealSeeder::class,
-]);
+            \Database\Seeders\ContractSeeder::class,
+            \Database\Seeders\PaymentSeeder::class,
+            MealSeeder::class,
+        ]);
     }
 }

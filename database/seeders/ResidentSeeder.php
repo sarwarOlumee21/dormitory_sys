@@ -11,6 +11,10 @@ class ResidentSeeder extends Seeder
 
 public function run(): void
 {
-    Resident::factory()->count(50)->create();
+    $desired = 50;
+    $existing = Resident::count();
+    if ($existing < $desired) {
+        Resident::factory()->count($desired - $existing)->create();
+    }
 }
 }
