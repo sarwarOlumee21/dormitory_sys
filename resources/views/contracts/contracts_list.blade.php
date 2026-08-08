@@ -95,8 +95,7 @@
                                 <td>{{ $contract->resident->room->room_number ?? '—' }}</td>
                                 <td>{{ \Carbon\Carbon::parse($contract->contract_date)->format('Y-m-d') }}</td>
                                 <td>{{ number_format($contract->contract_amount, 0, '.', ',') }} افغانی</td>
-                                <td>{{ number_format($paymentTotals[$contract->resident_id] ?? 0, 0, '.', ',') }} افغانی</td>
-                                <td><span class="badge {{ $contract->contract_status == 'فعال' ? 'badge-custom-green' : ($contract->contract_status == 'غيرفعال' ? 'badge-custom-red' : 'badge-custom-orange') }}">{{ $contract->contract_status }}</span></td>
+                                <td>{{ number_format($paymentTotals[$contract->resident_id] ?? 0, 0, '.', ',') }} افغانی</td>                                <td><span class="badge {{ $contract->contract_status == 'فعال' ? 'badge-custom-green' : ($contract->contract_status == 'غيرفعال' ? 'badge-custom-red' : 'badge-custom-orange') }}">{{ $contract->contract_status }}</span></td>
                                 <td class="text-center">
                                     <div class="btn-group" role="group">
                                         <a href="{{ route('contracts.edit', $contract->id) }}" class="btn btn-outline-primary btn-sm" title="ویرایش"><i class="la la-edit"></i></a>

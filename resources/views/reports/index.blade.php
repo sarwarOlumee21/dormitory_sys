@@ -113,130 +113,94 @@
             }
         </style>
 
-        {{-- بخش اول: کارت‌های چهارگانه آمار بالایی --}}
-        <div class="row mb-2">
-            {{-- کارت ساکنین --}}
-            <div class="col-xl-3 col-sm-6 mb-3">
-                <div class="card stat-card">
-                    <div class="card-body p-3 d-flex align-items-center justify-content-between">
-                        <div>
-                            <span class="text-muted font-small-3 d-block mb-1">ساکنین فعال</span>
-                            <h2 class="font-weight-bold mb-1" style="color: #1e293b;">۴۸</h2>
-                            <span class="font-small-2 text-success font-weight-600"><i class="la la-arrow-up"></i> +۳ این ماه</span>
-                        </div>
-                        <div class="stat-icon" style="background: rgba(26, 86, 219, 0.08); color: #1a56db;"><i class="la la-users"></i></div>
-                    </div>
-                </div>
-            </div>
-            {{-- کارت اتاق‌ها --}}
-            <div class="col-xl-3 col-sm-6 mb-3">
-                <div class="card stat-card">
-                    <div class="card-body p-3 d-flex align-items-center justify-content-between">
-                        <div>
-                            <span class="text-muted font-small-3 d-block mb-1">وضعیت اتاق‌ها</span>
-                            <h2 class="font-weight-bold mb-1" style="color: #1e293b;">۲۴</h2>
-                            <span class="font-small-2 text-info font-weight-600"><i class="la la-pie-chart"></i> ۸۵٪ اشغال</span>
-                        </div>
-                        <div class="stat-icon" style="background: rgba(14, 165, 233, 0.08); color: #0ea5e9;"><i class="la la-home"></i></div>
-                    </div>
-                </div>
-            </div>
-            {{-- کارت درآمد --}}
-            <div class="col-xl-3 col-sm-6 mb-3">
-                <div class="card stat-card">
-                    <div class="card-body p-3 d-flex align-items-center justify-content-between">
-                        <div>
-                            <span class="text-muted font-small-3 d-block mb-1">درآمد ماه (افغانی)</span>
-                            <h2 class="font-weight-bold mb-1" style="color: #16a34a; font-size: 22px;">۱۵۶,۰۰۰</h2>
-                            <span class="font-small-2 text-muted font-weight-600">۹ از ۱۲ پرداخت</span>
-                        </div>
-                        <div class="stat-icon" style="background: rgba(22, 163, 74, 0.08); color: #16a34a;"><i class="la la-money"></i></div>
-                    </div>
-                </div>
-            </div>
-            {{-- کارت درخواست‌ها --}}
-            <div class="col-xl-3 col-sm-6 mb-3">
-                <div class="card stat-card">
-                    <div class="card-body p-3 d-flex align-items-center justify-content-between">
-                        <div>
-                            <span class="text-muted font-small-3 d-block mb-1">درخواست باز</span>
-                            <h2 class="font-weight-bold mb-1" style="color: #ea580c;">۵</h2>
-                            <span class="font-small-2 text-danger font-weight-600"><i class="la la-warning"></i> ۱ فوری</span>
-                        </div>
-                        <div class="stat-icon" style="background: rgba(234, 88, 12, 0.08); color: #ea580c;"><i class="la la-wrench"></i></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        {{-- بخش دوم: نمودارها و جداول میانی --}}
-        <div class="row">
-            {{-- وضعیت اشغال بلوک‌ها --}}
-            <div class="col-lg-6 mb-4">
-                <div class="card custom-card h-100">
+        {{-- بخش اول: انتخاب نوع گزارش --}}
+        <div class="row mb-3">
+            <div class="col-12">
+                <div class="card custom-card">
                     <div class="card-header">
-                        <i class="la la-home"></i>
-                        <span>اشغال اتاق‌ها</span>
+                        <i class="la la-filter"></i>
+                        <span>نوع گزارش</span>
                     </div>
-                    <div class="card-body py-3">
-                        @foreach([['A', '12', '75'], ['B', '8', '50'], ['C', '6', '100'], ['D', '4', '25']] as $b)
-                            <div class="mb-3">
-                                <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <span class="font-weight-bold" style="color:#475569; font-size: 13px;">بلوک {{ $b[0] }}</span>
-                                    <span class="font-weight-bold text-dark" style="font-size: 13px;">{{ $b[2] }}٪</span>
-                                </div>
-                                <div class="progress-custom mb-1">
-                                    <div class="progress-bar bg-primary" style="width:{{ $b[2] }}%"></div>
-                                </div>
-                                <small class="text-muted font-small-2 d-block">{{ $b[1] }} اتاق</small>
-                            </div>
+                    <div class="card-body d-flex flex-wrap align-items-center">
+                        @foreach($reportTypes as $key => $type)
+                            <a href="{{ route('reports.index', ['type' => $key]) }}" class="btn btn-sm btn-export mb-2 {{ $selectedType === $key ? 'active' : '' }}" style="background: {{ $selectedType === $key ? '#1a56db' : '#ffffff' }}; color: {{ $selectedType === $key ? '#ffffff' : '#475569' }}; border-color: {{ $selectedType === $key ? '#1a56db' : '#cbd5e1' }}; margin-left: 5px;">
+                                {{ $type['label'] }}
+                            </a>
                         @endforeach
                     </div>
                 </div>
             </div>
+        </div>
 
-            {{-- وضعیت مالی و پرداخت‌ها --}}
-            <div class="col-lg-6 mb-4">
-                <div class="card custom-card h-100">
-                    <div class="card-header">
-                        <i class="la la-money"></i>
-                        <span>وضعیت پرداخت‌ها (۶ ماه)</span>
-                    </div>
-                    <div class="card-body p-0">
-                        <div class="table-responsive">
-                            <table class="table mb-0">
-                                <thead>
-                                    <tr>
-                                        <th>ماه</th>
-                                        <th>مبلغ</th>
-                                        <th class="text-center">وضعیت</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="font-weight-600">حمل ۱۴۰۴</td>
-                                        <td class="font-weight-bold">۱۵۶,۰۰۰</td>
-                                        <td class="text-center"><span class="badge-status-pct" style="background: rgba(22, 163, 74, 0.1); color: #16a34a;">۷۵٪</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="font-weight-600">جوزا ۱۴۰۴</td>
-                                        <td class="font-weight-bold">۱۶۸,۰۰۰</td>
-                                        <td class="text-center"><span class="badge-status-pct" style="background: rgba(22, 163, 74, 0.15); color: #16a34a;">۱۰۰٪</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="font-weight-600">جوزا ۱۴۰۳</td>
-                                        <td class="font-weight-bold">۱۴۲,۰۰۰</td>
-                                        <td class="text-center"><span class="badge-status-pct" style="background: rgba(234, 88, 12, 0.1); color: #ea580c;">۹۰٪</span></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+        {{-- بخش دوم: کارت‌های خلاصه گزارش --}}
+        <div class="row mb-2">
+            @foreach($report['summary'] as $summary)
+                <div class="col-xl-3 col-sm-6 mb-3">
+                    <div class="card stat-card">
+                        <div class="card-body p-3 d-flex align-items-center justify-content-between">
+                            <div>
+                                <span class="text-muted font-small-3 d-block mb-1">{{ $summary['title'] }}</span>
+                                <h2 class="font-weight-bold mb-1" style="color: #1e293b;">{{ $summary['value'] }}</h2>
+                                <span class="font-small-2 text-muted font-weight-600">{{ $summary['detail'] }}</span>
+                            </div>
+                            <div class="stat-icon" style="background: {{ $summary['bg'] }}; color: {{ $summary['color'] }};"><i class="{{ $summary['icon'] }}"></i></div>
                         </div>
                     </div>
+                </div>
+            @endforeach
+        </div>
+
+        {{-- بخش سوم: جدول گزارش انتخاب شده --}}
+        <div class="card custom-card mb-4">
+            <div class="card-header">
+                <i class="la la-table"></i>
+                <span>{{ $reportTypes[$selectedType]['label'] }} - جزئیات</span>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                @foreach($report['tableHeaders'] as $header)
+                                    <th>{{ $header }}</th>
+                                @endforeach
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($report['tableRows'] as $row)
+                                <tr>
+                                    <td class="font-weight-600">{{ $row['primary'] }}</td>
+                                    <td>{{ $row['secondary'] }}</td>
+                                    <td>{{ $row['status'] }}</td>
+                                    <td>{{ $row['meta'] }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
 
-        {{-- بخش سوم: خروجی گزارش‌ها --}}
+        {{-- بخش چهارم: کارت‌های تکمیلی گزارش --}}
+        <div class="row mb-4">
+            @foreach($report['detailCards'] as $card)
+                <div class="col-md-6 mb-3">
+                    <div class="card custom-card h-100">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1" style="font-weight: 700; color: #1f2937;">{{ $card['title'] }}</h6>
+                                    <p class="mb-0 text-muted" style="font-size: 13px;">{{ $card['hint'] }}</p>
+                                </div>
+                                <div class="badge badge-pill badge-primary" style="background: #e0f2fe; color: #0369a1; padding: 8px 12px; font-size: 14px; font-weight: 700; border-radius: 12px;">{{ $card['value'] }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+
+        {{-- بخش پنجم: خروجی گزارش‌ها --}}
         <div class="card custom-card mb-4">
             <div class="card-header">
                 <i class="la la-download"></i>
@@ -244,15 +208,14 @@
             </div>
             <div class="card-body">
                 <div class="d-flex flex-wrap align-items-center">
-                    <button class="btn btn-export"><i class="la la-file-pdf-o text-danger"></i> PDF ساکنین</button>
-                    <button class="btn btn-export"><i class="la la-file-excel-o text-success"></i> Excel پرداخت‌ها</button>
-                    <button class="btn btn-export"><i class="la la-file-text-o text-info"></i> گزارش قراردادها</button>
+                    <button class="btn btn-export"><i class="la la-file-pdf-o text-danger"></i> PDF {{ $reportTypes[$selectedType]['label'] }}</button>
+                    <button class="btn btn-export"><i class="la la-file-excel-o text-success"></i> Excel {{ $reportTypes[$selectedType]['label'] }}</button>
+                    <button class="btn btn-export"><i class="la la-file-text-o text-info"></i> خلاصه {{ $reportTypes[$selectedType]['label'] }}</button>
                     <button class="btn btn-export"><i class="la la-print text-secondary"></i> چاپ خلاصه</button>
                 </div>
-                
                 <div class="alert mt-3 mb-0 py-2 font-small-3 d-flex align-items-center" style="background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; border-radius: 8px;">
                     <i class="la la-info-circle ml-2" style="font-size: 18px;"></i>
-                    <span>در نسخه نهایی، گزارش‌ها از دیتابیس تولید می‌شوند.</span>
+                    <span>در نسخه نهایی، داده‌های گزارش از دیتابیس بارگذاری می‌شوند و اینجا فقط نمایش دمو است.</span>
                 </div>
             </div>
         </div>

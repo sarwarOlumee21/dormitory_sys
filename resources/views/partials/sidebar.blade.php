@@ -137,13 +137,19 @@
             </li>
           </ul>
         </li> -->
-
-        <li class="{{ request()->routeIs('reports.index') ? 'active' : '' }}">
-          <a href="{{ route('reports.index') }}">
-            <i class="la la-bar-chart"></i>
-            <span class="menu-title">گزارشات</span>
-          </a>
+        <li class="nav-item {{ request()->routeIs('reports.*') || request()->routeIs('report.*') ? 'active open' : '' }}">
+          <a href="#"><i class="la la-wrench"></i><span class="menu-title">گذارشات</span></a>
+          <ul class="menu-content">
+            <li class="{{ request()->routeIs('report.resident_report') ? 'active' : '' }}">
+              <a href="{{ route('report.resident_report') }}">گزارش ساکنین</a>
+            </li>
+            <li class="{{ request()->routeIs('reports.index') && request()->query('type') === 'payments' ? 'active' : '' }}">
+              <a href="{{ route('reports.index', ['type' => 'payments']) }}">گزارش پرداخت‌ها</a>
+            </li>
+          </ul>
         </li>
+
+
       @endif
     </ul>
   </div>

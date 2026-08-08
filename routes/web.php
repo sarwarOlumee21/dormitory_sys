@@ -74,3 +74,5 @@ Route::get('/registerMealPlan', [KitchenController::class, 'registerMealPlan'])-
 Route::get('/mealFoods', [KitchenController::class, 'mealFoods'])->name('mealFoods')->middleware(['auth', 'role:admin,manager,staff']);
 Route::post('/mealFoods/store', [KitchenController::class, 'storeMealFood'])->name('mealFoods.store')->middleware(['auth', 'role:admin,manager,staff']);
 Route::post('/registerMealPlan/store', [KitchenController::class, 'registerMealPlans'])->name('registerMealPlan/store')->middleware(['auth', 'role:admin,manager,staff']);
+Route::get('reports.resident_reports', [ReportController::class, 'residentReport'])->name('report.resident_report')->middleware(['auth', 'role:admin,manager,staff']);
+Route::get('reports.payment_reports', [ReportController::class, 'paymentReport'])->name('report.payment_report')->middleware(['auth', 'role:admin,manager,staff']);
