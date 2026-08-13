@@ -123,7 +123,6 @@ class ReportController extends Controller
     public function residentReport()
     {
         // $residents = Resident::with(['room', 'latestContract', 'payments'])->get();
-
         return view('reports.resident_report');
     }
     // public function residentReport()
