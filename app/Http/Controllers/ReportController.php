@@ -120,6 +120,12 @@ class ReportController extends Controller
 
         return view('reports.index', compact('items', 'totals', 'counts', 'totalResults', 'name', 'code', 'month', 'payment_status'));
     }
+    public function residentReport()
+    {
+        // $residents = Resident::with(['room', 'latestContract', 'payments'])->get();
+
+        return view('reports.resident_report');
+    }
     // public function residentReport()
     // {
     //     // Sample data for the resident report
