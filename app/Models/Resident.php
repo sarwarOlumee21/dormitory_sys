@@ -54,4 +54,8 @@ class Resident extends Model
     {
         return $this->hasOne(ContractRegister::class, 'resident_id')->latestOfMany();
     }
+    public function payments()
+{
+    return $this->hasMany(Payment::class, 'residents_id');
+}
 }

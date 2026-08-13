@@ -308,7 +308,8 @@
                                     جستجو با نام
                                 </label>
 
-                                <input type="text" name="name" value="{{ $name ?? '' }}" class="form-control form-control-report" placeholder="مثلاً: احمد رضایی">
+                                <input type="text" name="name" value="{{ $name ?? '' }}"
+                                    class="form-control form-control-report" placeholder="مثلاً: احمد رضایی">
 
                             </div>
 
@@ -320,7 +321,8 @@
                                     کد اقامت‌کننده
                                 </label>
 
-                                <input type="text" name="code" value="{{ $code ?? '' }}" class="form-control form-control-report" placeholder="مثلاً: RES-0021">
+                                <input type="text" name="code" value="{{ $code ?? '' }}"
+                                    class="form-control form-control-report" placeholder="مثلاً: RES-0021">
 
                             </div>
 
@@ -332,7 +334,8 @@
                                     تاریخ گزارش (ماه)
                                 </label>
 
-                                <input type="month" name="month" value="{{ $month ?? '' }}" class="form-control form-control-report">
+                                <input type="month" name="month" value="{{ $month ?? '' }}"
+                                    class="form-control form-control-report">
 
                             </div>
 
@@ -346,9 +349,9 @@
 
                                 <select name="payment_status" class="form-control form-control-report">
                                     <option value="">همه</option>
-                                    <option value="full" {{ (isset($payment_status) && $payment_status=='full')? 'selected' : '' }}>پرداخت کامل</option>
-                                    <option value="partial" {{ (isset($payment_status) && $payment_status=='partial')? 'selected' : '' }}>پرداخت جزئی</option>
-                                    <option value="none" {{ (isset($payment_status) && $payment_status=='none')? 'selected' : '' }}>بدون پرداخت</option>
+                                    <option value="full" {{ (isset($payment_status) && $payment_status == 'full') ? 'selected' : '' }}>پرداخت کامل</option>
+                                    <option value="partial" {{ (isset($payment_status) && $payment_status == 'partial') ? 'selected' : '' }}>پرداخت جزئی</option>
+                                    <option value="none" {{ (isset($payment_status) && $payment_status == 'none') ? 'selected' : '' }}>بدون پرداخت</option>
                                 </select>
 
                             </div>
@@ -635,8 +638,9 @@
                                     <th>کد</th>
                                     <th>اتاق</th>
                                     <th>مبلغ قرارداد</th>
-                                    <th>مبلغ مورد انتظار</th>
                                     <th>پرداخت‌شده</th>
+                                    <th>تعداد دفعات پرداخت شده</th>
+                                    <th>تاریخ آخرین پرداخت</th>
                                     <th>باقی‌مانده</th>
                                     <th>وضعیت</th>
 
@@ -648,78 +652,80 @@
                             <tbody>
 
                                 @forelse(($items ?? []) as $index => $item)
-                                <tr>
+                                    <tr>
 
-                                    <td>{{ $index + 1 }}</td>
+                                        <td>{{ $index + 1 }}</td>
 
-                                    <td>
+                                        <td>
 
-                                        <div class="resident-name">
+                                            <div class="resident-name">
 
-                                            <div class="avatar-circle">
-                                                {{ mb_substr($item['name'] ?? '', 0, 1) }}
+                                                <div class="avatar-circle">
+                                                    {{ mb_substr($item['name'] ?? '', 0, 1) }}
+                                                </div>
+
+                                                <strong>
+                                                    {{ $item['name'] ?? '-' }}
+                                                </strong>
+
                                             </div>
 
-                                            <strong>
-                                                {{ $item['name'] ?? '-' }}
-                                            </strong>
+                                        </td>
 
-                                        </div>
+                                        <td>
+                                            {{ $item['resident_code'] ?? '-' }}
+                                        </td>
 
-                                    </td>
+                                        <td>
+                                            {{ $item['room_number'] ?? '-' }}
+                                        </td>
 
-                                    <td>
-                                        {{ $item['resident_code'] ?? '-' }}
-                                    </td>
+                                        <td>
+                                            {{ number_format($item['contract_amount'] ?? 0) }} افغانی
+                                        </td>
 
-                                    <td>
-                                        {{ $item['room_number'] ?? '-' }}
-                                    </td>
+                                        <td class="money-paid">
+                                            {{ number_format($item['paid'] ?? 0) }} افغانی
+                                        </td>
+                                        <td>
+                                            {{ $item['payment_count'] ?? 0 }}
+                                        </td>
+                                        <td>
+                                            {{ $item['last_payment_date'] ?? '-' }}
+                                        </td>
 
-                                    <td>
-                                        {{ number_format($item['contract_amount'] ?? 0) }} افغانی
-                                    </td>
+                                        <td class="{{ ($item['remaining'] ?? 0) > 0 ? 'money-remaining' : 'money-complete' }}">
+                                            {{ number_format($item['remaining'] ?? 0) }} افغانی
+                                        </td>
 
-                                    <td>
-                                        {{ number_format($item['expected_amount'] ?? 0) }} افغانی
-                                    </td>
+                                        <td>
 
-                                    <td class="money-paid">
-                                        {{ number_format($item['paid'] ?? 0) }} افغانی
-                                    </td>
+                                            @if(($item['status'] ?? '') == 'full')
+                                                <span class="payment-status payment-full">
+                                                    <i class="la la-check-circle"></i>
+                                                    پرداخت کامل
+                                                </span>
+                                            @elseif(($item['status'] ?? '') == 'partial')
+                                                <span class="payment-status payment-partial">
+                                                    <i class="la la-adjust"></i>
+                                                    پرداخت جزئی
+                                                </span>
+                                            @else
+                                                <span class="payment-status payment-none">
+                                                    <i class="la la-close"></i>
+                                                    بدون پرداخت
+                                                </span>
+                                            @endif
 
-                                    <td class="{{ ($item['remaining'] ?? 0) > 0 ? 'money-remaining' : 'money-complete' }}">
-                                        {{ number_format($item['remaining'] ?? 0) }} افغانی
-                                    </td>
+                                        </td>
 
-                                    <td>
-
-                                        @if(($item['status'] ?? '') == 'full')
-                                            <span class="payment-status payment-full">
-                                                <i class="la la-check-circle"></i>
-                                                پرداخت کامل
-                                            </span>
-                                        @elseif(($item['status'] ?? '') == 'partial')
-                                            <span class="payment-status payment-partial">
-                                                <i class="la la-adjust"></i>
-                                                پرداخت جزئی
-                                            </span>
-                                        @else
-                                            <span class="payment-status payment-none">
-                                                <i class="la la-close"></i>
-                                                بدون پرداخت
-                                            </span>
-                                        @endif
-
-                                    </td>
-
-                                </tr>
+                                    </tr>
 
                                 @empty
 
-                                <tr>
-                                    <td colspan="9" class="text-center">نتیجه‌ای یافت نشد</td>
-                                </tr>
+                                    <tr>
+                                        <td colspan="9" class="text-center">نتیجه‌ای یافت نشد</td>
+                                    </tr>
 
                                 @endforelse
 

@@ -104,6 +104,8 @@ class ReportController extends Controller
                 'paid' => $paid,
                 'remaining' => max(0, $remaining),
                 'status' => $status,
+                'payment_count' => $r->payments->count(),
+                'last_payment_date' => $r->payments->max('payment_date'),
             ];
         }
 
