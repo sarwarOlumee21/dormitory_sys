@@ -501,7 +501,7 @@
             <div class="row mb-4">
 
                 {{-- مجموع اقامت‌کنندگان --}}
-                <div class="col-xl-4 col-md-6 mb-3">
+                <div class="col-xl-6 col-md-6 mb-3">
                     <div class="stat-card">
                         <div class="stat-content">
                             <div class="stat-icon icon-resident">
@@ -518,7 +518,7 @@
                 </div>
 
                 {{-- مجموع مهمان‌ها --}}
-                <div class="col-xl-4 col-md-6 mb-3">
+                <div class="col-xl-6 col-md-6 mb-3">
                     <div class="stat-card">
                         <div class="stat-content">
                             <div class="stat-icon icon-guest">
@@ -529,23 +529,6 @@
                                 <span class="stat-label">مجموع مهمان‌ها</span>
                                 <span class="stat-value">{{ $totals['guests'] ?? 0 }}</span>
                                 <span class="stat-sub" style="color:#9333ea;">نفر</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {{-- مجموع افراد --}}
-                <div class="col-xl-4 col-md-6 mb-3">
-                    <div class="stat-card">
-                        <div class="stat-content">
-                            <div class="stat-icon icon-capacity">
-                                <i class="la la-user-friends"></i>
-                            </div>
-
-                            <div class="stat-info">
-                                <span class="stat-label">مجموع افراد حاضر</span>
-                                <span class="stat-value">{{ $totals['people'] ?? (($totals['residents'] ?? 0) + ($totals['guests'] ?? 0)) }}</span>
-                                <span class="stat-sub" style="color:#0284c7;">اقامت‌کننده و مهمان</span>
                             </div>
                         </div>
                     </div>
@@ -613,92 +596,7 @@
             </div>
 
 
-            {{-- =========================================================
-                خلاصه ظرفیت اتاق‌ها
-            ========================================================== --}}
-            <div class="card custom-card mb-4">
-                <div class="card-header">
-                    <div class="title-group">
-                        <i class="la la-pie-chart"></i>
-                        <span>خلاصه وضعیت ظرفیت اتاق‌ها</span>
-                    </div>
 
-                    <span class="font-small-2 text-muted">
-                        ظرفیت کل: {{ $roomTotals['capacity'] ?? 0 }} نفر
-                    </span>
-                </div>
-
-                <div class="card-body">
-                    <div class="row">
-
-                        <div class="col-lg-3 col-md-6 mb-3">
-                            <div class="room-summary">
-                                <div class="room-summary-icon icon-room">
-                                    <i class="la la-bed"></i>
-                                </div>
-                                <div class="room-summary-title">ظرفیت کل</div>
-                                <div class="room-summary-value">{{ $roomTotals['capacity'] ?? 0 }}</div>
-                                <div class="stat-sub text-muted mt-1">نفر</div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-6 mb-3">
-                            <div class="room-summary">
-                                <div class="room-summary-icon icon-capacity">
-                                    <i class="la la-users"></i>
-                                </div>
-                                <div class="room-summary-title">ظرفیت استفاده‌شده</div>
-                                <div class="room-summary-value">{{ $roomTotals['occupied'] ?? 0 }}</div>
-                                <div class="stat-sub text-muted mt-1">نفر</div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-6 mb-3">
-                            <div class="room-summary">
-                                <div class="room-summary-icon icon-available">
-                                    <i class="la la-plus-circle"></i>
-                                </div>
-                                <div class="room-summary-title">ظرفیت باقی‌مانده</div>
-                                <div class="room-summary-value">{{ $roomTotals['remaining'] ?? 0 }}</div>
-                                <div class="stat-sub text-muted mt-1">نفر</div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-6 mb-3">
-                            @php
-                                $capacity = $roomTotals['capacity'] ?? 0;
-                                $occupied = $roomTotals['occupied'] ?? 0;
-                                $occupancyPercent = $capacity > 0 ? min(100, round(($occupied / $capacity) * 100)) : 0;
-                            @endphp
-
-                            <div class="room-summary">
-                                <div class="room-summary-icon icon-resident">
-                                    <i class="la la-bar-chart"></i>
-                                </div>
-                                <div class="room-summary-title">درصد اشغال</div>
-                                <div class="room-summary-value">{{ $occupancyPercent }}%</div>
-
-                                <div class="capacity-progress mt-3">
-                                    <div class="progress">
-                                        <div class="progress-bar"
-                                             role="progressbar"
-                                             style="width: {{ $occupancyPercent }}%;"
-                                             aria-valuenow="{{ $occupancyPercent }}"
-                                             aria-valuemin="0"
-                                             aria-valuemax="100">
-                                        </div>
-                                    </div>
-
-                                    <div class="capacity-text">
-                                        {{ $occupied }} از {{ $capacity }} ظرفیت استفاده شده
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
 
 
             {{-- =========================================================
@@ -862,113 +760,6 @@
                                 {{ $totals['guests'] ?? 0 }}
                             </strong>
                         </span>
-                    </div>
-                </div>
-            </div>
-
-
-            {{-- =========================================================
-                جدول وضعیت اتاق‌ها
-            ========================================================== --}}
-            <div class="card custom-card mb-4">
-                <div class="card-header">
-                    <div class="title-group">
-                        <i class="la la-building"></i>
-                        <span>گزارش وضعیت اتاق‌ها</span>
-                    </div>
-
-                    <span class="font-small-2 text-muted">
-                        مجموع اتاق‌ها: {{ $roomTotals['total'] ?? 0 }}
-                    </span>
-                </div>
-
-                <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table report-table mb-0">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>شماره اتاق</th>
-                                    <th>بخش / طبقه</th>
-                                    <th>ظرفیت کل</th>
-                                    <th>افراد داخل اتاق</th>
-                                    <th>ظرفیت باقی‌مانده</th>
-                                    <th>درصد اشغال</th>
-                                    <th>وضعیت</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                @forelse(($rooms ?? []) as $index => $room)
-                                    @php
-                                        $capacity = $room['capacity'] ?? 0;
-                                        $occupied = $room['occupied'] ?? 0;
-                                        $remaining = max(0, $capacity - $occupied);
-                                        $percent = $capacity > 0
-                                            ? min(100, round(($occupied / $capacity) * 100))
-                                            : 0;
-                                    @endphp
-
-                                    <tr>
-                                        <td>{{ $index + 1 }}</td>
-
-                                        <td>
-                                            <strong>{{ $room['room_number'] ?? '-' }}</strong>
-                                        </td>
-
-                                        <td>
-                                            {{ $room['floor'] ?? ($room['section'] ?? '-') }}
-                                        </td>
-
-                                        <td>{{ $capacity }} نفر</td>
-
-                                        <td>{{ $occupied }} نفر</td>
-
-                                        <td>{{ $remaining }} نفر</td>
-
-                                        <td>
-                                            <div class="capacity-progress">
-                                                <div class="progress">
-                                                    <div class="progress-bar"
-                                                         role="progressbar"
-                                                         style="width: {{ $percent }}%;">
-                                                    </div>
-                                                </div>
-
-                                                <div class="capacity-text">{{ $percent }}%</div>
-                                            </div>
-                                        </td>
-
-                                        <td>
-                                            @if($capacity > 0 && $occupied >= $capacity)
-                                                <span class="status-badge room-full">
-                                                    <i class="la la-lock"></i>
-                                                    پر
-                                                </span>
-                                            @elseif($occupied == 0)
-                                                <span class="status-badge room-available">
-                                                    <i class="la la-check-circle"></i>
-                                                    خالی
-                                                </span>
-                                            @else
-                                                <span class="status-badge room-partial">
-                                                    <i class="la la-adjust"></i>
-                                                    دارای ظرفیت
-                                                </span>
-                                            @endif
-                                        </td>
-                                    </tr>
-
-                                @empty
-                                    <tr>
-                                        <td colspan="8" class="text-center py-4 text-muted">
-                                            <i class="la la-info-circle"></i>
-                                            اطلاعات اتاقی یافت نشد
-                                        </td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
                     </div>
                 </div>
             </div>

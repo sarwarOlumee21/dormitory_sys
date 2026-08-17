@@ -31,7 +31,7 @@ class VisitorController extends Controller
             'guest_id_number' => 'required|string|max:255',
             'guest_phone' => 'nullable|string|max:255',
             'check_in_at' => 'required|date',
-            'check_out_at' => 'nullable|date|after_or_equal:check_in_at',
+            'check_out_possible_at' => 'nullable|date|after_or_equal:check_in_at',
             'room_number' => 'required|exists:rooms,id',
             'purpose' => 'nullable|string|max:500',
         ]);

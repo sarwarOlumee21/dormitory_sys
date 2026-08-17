@@ -10,6 +10,7 @@ use App\Models\Visitors;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use App\Models\Room;
 
 class ReportController extends Controller
 {
@@ -122,8 +123,100 @@ class ReportController extends Controller
     }
     public function residentReport()
     {
-        // $residents = Resident::with(['room', 'latestContract', 'payments'])->get();
-        return view('reports.resident_report');
+        $residents = Resident::with(['room', 'latestContract'])->get();
+        $rooms = Room::all();
+
+        $residentCount = $residents->count();
+        $roomCount = $rooms->count();
+
+        $guestCount = Visitors::whereNull('check_out_at')->count();
+
+        $totals = [
+            'residents' => $residentCount,
+            'guests' => $guestCount,
+            'people' => $residentCount + $guestCount,
+        ];
+
+        $roomTotals = [
+            'total' => $roomCount,
+            'full' => $rooms->filter(function ($room) {
+                $occupied = $room->residents()->count();
+                return $room->capacity > 0 && $occupied >= $room->capacity;
+            })->count(),
+            'available' => $rooms->filter(function ($room) {
+                $occupied = $room->residents()->count();
+                return $room->capacity > 0 && $occupied < $room->capacity;
+            })->count(),
+        ];
+
+        $formatDate = function ($value, $format = 'Y-m-d') {
+            if (empty($value)) {
+                return null;
+            }
+
+            if ($value instanceof \Carbon\Carbon) {
+                return $value->format($format);
+            }
+
+            try {
+                return Carbon::parse($value)->format($format);
+            } catch (\Throwable $e) {
+                return null;
+            }
+        };
+
+        $items = $residents->map(function ($resident) use ($formatDate) {
+            $room = $resident->room;
+            $roomCapacity = $room?->capacity ?? 0;
+            $roomOccupied = $room ? $room->residents()->count() : 0;
+
+            return [
+                'name' => $resident->name,
+                'type' => 'resident',
+                'code' => $resident->resident_code,
+                'room_number' => $room?->room_number,
+                'room_capacity' => $roomCapacity,
+                'room_occupied' => $roomOccupied,
+                'check_in_date' => $formatDate($resident->created_at, 'Y-m-d'),
+                'phone' => $resident->phone_number,
+                'resident_code' => $resident->resident_code,
+            ];
+        })->toArray();
+
+        $guestItems = Visitors::with('resident', 'room')->whereNull('check_out_at')->get()->map(function ($visitor) use ($formatDate) {
+            $room = $visitor->room;
+            $roomCapacity = $room?->capacity ?? 0;
+            $roomOccupied = $room ? $room->residents()->count() : 0;
+
+            return [
+                'name' => $visitor->guest_name,
+                'type' => 'guest',
+                'code' => $visitor->guest_id_number,
+                'room_number' => $visitor->room_number ?? $visitor->resident?->room?->room_number,
+                'room_capacity' => $roomCapacity,
+                'room_occupied' => $roomOccupied,
+                'check_in_date' => $formatDate($visitor->check_in_at, 'Y-m-d H:i'),
+                'phone' => $visitor->guest_phone,
+                'guest_code' => $visitor->guest_id_number,
+            ];
+        })->toArray();
+
+        $items = array_merge($items, $guestItems);
+        $totalResults = count($items);
+
+        $reportDate = now()->format('Y-m-d');
+
+        return view('reports.resident_report', compact(
+            'residents',
+            'residentCount',
+            'rooms',
+            'roomCount',
+            'totals',
+            'roomTotals',
+            'items',
+            'totalResults',
+            'reportDate'
+        ));
     }
     // public function residentReport()
     // {

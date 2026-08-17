@@ -15,6 +15,7 @@ return new class extends Migration
             $table->string('guest_phone', 30)->nullable();
             $table->string('guest_id_number', 100)->nullable();
             $table->dateTime('check_in_at')->nullable();
+            $table->dateTime('check_out_possible_at')->nullable();
             $table->dateTime('check_out_at')->nullable();
             $table->text('purpose')->nullable();
             $table->string('attendance_status', 50)->default('داخل خوابگاه');

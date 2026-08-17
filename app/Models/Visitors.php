@@ -14,6 +14,7 @@ class Visitors extends Model
         'guest_id_number',
         'check_in_at',
         'check_out_at',
+        'check_out_possible_at',
         'room_number',
         'purpose',
     ];

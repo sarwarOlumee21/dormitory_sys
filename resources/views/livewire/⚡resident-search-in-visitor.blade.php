@@ -143,7 +143,7 @@ new class extends Component {
                     <div class="col-md-4 form-group mb-4">
                         <label class="flabel"><i class="la la-calendar-check-o text-primary"></i> تاریخ خروج پیش‌بینی
                             شده</label>
-                        <input type="datetime-local" class="form-control" name="check_out_at">
+                        <input type="datetime-local" class="form-control" name="check_out_possible_at">
                     </div>
 
                     <div class="col-md-4 form-group mb-4">
