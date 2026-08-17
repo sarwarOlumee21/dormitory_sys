@@ -57,7 +57,7 @@
             <select class="finput" name="room_id">
                 <option value="">انتخاب کنید</option>
                 @foreach($rooms as $room)
-                    <option value="{{ $room->id }}">{{ $room->room_number }} - {{ $room->room_type }}</option>
+                    <option value="{{ $room->id }}">{{ $room->room_number }} - {{ $room->room_type }} - {{ $room->remaining_capacity }} ظرفیت باقی مانده</option>
                 @endforeach
             </select>
           </div>

@@ -16,6 +16,21 @@ class ResidentController extends Controller
     public function ResidentRegister()
     {
         $rooms = Room::all();
+        $residents = Resident::all();
+
+        $rooms = $rooms->filter(function ($room) use ($residents) {
+
+            $residentCount = $residents
+                ->where('room_id', $room->id)
+                ->count();
+
+            // ظرفیت باقی‌مانده
+            $room->remaining_capacity = $room->capacity - $residentCount;
+
+            // فقط اتاق‌هایی که ظرفیت خالی دارند
+            return $residentCount < $room->capacity;
+        });
+
         return view('resident.resident_register', compact('rooms'));
     }
 
@@ -54,7 +69,7 @@ class ResidentController extends Controller
 
         $resident = Resident::create($validatedData);
 
-        if (! $resident) {
+        if (!$resident) {
             return redirect()->back()->with('error', 'ثبت ساکن انجام نشد. لطفاً دوباره تلاش کنید.');
         }
 
@@ -89,7 +104,7 @@ class ResidentController extends Controller
         $resident = Resident::findOrFail($id);
         $updated = $resident->update($validatedData);
 
-        if (! $updated) {
+        if (!$updated) {
             return redirect()->back()->with('error', 'به‌روزرسانی ساکن انجام نشد. لطفاً دوباره تلاش کنید.');
         }
 
