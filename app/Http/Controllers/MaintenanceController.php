@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\RequestType;
+use App\Models\Room;
 use App\Models\Resident;
 use App\Models\MaintenanceRequest;
 
@@ -11,9 +12,10 @@ class MaintenanceController extends Controller
 {
     public function maintenanceRequest()
     {
-        $residents = Resident::with('room')->get(); // Assuming you have a Resident model
-        $requestTypes = RequestType::all(); // Assuming you have a RequestType model
-        return view('maintenance.maintenance_request', compact('residents', 'requestTypes'));
+        $rooms = Room::all();
+        $requestTypes = RequestType::all();
+
+        return view('maintenance.maintenance_request', compact('rooms', 'requestTypes'));
     }
 
     public function requestType()
@@ -41,13 +43,15 @@ class MaintenanceController extends Controller
     public function saveRequest(Request $request)
     {
         $data = $request->validate([
-            'resident_id' => 'required|exists:residents,id',
+            'user_id' => 'required|exists:users,id',
             'room_id' => 'required|exists:rooms,id',
             'request_types_id' => 'required|exists:request_types,id',
             'priority' => 'required|string|max:50',
             'description' => 'nullable|string|max:1000',
         ]);
-        // Save the maintenance request to the database
+
+        $data['user_id'] = auth()->id();
+
         $save = MaintenanceRequest::create($data);
         if ($save) {
             $request->session()->flash('success', 'درخواست تعمیر با موفقیت ثبت شد.');
@@ -60,7 +64,30 @@ class MaintenanceController extends Controller
 
     public function list()
     {
-        $maintenanceRequests = MaintenanceRequest::with(['resident', 'requestType','room'])->get();
-        return view('maintenance.maintenance_list',compact('maintenanceRequests'));
+        $maintenanceRequests = MaintenanceRequest::with(['user', 'requestType', 'room'])->get();
+        return view('maintenance.maintenance_list', compact('maintenanceRequests'));
+    }
+
+    public function follow_up()
+    {
+        $userId = auth()->id();
+
+        $maintenanceRequests = MaintenanceRequest::with(['user', 'requestType', 'room'])
+            ->when($userId, function ($query, $userId) {
+                $query->where('user_id', $userId);
+            }, function ($query) {
+                $query->whereRaw('1 = 0');
+            })
+            ->orderByDesc('created_at')
+            ->get();
+
+        $stats = [
+            'all' => $maintenanceRequests->count(),
+            'pending' => $maintenanceRequests->where('status', 'در حال بررسی')->count(),
+            'in_progress' => $maintenanceRequests->where('status', 'در حال پیگیری')->count(),
+            'done' => $maintenanceRequests->whereIn('status', ['تکمیل شده', 'تأیید شد'])->count(),
+        ];
+
+        return view('maintenance.follow_up_request', compact('maintenanceRequests', 'stats'));
     }
 }

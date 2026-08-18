@@ -17,6 +17,7 @@ class Visitors extends Model
         'check_out_possible_at',
         'room_number',
         'purpose',
+        'attendace_status'
     ];
     
 public function resident()

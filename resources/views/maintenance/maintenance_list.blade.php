@@ -36,7 +36,7 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>نام گزارش‌دهنده / ساکن</th>
+                            <th>نام گزارش‌دهنده</th>
                             <th>نمبر اتاق</th>
                             <th>نوع درخواست</th>
                             <th>اولویت</th>
@@ -51,7 +51,7 @@
                         
                         <tr>
                             <td>{{ $request->id }}</td>
-                            <td class="font-weight-bold">{{ $request->resident->name ?? 'نام نامشخص' }}</td>
+                            <td class="font-weight-bold">{{ $request->user->name ?? 'نام نامشخص' }}</td>
                             <td><span class="badge-room">{{ $request->room->room_number ?? 'اتاق نامشخص' }}</span></td>
                             <td>{{ $request->requestType->name ?? 'نوع نامشخص' }}</td>
                             <td><span class="badge-prio-danger"><i class="la la-exclamation-circle"></i> {{ $request->priority }}</span></td>

@@ -53,12 +53,19 @@
                                     <td>{{ $visitor->id }}</td>
                                     <td class="font-weight-bold">{{ $visitor->guest_name }}</td>
                                     <td>{{ $visitor->resident->name ?? 'نام میزبان در دسترس نیست' }}</td>
-                                    <td><span class="badge-custom-blue">{{ $visitor->room->room_number ?? 'نمبر اتاق در دسترس نیست' }}</span></td>
+                                    <td><span
+                                            class="badge-custom-blue">{{ $visitor->room->room_number ?? 'نمبر اتاق در دسترس نیست' }}</span>
+                                    </td>
                                     <td dir="ltr" class="text-right">{{ $visitor->check_in_at }}</td>
                                     <td class="text-muted">{{ $visitor->check_out_at }}</td>
-                                    <td><span class="badge-custom-blue"><i class="la la-sign-in"></i> {{ $visitor->attendance_status }}</span></td>
+                                    <td><span class="badge-custom-blue"><i class="la la-sign-in"></i>
+                                            {{ $visitor->attendance_status }}</span></td>
                                     <td class="text-center">
-                                        <button class="btn btn-action-out"><i class="la la-sign-out"></i> ثبت خروج</button>
+                                        <button type="button" class="btn btn-action-out" data-toggle="modal"
+                                            data-target="#checkoutModal">
+                                            <i class="la la-sign-out"></i>
+                                            ثبت خروج
+                                        </button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -79,4 +86,63 @@
         </div>
     </div>
 
+<div class="modal fade" id="checkoutModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+
+        <div class="modal-content" style="border-radius:15px; direction:rtl;">
+
+            <form action="{{ route('visitors.leave') }}"
+                  method="POST">
+
+                @csrf
+
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-bold">
+                        ثبت خروج اقامت‌کننده
+                    </h5>
+
+                    <button type="button"
+                            class="close"
+                            data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label class="font-weight-bold">
+                            تاریخ خروج
+                        </label>
+
+                        <input type="date"
+                               name="check_out_at"
+                               class="form-control"
+                               value="{{ date('Y-m-d') }}"
+                               required>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-dismiss="modal">
+                        لغو
+                    </button>
+
+                    <button type="submit"
+                            class="btn btn-primary">
+                        <i class="la la-check"></i>
+                        تأیید و ثبت خروج
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
 @endsection

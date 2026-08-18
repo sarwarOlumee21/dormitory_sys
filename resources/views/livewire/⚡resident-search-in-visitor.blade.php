@@ -68,7 +68,6 @@ new class extends Component {
                 <div class="row">
 
                     <div class="col-md-6 form-group mb-4">
-                        <label class="flabel">کد و نام شخص</label>
                         <div class="position-relative">
 
                             <label class="flabel">

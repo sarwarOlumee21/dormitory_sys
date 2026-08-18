@@ -18,7 +18,7 @@ return new class extends Migration
 
         Schema::create('maintenance_requests', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('resident_id')->nullable()->constrained('residents')->nullOnDelete();
+            $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
             $table->foreignId('room_id')->nullable()->constrained('rooms')->nullOnDelete();
             $table->string('priority', 50)->default('متوسط');
             $table->text('description')->nullable();

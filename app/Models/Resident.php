@@ -25,19 +25,9 @@ class Resident extends Model
         'guarantor_occupation_location',
         'status',
         'room_id',
-        'name',
-        'father_name',
-        'phone_number',
-        'city_name',
-        'occupation',
-        'work_phone',
-        'occupation_location',
-        'guarantor_name',
-        'guarantor_father_name',
-        'guarantor_phone',
-        'guarantor_occupation',
-        'guarantor_occupation_location',
-        'status',
+        'resident_image_url',
+        'id_card_image_url',
+        'guarantor_image_url',
     ];
 
     public function room()

@@ -32,20 +32,13 @@
                 <div class="card-body py-4">
                     <div class="row">
                         
-                        <div class="col-md-6 form-group mb-4">
-                            <label class="flabel"><i class="la la-user text-primary"></i> ساکن / گزارش‌دهنده</label>
-                            <select class="form-control" name="resident_id">
-                                @foreach($residents as $resident)
-                                    <option value="{{ $resident->id }}">{{ $resident->name }} ({{ $resident->room->room_number }})</option>
-                                @endforeach
-                            </select>
-                        </div>
+                        <input type="hidden" name="user_id" value="{{ auth()->id() }}">
 
                         <div class="col-md-6 form-group mb-4">
                             <label class="flabel"><i class="la la-home text-primary"></i> نمبر اتاق</label>
                             <select class="form-control" name="room_id">
-                                @foreach($residents as $resident)
-                                    <option value="{{ $resident->room->id }}">{{ $resident->room->room_number }}</option>
+                                @foreach($rooms as $room)
+                                    <option value="{{ $room->id }}">{{ $room->room_number }}</option>
                                 @endforeach
                             </select>
                         </div>

@@ -19,6 +19,12 @@
             <span class="menu-title">درخواست ترمیم</span>
           </a>
         </li>
+        <li class="{{ request()->routeIs('maintenance.follow_up_request') ? 'active' : '' }}">
+          <a href="{{ route('maintenance.follow_up_request') }}">
+            <i class="la la-wrench"></i>
+            <span class="menu-title">پیگیری ترمیم</span>
+          </a>
+        </li>
 
         <li class="{{ request()->routeIs('mealplan') ? 'active' : '' }}">
           <a href="{{ route('mealplan') }}">

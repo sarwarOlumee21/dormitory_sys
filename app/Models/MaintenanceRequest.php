@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class MaintenanceRequest extends Model
 {
     protected $fillable = [
-        'resident_id',
+        'user_id',
         'room_id',
         'priority',
         'description',
@@ -16,15 +16,16 @@ class MaintenanceRequest extends Model
         'request_types_id',
     ];
 
-    public function resident()
+    public function user()
     {
-        return $this->belongsTo(Resident::class);
+        return $this->belongsTo(User::class);
     }
 
     public function requestType()
     {
         return $this->belongsTo(RequestType::class, 'request_types_id');
     }
+
     public function room()
     {
         return $this->belongsTo(Room::class);

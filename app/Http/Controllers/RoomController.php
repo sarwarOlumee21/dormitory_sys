@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Room;
+use App\Models\Resident;
 
 class RoomController extends Controller
 {
@@ -11,11 +12,37 @@ class RoomController extends Controller
         return view('rooms.room_register');
     }
     public function RoomList(){
-        $rooms = Room::all();
-        $count = $rooms->count();
-        $activeRooms = Room::where('status', 'available')->count();
+  $rooms = Room::all();
+$resident = Resident::all();
 
-        return view('rooms.room_list', compact('rooms', 'count', 'activeRooms'));
+$rooms = $rooms->map(function ($room) use ($resident) {
+
+    // تعداد Resident های داخل این اتاق
+    $currentCapacity = $resident
+        ->where('room_id', $room->id)
+        ->count();
+
+    // ظرفیت فعلی اتاق
+    $room->current_capacity = $currentCapacity;
+
+    // وضعیت اتاق
+    if ($currentCapacity == 0) {
+
+        $room->room_status = 'خالی';
+
+    } elseif ($currentCapacity >= $room->capacity) {
+
+        $room->room_status = 'پر';
+
+    } elseif ($currentCapacity < $room->capacity) {
+
+        $room->room_status = 'دارای ظرفیت';
+
+    }
+
+    return $room;
+});
+        return view('rooms.room_list', compact('rooms'));
     }
     public function store(Request $request)
     {

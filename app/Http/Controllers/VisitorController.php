@@ -13,14 +13,14 @@ class VisitorController extends Controller
         $residents = Resident::all();
         $rooms = Room::all();
         // $rooms = $residents->pluck('room')->unique();
-        return view('visitors.visitor_register', compact('residents','rooms'));
+        return view('visitors.visitor_register', compact('residents', 'rooms'));
     }
 
     public function list()
     {
         $visitors = Visitors::with('resident', 'room')->get();
 
-        return view('visitors.visitor_list',compact('visitors'));
+        return view('visitors.visitor_list', compact('visitors'));
     }
     public function store(Request $request)
     {
@@ -38,8 +38,24 @@ class VisitorController extends Controller
 
         // Create a new visitor record in the database
         Visitors::create($validatedData);
-
         // Redirect back with a success message
         return redirect()->route('visitors.register')->with('success', 'بازدیدکننده با موفقیت ثبت شد.');
+    }
+    public function saveLeave(Request $request)
+    {
+        $attendance_status = "خروج تایید شد";
+        $request->validate([
+            'visitor_id' => 'required|exists:visitors,id',
+            'checkout_date' => 'required|date',
+        ]);
+
+        $visitor = Visitors::findOrFail($request->visitor_id);
+
+        $visitor->update([
+            'check_out_at' => $request->checkout_date,
+            'attendance_status' => $attendance_status,
+        ]);
+
+        return redirect()->back()->with('success', 'خروج مهمان با موفقیت ثبت شد.');
     }
 }

@@ -24,6 +24,9 @@ public function up(): void
         $table->string('guarantor_phone', 30)->nullable();
         $table->string('guarantor_occupation', 150)->nullable();
         $table->string('guarantor_occupation_location', 300)->nullable();
+        $table->string('resident_image_url')->nullable();
+        $table->string('id_card_image_url')->nullable();
+        $table->string('guarantor_image_url')->nullable();
 
         $table->foreignId('room_id')
               ->constrained('rooms')

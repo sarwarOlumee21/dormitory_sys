@@ -41,7 +41,9 @@ Route::prefix('visitors')->name('visitors.')->group(function () {
     Route::get('/register', [VisitorController::class, 'register'])->name('register')->middleware(['auth', 'role:admin,manager,staff']);
     Route::get('/list', [VisitorController::class, 'list'])->name('list')->middleware(['auth', 'role:admin,manager,staff']);
     Route::post('/store', [VisitorController::class, 'store'])->name('store')->middleware(['auth', 'role:admin,manager,staff']);
-});
+Route::post('/leave', [VisitorController::class, 'saveLeave'])
+    ->name('leave')
+    ->middleware(['auth', 'role:admin,manager,staff']);    });
 Route::prefix('maintenance')->name('maintenance.')->group(function () {
 Route::get('/request', [MaintenanceController::class, 'maintenanceRequest'])
     ->name('request')
@@ -50,6 +52,7 @@ Route::get('/request', [MaintenanceController::class, 'maintenanceRequest'])
     Route::post('/requestType/save', [MaintenanceController::class, 'saveRequestType'])->name('requestType.save')->middleware(['auth', 'role:admin,manager,staff,user']);
     Route::post('/request/save', [MaintenanceController::class, 'saveRequest'])->name('request.save')->middleware(['auth', 'role:admin,manager,staff,user']);
     Route::get('/list', [MaintenanceController::class, 'list'])->name('list')->middleware(['auth', 'role:admin,manager,staff']);
+    Route::get('/follow_up_request', [MaintenanceController::class, 'follow_up'])->name('follow_up_request')->middleware(['auth', 'role:user']);
     // Route::post('/request/save', [MaintenanceController::class, 'saveRequest'])->name('request.save')->middleware(['auth', 'role:admin,manager,staff,user']);
 });
 Route::prefix('announcements')->name('announcements.')->group(function () {

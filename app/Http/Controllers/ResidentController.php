@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Resident;
 use App\Models\Room;
 
@@ -65,7 +66,17 @@ class ResidentController extends Controller
             'guarantor_occupation' => 'nullable|string|max:255',
             'guarantor_occupation_location' => 'nullable|string|max:255',
             'room_id' => 'required|exists:rooms,id',
+            'resident_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'id_card_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'guarantor_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
+
+        foreach (['resident_image', 'id_card_image', 'guarantor_image'] as $field) {
+            if ($request->hasFile($field)) {
+                $path = $request->file($field)->store('residents', 'public');
+                $validatedData[str_replace('_image', '_image_url', $field)] = '/storage/' . $path;
+            }
+        }
 
         $resident = Resident::create($validatedData);
 
