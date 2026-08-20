@@ -11,10 +11,19 @@ class MaintenanceRequest extends Model
         'room_id',
         'priority',
         'description',
+        'admin_comment',
         'status',
         'is_active',
         'request_types_id',
+        'notification_read_at',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'notification_read_at' => 'datetime',
+        ];
+    }
 
     public function user()
     {

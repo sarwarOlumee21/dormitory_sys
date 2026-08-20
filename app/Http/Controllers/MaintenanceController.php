@@ -68,6 +68,40 @@ class MaintenanceController extends Controller
         return view('maintenance.maintenance_list', compact('maintenanceRequests'));
     }
 
+    public function show(MaintenanceRequest $maintenanceRequest)
+    {
+        $maintenanceRequest->load(['user', 'requestType', 'room']);
+        $isManager = in_array(auth()->user()->role, ['admin', 'manager', 'staff']);
+
+        abort_unless($isManager || $maintenanceRequest->user_id === auth()->id(), 403);
+
+        return view('maintenance.request_show', compact('maintenanceRequest', 'isManager'));
+    }
+
+    public function updateDetails(Request $request, MaintenanceRequest $maintenanceRequest)
+    {
+        abort_unless(in_array(auth()->user()->role, ['admin', 'manager', 'staff']), 403);
+
+        $validated = $request->validate([
+            'status' => 'required|string|max:50',
+            'admin_comment' => 'nullable|string|max:2000',
+        ]);
+
+        $maintenanceRequest->update($validated);
+
+        return redirect()->route('maintenance.show', $maintenanceRequest)
+            ->with('success', 'وضعیت و کامنت درخواست ذخیره شد.');
+    }
+
+    public function markNotificationRead(MaintenanceRequest $maintenanceRequest)
+    {
+        $maintenanceRequest->update([
+            'notification_read_at' => now(),
+        ]);
+
+        return redirect()->route('maintenance.list');
+    }
+
     public function follow_up()
     {
         $userId = auth()->id();

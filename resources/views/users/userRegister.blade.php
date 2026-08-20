@@ -28,7 +28,7 @@
             </div>
 
             <div class="form-outer">
-                <form action="{{ route('users.store') }}" method="POST">
+                <form action="{{ route('users.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="section-pill">
                         <i class="la la-id-card"></i>
@@ -78,6 +78,10 @@
                             <label class="flabel"><i class="la la-user"></i> تأیید رمز عبور <span
                                     class="required-star">*</span></label>
                             <input type="password" class="finput" name="password_confirmation" placeholder=" تأیید رمز عبور">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="photo">عکس خود را وارد کنید</label>
+                            <input type="file" class="finput" id="photo" name="photo" accept="image/jpeg,image/png,image/webp">
                         </div>
 
                     </div>

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->foreignId('room_id')->nullable()->constrained('rooms')->nullOnDelete();
             $table->string('priority', 50)->default('متوسط');
             $table->text('description')->nullable();
+            $table->date('notification_read_at')->nullable();
             $table->string('status', 50)->default('جدید');
             $table->boolean('is_active')->default(true);
             $table->foreignId('request_types_id')->constrained('request_types');

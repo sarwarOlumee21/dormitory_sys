@@ -251,9 +251,9 @@
                                 </td>
 
                                 <td class="text-center">
-                                    <button class="btn btn-outline-primary btn-sm" title="مشاهده جزئیات">
+                                    <a href="{{ route('maintenance.show', $request) }}" class="btn btn-outline-primary btn-sm" title="مشاهده جزئیات">
                                         <i class="la la-eye"></i>
-                                    </button>
+                                    </a>
                                 </td>
                             </tr>
                         @empty

@@ -12,19 +12,30 @@
             <span class="menu-title">داشبورد</span>
           </a>
         </li>
-
+        <li class="nav-item {{ request()->routeIs('resident.*') ? 'active open' : '' }}">
+          <a href="#"><i class="la la-users"></i><span class="menu-title">درخواست ها 
+            
+          </span></a>
+          <ul class="menu-content">
+<!--  -->
         <li class="{{ request()->routeIs('maintenance.request') ? 'active' : '' }}">
           <a href="{{ route('maintenance.request') }}">
             <i class="la la-wrench"></i>
             <span class="menu-title">درخواست ترمیم</span>
           </a>
         </li>
+        
         <li class="{{ request()->routeIs('maintenance.follow_up_request') ? 'active' : '' }}">
           <a href="{{ route('maintenance.follow_up_request') }}">
             <i class="la la-wrench"></i>
             <span class="menu-title">پیگیری ترمیم</span>
           </a>
         </li>
+<!--  -->
+          </ul>
+        </li>
+
+
 
         <li class="{{ request()->routeIs('mealplan') ? 'active' : '' }}">
           <a href="{{ route('mealplan') }}">

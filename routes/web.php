@@ -52,6 +52,15 @@ Route::get('/request', [MaintenanceController::class, 'maintenanceRequest'])
     Route::post('/requestType/save', [MaintenanceController::class, 'saveRequestType'])->name('requestType.save')->middleware(['auth', 'role:admin,manager,staff,user']);
     Route::post('/request/save', [MaintenanceController::class, 'saveRequest'])->name('request.save')->middleware(['auth', 'role:admin,manager,staff,user']);
     Route::get('/list', [MaintenanceController::class, 'list'])->name('list')->middleware(['auth', 'role:admin,manager,staff']);
+    Route::get('/request/{maintenanceRequest}', [MaintenanceController::class, 'show'])
+        ->name('show')
+        ->middleware(['auth', 'role:admin,manager,staff,user']);
+    Route::put('/request/{maintenanceRequest}', [MaintenanceController::class, 'updateDetails'])
+        ->name('updateDetails')
+        ->middleware(['auth', 'role:admin,manager,staff']);
+    Route::get('/request/{maintenanceRequest}/notification-read', [MaintenanceController::class, 'markNotificationRead'])
+        ->name('notification.read')
+        ->middleware(['auth', 'role:admin,manager,staff']);
     Route::get('/follow_up_request', [MaintenanceController::class, 'follow_up'])->name('follow_up_request')->middleware(['auth', 'role:user']);
     // Route::post('/request/save', [MaintenanceController::class, 'saveRequest'])->name('request.save')->middleware(['auth', 'role:admin,manager,staff,user']);
 });

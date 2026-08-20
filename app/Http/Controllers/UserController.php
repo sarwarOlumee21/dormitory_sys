@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Hash;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Models\User;
 
 class UserController extends Controller
@@ -22,7 +23,9 @@ class UserController extends Controller
             'username' => 'required|string|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'number' => 'required|string|max:255',
+            'photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             ]);
+        $profileImagePath = $request->file('photo')?->store('profile-images', 'public');
         $user = User::create([
             'code' => $validatedData['code'],
             'name' => $validatedData['name'],
@@ -31,6 +34,7 @@ class UserController extends Controller
             'username' => $validatedData['username'],
             'password' => Hash::make($validatedData['password']),
             'number' => $validatedData['number'],
+            'profile_image_url' => $profileImagePath,
         ]);
         if (!$user) {
             return redirect()->back()->with('error', 'Failed to register user. Please try again.');
@@ -60,7 +64,12 @@ class UserController extends Controller
             'username' => 'required|string|max:255|unique:users,username,' . $user->id,
             'password' => 'nullable|string|min:8|confirmed',
             'number' => 'required|string|max:255',
+            'photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
+        $profileImagePath = $request->file('photo')?->store('profile-images', 'public');
+        if ($profileImagePath && $user->profile_image_url) {
+            Storage::disk('public')->delete($user->profile_image_url);
+        }
         $user->update([
             'code' => $validatedData['code'],
             'name' => $validatedData['name'],
@@ -69,6 +78,7 @@ class UserController extends Controller
             'username' => $validatedData['username'],
             'password' => isset($validatedData['password']) ? Hash::make($validatedData['password']) : $user->password,
             'number' => $validatedData['number'],
+            'profile_image_url' => $profileImagePath ?: $user->profile_image_url,
         ]);
         return redirect()->route('users.userList')->with('success', 'User updated successfully.');
     }

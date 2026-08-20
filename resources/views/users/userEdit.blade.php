@@ -28,7 +28,7 @@
             </div>
 
             <div class="form-outer">
-                <form action="{{ route('users.userUpdate', ['id' => $user->id]) }}" method="POST">
+                <form action="{{ route('users.userUpdate', ['id' => $user->id]) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <div class="section-pill">
@@ -78,6 +78,13 @@
                             <label class="flabel"><i class="la la-user"></i> تأیید رمز عبور جدید <span
                                     class="required-star">*</span></label>
                             <input type="password" class="finput" name="password_confirmation" placeholder=" تأیید رمز عبور" value="">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="photo">عکس پروفایل</label>
+                            <input type="file" class="finput" id="photo" name="photo" accept="image/jpeg,image/png,image/webp">
+                            @if ($user->profile_image_url)
+                                <img src="{{ asset('storage/' . $user->profile_image_url) }}" alt="عکس پروفایل" style="width:70px;height:70px;object-fit:cover;border-radius:8px;margin-top:8px;">
+                            @endif
                         </div>
 
                     </div>
