@@ -43,17 +43,16 @@ class VisitorController extends Controller
     }
     public function saveLeave(Request $request)
     {
-        $attendance_status = "خروج تایید شد";
         $request->validate([
             'visitor_id' => 'required|exists:visitors,id',
-            'checkout_date' => 'required|date',
+            'check_out_at' => 'required|date',
         ]);
 
         $visitor = Visitors::findOrFail($request->visitor_id);
 
         $visitor->update([
-            'check_out_at' => $request->checkout_date,
-            'attendance_status' => $attendance_status,
+            'check_out_at' => $request->check_out_at,
+            'attendance_status' => 'خارج خوابگاه',
         ]);
 
         return redirect()->back()->with('success', 'خروج مهمان با موفقیت ثبت شد.');

@@ -11,7 +11,20 @@ return new class extends Migration
     {
         // انتقال اتاق‌های قراردادها به ساکنین مرتبط
         DB::statement(
-            'UPDATE residents JOIN contracts ON residents.id = contracts.resident_id SET residents.room_id = contracts.room_id WHERE contracts.room_id IS NOT NULL'
+            'UPDATE residents
+             SET room_id = (
+                 SELECT contracts.room_id
+                 FROM contracts
+                 WHERE contracts.resident_id = residents.id
+                 AND contracts.room_id IS NOT NULL
+                 LIMIT 1
+             )
+             WHERE EXISTS (
+                 SELECT 1
+                 FROM contracts
+                 WHERE contracts.resident_id = residents.id
+                 AND contracts.room_id IS NOT NULL
+             )'
         );
 
         Schema::table('contracts', function (Blueprint $table) {

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Visitors extends Model
 {
     protected $table = 'visitors';
+
     protected $fillable = [
         'guest_name',
         'resident_id',
@@ -17,7 +18,13 @@ class Visitors extends Model
         'check_out_possible_at',
         'room_number',
         'purpose',
-        'attendace_status'
+        'attendance_status'
+    ];
+
+    protected $casts = [
+        'check_in_at' => 'datetime',
+        'check_out_at' => 'datetime',
+        'check_out_possible_at' => 'datetime',
     ];
     
 public function resident()

@@ -66,7 +66,6 @@ new class extends Component {
                     <div class="col-lg-6 mb-3">
                         <!-- <label class="flabel">تاریخ پایان قرارداد</label>
                                         <input type="date" class="finput w-100"> -->
-                        <label class="flabel">کد و نام شخص</label>
                         <div class="position-relative">
 
                             <label class="flabel">

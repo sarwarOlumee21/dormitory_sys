@@ -59,7 +59,6 @@
                             <td><span class="badge-status-pending">{{$request->status}}</span></td>
                             <td class="text-center">
                                 <div class="btn-group btn-group-sm">
-                                    <button class="btn btn-outline-success" title="تغییر وضعیت به انجام شده"><i class="la la-check"></i></button>
                                     <a href="{{ route('maintenance.show', $request) }}" class="btn btn-outline-primary" title="مشاهده جزئیات"><i class="la la-eye"></i></a>
                                 </div>
                             </td>

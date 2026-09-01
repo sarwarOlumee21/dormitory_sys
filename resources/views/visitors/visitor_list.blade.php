@@ -57,12 +57,16 @@
                                             class="badge-custom-blue">{{ $visitor->room->room_number ?? 'نمبر اتاق در دسترس نیست' }}</span>
                                     </td>
                                     <td dir="ltr" class="text-right">{{ $visitor->check_in_at }}</td>
-                                    <td class="text-muted">{{ $visitor->check_out_at }}</td>
-                                    <td><span class="badge-custom-blue"><i class="la la-sign-in"></i>
-                                            {{ $visitor->attendance_status }}</span></td>
+                                    <td class="text-muted">{{ $visitor->check_out_at ?? '-' }}</td>
+                                    <td>
+                                        <span class="badge-custom-blue">
+                                            <i class="la la-sign-in"></i>
+                                            {{ $visitor->attendance_status ?? 'داخل خوابگاه' }}
+                                        </span>
+                                    </td>
                                     <td class="text-center">
                                         <button type="button" class="btn btn-action-out" data-toggle="modal"
-                                            data-target="#checkoutModal">
+                                            data-target="#checkoutModal" data-visitor-id="{{ $visitor->id }}">
                                             <i class="la la-sign-out"></i>
                                             ثبت خروج
                                         </button>
@@ -108,6 +112,8 @@
                     </button>
                 </div>
 
+                <input type="hidden" name="visitor_id" id="visitor_id">
+
                 <div class="modal-body">
 
                     <div class="form-group">
@@ -117,6 +123,7 @@
 
                         <input type="date"
                                name="check_out_at"
+                               id="check_out_at"
                                class="form-control"
                                value="{{ date('Y-m-d') }}"
                                required>
@@ -145,4 +152,18 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const checkoutModal = document.getElementById('checkoutModal');
+        const visitorIdInput = document.getElementById('visitor_id');
+
+        checkoutModal.addEventListener('show.bs.modal', function (event) {
+            const triggerButton = event.relatedTarget;
+            const visitorId = triggerButton.getAttribute('data-visitor-id');
+            visitorIdInput.value = visitorId;
+        });
+    });
+</script>
+
 @endsection

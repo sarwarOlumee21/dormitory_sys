@@ -48,7 +48,7 @@
           <label for="password"><i class="fas fa-key" style="margin-left: 6px;"></i> رمز عبور</label>
           <div class="input-field">
             <i class="fas fa-lock"></i>
-            <input type="password" id="password" name="password" value="password123" />
+            <input type="password" id="password" name="password" value="" placeholder="رمز عبور" />
           </div>
         </div>
 

@@ -64,7 +64,10 @@ class MaintenanceController extends Controller
 
     public function list()
     {
-        $maintenanceRequests = MaintenanceRequest::with(['user', 'requestType', 'room'])->get();
+        $maintenanceRequests = MaintenanceRequest::with(['user', 'requestType', 'room'])
+            ->where('is_active', true)
+            ->get();
+
         return view('maintenance.maintenance_list', compact('maintenanceRequests'));
     }
 
@@ -87,6 +90,9 @@ class MaintenanceController extends Controller
             'admin_comment' => 'nullable|string|max:2000',
         ]);
 
+        $status = $validated['status'];
+        $validated['is_active'] = in_array($status, ['تکمیل شده', 'تأیید شد', 'رد شد'], true) ? false : true;
+
         $maintenanceRequest->update($validated);
 
         return redirect()->route('maintenance.show', $maintenanceRequest)
@@ -107,6 +113,7 @@ class MaintenanceController extends Controller
         $userId = auth()->id();
 
         $maintenanceRequests = MaintenanceRequest::with(['user', 'requestType', 'room'])
+            ->where('is_active', true)
             ->when($userId, function ($query, $userId) {
                 $query->where('user_id', $userId);
             }, function ($query) {

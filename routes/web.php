@@ -24,6 +24,8 @@ Route::prefix('resident')->name('resident.')->group(function () {
 Route::prefix('rooms')->name('rooms.')->group(function () {
     Route::get('/room_register', [RoomController::class, 'RoomRegister'])->name('register')->middleware(['auth', 'role:admin,manager,staff']);
     Route::get('/room_list', [RoomController::class, 'RoomList'])->name('list')->middleware(['auth', 'role:admin,manager,staff']);
+    Route::get('/{id}/edit', [RoomController::class, 'RoomEdit'])->name('edit')->middleware(['auth', 'role:admin,manager,staff']);
+    Route::put('/{id}/update', [RoomController::class, 'update'])->name('update')->middleware(['auth', 'role:admin,manager,staff']);
 });
 Route::prefix('contracts')->name('contracts.')->group(function () {
     Route::get('/contracts_edit/{id}', [ContractsController::class, 'ContractsEdit'])->name('edit')->middleware(['auth', 'role:admin,manager,staff']);

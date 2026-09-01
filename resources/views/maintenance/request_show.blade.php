@@ -52,7 +52,7 @@
                         <div class="form-group">
                             <label class="flabel" for="status">وضعیت</label>
                             <select class="form-control" id="status" name="status">
-                                @foreach (['جدید', 'در حال بررسی', 'در حال پیگیری', 'تکمیل شده', 'تأیید شد', 'رد شد'] as $status)
+                                @foreach (['در حال پیگیری', 'تکمیل شده', 'تأیید شد', 'رد شد'] as $status)
                                     <option value="{{ $status }}" {{ $maintenanceRequest->status === $status ? 'selected' : '' }}>{{ $status }}</option>
                                 @endforeach
                             </select>

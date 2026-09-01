@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Models\Room;
 use App\Models\Resident;
 
@@ -43,6 +44,30 @@ $rooms = $rooms->map(function ($room) use ($resident) {
     return $room;
 });
         return view('rooms.room_list', compact('rooms'));
+    }
+    public function RoomEdit($id)
+    {
+        $room = Room::findOrFail($id);
+
+        return view('rooms.room_edit', compact('room'));
+    }
+    public function update(Request $request, $id)
+    {
+        $room = Room::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'room_number' => ['required', 'string', Rule::unique('rooms', 'room_number')->ignore($id)],
+            'capacity' => ['required', 'integer', 'min:1'],
+            'notes' => ['nullable', 'string'],
+        ]);
+
+        $updated = $room->update($validatedData);
+
+        if (!$updated) {
+            return redirect()->back()->with('error', 'به‌روزرسانی اتاق انجام نشد. لطفاً دوباره تلاش کنید.');
+        }
+
+        return redirect()->route('rooms.list')->with('success', 'اطلاعات اتاق با موفقیت بروزرسانی شد.');
     }
     public function store(Request $request)
     {

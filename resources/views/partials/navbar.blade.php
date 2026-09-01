@@ -31,13 +31,14 @@
               && \Illuminate\Support\Facades\Schema::hasTable('maintenance_requests');
             $notificationRequests = $canViewRequestNotifications
               ? \App\Models\MaintenanceRequest::with(['user', 'requestType', 'room'])
+                ->where('is_active', true)
                 ->whereNull('notification_read_at')
                 ->latest()
                 ->take(10)
                 ->get()
               : collect();
             $notificationCount = $canViewRequestNotifications
-              ? \App\Models\MaintenanceRequest::whereNull('notification_read_at')->count()
+              ? \App\Models\MaintenanceRequest::where('is_active', true)->whereNull('notification_read_at')->count()
               : 0;
           @endphp
 

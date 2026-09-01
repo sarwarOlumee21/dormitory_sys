@@ -1,88 +1,47 @@
-```blade
 @extends('layouts.generalLayouts')
 
 @section('content')
 
-<div class="row justify-content-center">
-    <div class="col-12 col-xl-11">
+@vite(['resources/css/maintenance.css'])
 
-        {{-- Header --}}
-        <div class="top-banner d-flex justify-content-between align-items-center flex-wrap gap-3">
+<div class="row dir-rtl">
+    <div class="col-12">
 
-            <div>
-                <div class="banner-icon">
-                    <i class="la la-server text-white" style="font-size:22px;"></i>
+        {{-- بنر بالایی صفحه با استایل مدرن، مینیمال و یکپارچه --}}
+        <div class="top-banner mb-4">
+            <div class="d-flex flex-wrap align-items-center justify-content-between">
+                <div class="d-flex align-items-center mb-2 mb-md-0">
+                    <div class="banner-icon ml-3">
+                        <i class="la la-server text-white"></i>
+                    </div>
+                    <div>
+                        <h5 class="text-white mb-1 font-weight-bold">لیست اتاق‌ها</h5>
+                        <p class="mb-0 banner-caption">لیست ظرفیت و وضعیت اتاق‌های خوابگاه اندیشه</p>
+                    </div>
                 </div>
-
-                <h5 class="text-white mb-1 font-weight-bold" style="direction:rtl;">
-                    لیست اتاق‌ها
-                </h5>
-
-                <p class="mb-0"
-                   style="color:rgba(255,255,255,.75);font-size:13px;direction:rtl;">
-                    لیست ظرفیت و وضعیت اتاق‌های خوابگاه اندیشه
-                </p>
+                <div>
+                    <a href="{{ route('rooms.register') }}" class="btn btn-white text-primary font-weight-bold px-4 btn-maintain-white">
+                        <i class="la la-plus ml-1 icon-sm"></i> ثبت اتاق جدید
+                    </a>
+                </div>
             </div>
-
-            <div>
-                <a href="{{ route('rooms.register') }}"
-                   class="btn btn-light btn-sm px-4 py-2 font-weight-bold"
-                   style="border-radius:10px; color:#1a56db;">
-
-                    <i class="la la-plus-circle font-medium-2"></i>
-                    ثبت اتاق جدید
-
-                </a>
-            </div>
-
         </div>
 
-
-        {{-- Table --}}
-        <div class="form-outer">
-
-            <div class="table-responsive"
-                 style="border:1px solid #e2e8f0; border-radius:12px; overflow:hidden;">
-
-                <table class="table table-hover mb-0"
-                       style="direction:rtl; text-align:right;">
-
-                    <thead style="background:#f1f5f9; border-bottom:2px solid #e2e8f0;">
-
+        {{-- جدول نمایش داده‌ها درون کارد مینیمال --}}
+        <div class="card custom-card">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
                         <tr>
-
-                            <th class="border-0 font-weight-bold"
-                                style="color:#475569;">
-                                #
-                            </th>
-
-                            <th class="border-0 font-weight-bold"
-                                style="color:#475569;">
-                                نام اتاق
-                            </th>
-
-                            <th class="border-0 font-weight-bold"
-                                style="color:#475569;">
-                                ظرفیت کل
-                            </th>
-
-                            <th class="border-0 font-weight-bold"
-                                style="color:#475569;">
-                                ظرفیت فعلی
-                            </th>
-
-                            <th class="border-0 font-weight-bold"
-                                style="color:#475569;">
-                                وضعیت اتاق
-                            </th>
-
+                            <th>#</th>
+                            <th>نام اتاق</th>
+                            <th>ظرفیت کل</th>
+                            <th>ظرفیت فعلی</th>
+                            <th>وضعیت اتاق</th>
+                            <th>عملیات</th>
                         </tr>
-
                     </thead>
-
-
                     <tbody>
-
                         @forelse ($rooms as $room)
 
                             @php
@@ -91,113 +50,114 @@
                             @endphp
 
                             <tr>
+                                <td>{{ $loop->iteration }}</td>
 
-                                {{-- شماره --}}
-                                <td class="align-middle">
-                                    {{ $loop->iteration }}
+                                <td class="font-weight-bold">
+                                    <span class="badge-room">{{ $room->room_number }}</span>
                                 </td>
 
-
-                                {{-- نام / شماره اتاق --}}
-                                <td class="align-middle">
-
-                                    <span class="badge badge-pill badge-light border px-3 py-2 font-weight-bold text-primary">
-                                        {{ $room->room_number }}
-                                    </span>
-
+                                <td>
+                                    {{ $room->capacity }}
+                                    <small class="text-muted">نفر</small>
                                 </td>
 
-
-                                {{-- ظرفیت کل --}}
-                                <td class="align-middle">
-
-                                    <span class="font-weight-bold text-dark">
-                                        {{ $room->capacity }}
-                                    </span>
-
-                                    <small class="text-muted">
-                                        نفر
-                                    </small>
-
+                                <td>
+                                    {{ $room->current_capacity }}
+                                    <small class="text-muted">نفر</small>
                                 </td>
 
-
-                                {{-- ظرفیت فعلی / افراد فعلی --}}
-                                <td class="align-middle">
-
-                                    <span class="font-weight-bold text-dark">
-                                        {{ $room->current_capacity }}
-                                    </span>
-
-                                    <small class="text-muted">
-                                        نفر
-                                    </small>
-
-                                </td>
-
-                                {{-- وضعیت --}}
-                                <td class="align-middle">
-
+                                <td>
                                     @if ($room->room_status == 'پر')
-
-                                        <span class="badge badge-danger px-3 py-2"
-                                              style="border-radius:6px;">
-                                            پر
+                                        <span class="room-status-badge room-status-full">
+                                            <i class="la la-times-circle"></i> پر
                                         </span>
-
                                     @elseif ($room->room_status == 'دارای ظرفیت')
-
-                                        <span class="badge badge-warning px-3 py-2"
-                                              style="border-radius:6px;">
-                                             دارای ظرفیت
+                                        <span class="room-status-badge room-status-available">
+                                            <i class="la la-check-circle"></i> دارای ظرفیت
                                         </span>
-
                                     @elseif ($room->room_status == 'خالی')
-
-                                        <span class="badge badge-secondary px-3 py-2"
-                                              style="border-radius:6px;">
-                                            خالی
+                                        <span class="room-status-badge room-status-empty">
+                                            <i class="la la-circle"></i> خالی
                                         </span>
-
                                     @else
-
-                                        <span class="badge badge-success px-3 py-2"
-                                              style="border-radius:6px;">
-                                            فعال
+                                        <span class="room-status-badge room-status-active">
+                                            <i class="la la-bolt"></i> فعال
                                         </span>
-
                                     @endif
-
                                 </td>
 
+                                <td>
+                                    <a href="{{ route('rooms.edit', ['id' => $room->id]) }}" class="btn btn-sm btn-outline-primary">
+                                        <i class="la la-edit"></i> ویرایش
+                                    </a>
+                                </td>
                             </tr>
 
                         @empty
 
                             <tr>
-
-                                <td colspan="6"
-                                    class="text-center text-muted py-5">
-
+                                <td colspan="6" class="text-center text-muted py-5">
                                     <i class="la la-inbox font-large-2 d-block mb-2"></i>
-
                                     هیچ اتاقی ثبت نشده است.
-
                                 </td>
-
                             </tr>
 
                         @endforelse
-
                     </tbody>
-
                 </table>
-
             </div>
 
+            <div class="card-footer bg-light d-flex align-items-center justify-content-between flex-wrap py-3 card-footer-maintain">
+                <span class="text-muted font-small-3">نمایش لیست کل اتاق‌های ثبت‌شده</span>
+                <span class="text-muted font-small-3">
+                    <i class="la la-info-circle text-primary"></i> برای ثبت اتاق جدید از دکمه بالا استفاده کنید.
+                </span>
+            </div>
         </div>
 
     </div>
 </div>
+
+<style>
+    .room-status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12.5px;
+        font-weight: 700;
+        line-height: 1;
+        white-space: nowrap;
+    }
+
+    .room-status-badge i {
+        font-size: 13px;
+    }
+
+    /* پر - قرمز */
+    .room-status-full {
+        background-color: #fde8e8;
+        color: #c81e1e;
+    }
+
+    /* دارای ظرفیت - نارنجی/زرد */
+    .room-status-available {
+        background-color: #fef3c7;
+        color: #92400e;
+    }
+
+    /* خالی - خاکستری */
+    .room-status-empty {
+        background-color: #f1f5f9;
+        color: #475569;
+    }
+
+    /* فعال - سبز */
+    .room-status-active {
+        background-color: #def7ec;
+        color: #03543f;
+    }
+</style>
 
 @endsection
