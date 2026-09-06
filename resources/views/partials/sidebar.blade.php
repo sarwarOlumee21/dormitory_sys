@@ -160,8 +160,11 @@
             <li class="{{ request()->routeIs('report.resident_report') ? 'active' : '' }}">
               <a href="{{ route('report.resident_report') }}">گزارش ساکنین</a>
             </li>
-            <li class="{{ request()->routeIs('reports.index') && request()->query('type') === 'payments' ? 'active' : '' }}">
-              <a href="{{ route('reports.index', ['type' => 'payments']) }}">گزارش پرداخت‌ها</a>
+            <li class="{{ request()->routeIs('report.payments_general', 'reports.index') ? 'active' : '' }}">
+              <a href="{{ route('report.payments_general') }}">گزارش پرداخت‌های کلی</a>
+            </li>
+            <li class="{{ request()->routeIs('report.payments_history') ? 'active' : '' }}">
+              <a href="{{ route('report.payments_history') }}">گزارش تاریخی پرداخت</a>
             </li>
           </ul>
         </li>

@@ -14,6 +14,11 @@ use App\Models\Room;
 
 class ReportController extends Controller
 {
+    public function paymentHistory(Request $request)
+    {
+        return view('reports.payment_history_demo');
+    }
+
     public function index(Request $request)
     {
         // گرفتن اطلاعات فیلتر از URL
@@ -121,15 +126,105 @@ class ReportController extends Controller
 
         return view('reports.index', compact('items', 'totals', 'counts', 'totalResults', 'name', 'code', 'month', 'payment_status'));
     }
-    public function residentReport()
+    public function residentReport(Request $request)
     {
+        $personType = $request->get('person_type');
+        $nameFilter = $request->get('name');
+        $roomNumberFilter = $request->get('room_number');
+        $roomStatusFilter = $request->get('room_status');
+        $dateFrom = $request->get('date_from');
+        $dateTo = $request->get('date_to');
+
         $residents = Resident::with(['room', 'latestContract'])->get();
         $rooms = Room::all();
 
-        $residentCount = $residents->count();
         $roomCount = $rooms->count();
+        $allGuestCount = Visitors::whereNull('check_out_at')->count();
 
-        $guestCount = Visitors::whereNull('check_out_at')->count();
+        $residentItems = $residents->filter(function ($resident) use ($nameFilter, $roomNumberFilter, $personType, $dateFrom, $dateTo) {
+            if (!empty($nameFilter) && stripos($resident->name, $nameFilter) === false) {
+                return false;
+            }
+
+            if (!empty($roomNumberFilter) && ($resident->room?->room_number ?? '') !== (string) $roomNumberFilter) {
+                return false;
+            }
+
+            if (!empty($dateFrom) && ($resident->created_at?->format('Y-m-d') < $dateFrom)) {
+                return false;
+            }
+
+            if (!empty($dateTo) && ($resident->created_at?->format('Y-m-d') > $dateTo)) {
+                return false;
+            }
+
+            return $personType !== 'guest';
+        })->map(function ($resident) {
+            $room = $resident->room;
+            $roomCapacity = $room?->capacity ?? 0;
+            $roomOccupied = $room ? $room->residents()->count() : 0;
+
+            return [
+                'name' => $resident->name,
+                'type' => 'resident',
+                'code' => $resident->resident_code,
+                'room_number' => $room?->room_number,
+                'room_capacity' => $roomCapacity,
+                'room_occupied' => $roomOccupied,
+                'check_in_date' => $resident->created_at?->format('Y-m-d'),
+                'phone' => $resident->phone_number,
+                'resident_code' => $resident->resident_code,
+            ];
+        })->values()->all();
+
+        $guestItems = Visitors::with('resident', 'room')->whereNull('check_out_at')->get()->filter(function ($visitor) use ($nameFilter, $roomNumberFilter, $personType, $dateFrom, $dateTo) {
+            $name = $visitor->guest_name ?? '';
+            $roomNumber = $visitor->room_number ?? $visitor->resident?->room?->room_number;
+            $visitDate = $visitor->check_in_at?->format('Y-m-d');
+
+            if (!empty($nameFilter) && stripos($name, $nameFilter) === false) {
+                return false;
+            }
+
+            if (!empty($roomNumberFilter) && (string) $roomNumber !== (string) $roomNumberFilter) {
+                return false;
+            }
+
+            if (!empty($dateFrom) && $visitDate < $dateFrom) {
+                return false;
+            }
+
+            if (!empty($dateTo) && $visitDate > $dateTo) {
+                return false;
+            }
+
+            return $personType !== 'resident';
+        })->map(function ($visitor) {
+            $room = $visitor->room;
+            $roomCapacity = $room?->capacity ?? 0;
+            $roomOccupied = $room ? $room->residents()->count() : 0;
+
+            return [
+                'name' => $visitor->guest_name,
+                'type' => 'guest',
+                'code' => $visitor->guest_id_number,
+                'room_number' => $visitor->room_number ?? $visitor->resident?->room?->room_number,
+                'room_capacity' => $roomCapacity,
+                'room_occupied' => $roomOccupied,
+                'check_in_date' => $visitor->check_in_at?->format('Y-m-d'),
+                'phone' => $visitor->guest_phone,
+                'guest_code' => $visitor->guest_id_number,
+            ];
+        })->values()->all();
+
+        $filteredItems = match ($personType) {
+            'resident' => $residentItems,
+            'guest' => $guestItems,
+            default => array_merge($residentItems, $guestItems),
+        };
+
+        $residentCount = $personType === 'guest' ? 0 : count($residentItems);
+        $guestCount = $personType === 'resident' ? 0 : count($guestItems);
 
         $totals = [
             'residents' => $residentCount,
@@ -149,74 +244,48 @@ class ReportController extends Controller
             })->count(),
         ];
 
-        $formatDate = function ($value, $format = 'Y-m-d') {
-            if (empty($value)) {
-                return null;
-            }
+        if ($roomStatusFilter === 'full' || $roomStatusFilter === 'available' || $roomStatusFilter === 'empty') {
+            $filteredItems = array_values(array_filter($filteredItems, function ($item) use ($roomStatusFilter) {
+                $occupied = $item['room_occupied'] ?? 0;
+                $capacity = $item['room_capacity'] ?? 0;
 
-            if ($value instanceof \Carbon\Carbon) {
-                return $value->format($format);
-            }
+                if ($roomStatusFilter === 'full') {
+                    return $capacity > 0 && $occupied >= $capacity;
+                }
 
-            try {
-                return Carbon::parse($value)->format($format);
-            } catch (\Throwable $e) {
-                return null;
-            }
-        };
+                if ($roomStatusFilter === 'available') {
+                    return $capacity > 0 && $occupied < $capacity && $occupied > 0;
+                }
 
-        $items = $residents->map(function ($resident) use ($formatDate) {
-            $room = $resident->room;
-            $roomCapacity = $room?->capacity ?? 0;
-            $roomOccupied = $room ? $room->residents()->count() : 0;
+                return $capacity > 0 && $occupied === 0;
+            }));
+        }
 
-            return [
-                'name' => $resident->name,
-                'type' => 'resident',
-                'code' => $resident->resident_code,
-                'room_number' => $room?->room_number,
-                'room_capacity' => $roomCapacity,
-                'room_occupied' => $roomOccupied,
-                'check_in_date' => $formatDate($resident->created_at, 'Y-m-d'),
-                'phone' => $resident->phone_number,
-                'resident_code' => $resident->resident_code,
-            ];
-        })->toArray();
-
-        $guestItems = Visitors::with('resident', 'room')->whereNull('check_out_at')->get()->map(function ($visitor) use ($formatDate) {
-            $room = $visitor->room;
-            $roomCapacity = $room?->capacity ?? 0;
-            $roomOccupied = $room ? $room->residents()->count() : 0;
-
-            return [
-                'name' => $visitor->guest_name,
-                'type' => 'guest',
-                'code' => $visitor->guest_id_number,
-                'room_number' => $visitor->room_number ?? $visitor->resident?->room?->room_number,
-                'room_capacity' => $roomCapacity,
-                'room_occupied' => $roomOccupied,
-                'check_in_date' => $formatDate($visitor->check_in_at, 'Y-m-d H:i'),
-                'phone' => $visitor->guest_phone,
-                'guest_code' => $visitor->guest_id_number,
-            ];
-        })->toArray();
-
-        $items = array_merge($items, $guestItems);
-        $totalResults = count($items);
-
+        $totalResults = count($filteredItems);
         $reportDate = now()->format('Y-m-d');
 
         return view('reports.resident_report', compact(
             'residents',
-            'residentCount',
             'rooms',
             'roomCount',
             'totals',
             'roomTotals',
-            'items',
             'totalResults',
-            'reportDate'
-        ));
+            'reportDate',
+            'personType',
+            'nameFilter',
+            'roomNumberFilter',
+            'roomStatusFilter'
+        ))->with('items', $filteredItems)
+          ->with('residentCount', $residentCount)
+          ->with('guestCount', $guestCount)
+          ->with('allGuestCount', $allGuestCount)
+          ->with('person_type', $personType)
+          ->with('name', $nameFilter)
+          ->with('room_number', $roomNumberFilter)
+          ->with('room_status', $roomStatusFilter)
+          ->with('date_from', $dateFrom)
+          ->with('date_to', $dateTo);
     }
     // public function residentReport()
     // {

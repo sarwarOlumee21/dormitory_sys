@@ -475,6 +475,22 @@
                                 </select>
                             </div>
 
+                            <div class="col-lg-2 col-md-6 mb-3">
+                                <label class="font-small-3 text-muted mb-1">از تاریخ</label>
+                                <input type="date"
+                                       name="date_from"
+                                       value="{{ $date_from ?? '' }}"
+                                       class="form-control form-control-report">
+                            </div>
+
+                            <div class="col-lg-2 col-md-6 mb-3">
+                                <label class="font-small-3 text-muted mb-1">تا تاریخ</label>
+                                <input type="date"
+                                       name="date_to"
+                                       value="{{ $date_to ?? '' }}"
+                                       class="form-control form-control-report">
+                            </div>
+
                             <div class="col-lg-3 col-md-12 mb-3 d-flex align-items-end">
                                 <div class="d-flex w-100" style="gap: 8px;">
                                     <button type="submit" class="btn btn-filter-apply flex-fill">
@@ -627,9 +643,7 @@
                                     <th>نوع</th>
                                     <th>کد / شماره</th>
                                     <th>اتاق</th>
-                                    <th>ظرفیت اتاق</th>
                                     <th>تاریخ ورود</th>
-                                    <th>وضعیت</th>
                                 </tr>
                             </thead>
 
@@ -689,42 +703,9 @@
                                             <strong>{{ $item['room_number'] ?? '-' }}</strong>
                                         </td>
 
-                                        <td>
-                                            <div class="capacity-progress">
-                                                <div class="progress">
-                                                    <div class="progress-bar"
-                                                         role="progressbar"
-                                                         style="width: {{ $roomPercent }}%;">
-                                                    </div>
-                                                </div>
-
-                                                <div class="capacity-text">
-                                                    {{ $roomOccupied }} از {{ $roomCapacity }} نفر
-                                                </div>
-                                            </div>
-                                        </td>
 
                                         <td>
                                             {{ $item['check_in_date'] ?? ($item['entry_date'] ?? '-') }}
-                                        </td>
-
-                                        <td>
-                                            @if($isFull)
-                                                <span class="status-badge room-full">
-                                                    <i class="la la-lock"></i>
-                                                    ظرفیت پر
-                                                </span>
-                                            @elseif($isEmpty)
-                                                <span class="status-badge room-available">
-                                                    <i class="la la-check-circle"></i>
-                                                    خالی
-                                                </span>
-                                            @else
-                                                <span class="status-badge room-partial">
-                                                    <i class="la la-adjust"></i>
-                                                    دارای ظرفیت
-                                                </span>
-                                            @endif
                                         </td>
                                     </tr>
 

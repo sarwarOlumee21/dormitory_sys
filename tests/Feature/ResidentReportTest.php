@@ -113,4 +113,68 @@ class ResidentReportTest extends TestCase
         $response->assertSeeInOrder(['مجموع مهمان‌ها', '2']);
         $response->assertSeeInOrder(['مجموع اتاق‌ها', '2']);
     }
+
+    public function test_guest_filter_shows_only_guests_and_zeroes_resident_statistics_without_affecting_rooms(): void
+    {
+        $roomA = Room::create([
+            'room_number' => '101',
+            'capacity' => 2,
+            'status' => 'فعال',
+        ]);
+
+        Resident::create([
+            'name' => 'علی رضایی',
+            'resident_code' => 'R-1001',
+            'room_id' => $roomA->id,
+            'status' => 'فعال',
+        ]);
+
+        Visitors::create([
+            'guest_name' => 'مهمان اول',
+            'resident_id' => 1,
+            'room_number' => '101',
+            'check_in_at' => now(),
+            'attendance_status' => 'داخل خوابگاه',
+        ]);
+
+        $response = $this->withoutMiddleware()->get('/report.resident_report?person_type=guest');
+
+        $response->assertOk();
+        $response->assertDontSee('علی رضایی');
+        $response->assertSee('مهمان اول');
+        $response->assertSeeInOrder(['مجموع اقامت‌کنندگان', '0']);
+        $response->assertSeeInOrder(['مجموع اتاق‌ها', '1']);
+    }
+
+    public function test_report_can_filter_records_between_two_dates(): void
+    {
+        $roomA = Room::create([
+            'room_number' => '201',
+            'capacity' => 2,
+            'status' => 'فعال',
+        ]);
+
+        Resident::create([
+            'name' => 'رضا احمدی',
+            'resident_code' => 'R-2001',
+            'room_id' => $roomA->id,
+            'created_at' => '2026-08-05 10:00:00',
+            'updated_at' => '2026-08-05 10:00:00',
+            'status' => 'فعال',
+        ]);
+
+        Visitors::create([
+            'guest_name' => 'مهمان جدید',
+            'resident_id' => 1,
+            'room_number' => '201',
+            'check_in_at' => '2026-08-12 09:30:00',
+            'attendance_status' => 'داخل خوابگاه',
+        ]);
+
+        $response = $this->withoutMiddleware()->get('/report.resident_report?person_type=guest&date_from=2026-08-10&date_to=2026-08-15');
+
+        $response->assertOk();
+        $response->assertSee('مهمان جدید');
+        $response->assertDontSee('رضا احمدی');
+    }
 }

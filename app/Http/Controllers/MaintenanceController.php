@@ -62,13 +62,36 @@ class MaintenanceController extends Controller
         return redirect()->route('maintenance.request');
     }
 
-    public function list()
+    public function list(Request $request)
     {
+        $selectedStatus = $request->get('status', 'در حال پیگیری');
+        $allowedStatuses = ['در حال پیگیری', 'تکمیل شده', 'رد شد'];
+
+        if (!in_array($selectedStatus, $allowedStatuses, true)) {
+            $selectedStatus = 'در حال پیگیری';
+        }
+
+        $statusValues = match ($selectedStatus) {
+            'در حال پیگیری' => ['جدید', 'در حال پیگیری', 'در حال بررسی'],
+            'تکمیل شده' => ['تکمیل شده'],
+            'رد شد' => ['رد شد'],
+            default => ['جدید', 'در حال پیگیری', 'در حال بررسی'],
+        };
+
         $maintenanceRequests = MaintenanceRequest::with(['user', 'requestType', 'room'])
-            ->where('is_active', true)
+            ->whereIn('status', $statusValues)
+            ->when($selectedStatus === 'در حال پیگیری', function ($query) {
+                $query->where('is_active', true);
+            }, function ($query) {
+                $query->where(function ($innerQuery) {
+                    $innerQuery->where('is_active', true)
+                        ->orWhereIn('status', ['تکمیل شده', 'رد شد']);
+                });
+            })
+            ->orderByDesc('created_at')
             ->get();
 
-        return view('maintenance.maintenance_list', compact('maintenanceRequests'));
+        return view('maintenance.maintenance_list', compact('maintenanceRequests', 'selectedStatus'));
     }
 
     public function show(MaintenanceRequest $maintenanceRequest)
@@ -91,7 +114,7 @@ class MaintenanceController extends Controller
         ]);
 
         $status = $validated['status'];
-        $validated['is_active'] = in_array($status, ['تکمیل شده', 'تأیید شد', 'رد شد'], true) ? false : true;
+        $validated['is_active'] = in_array($status, ['تکمیل شده', 'رد شد'], true) ? false : true;
 
         $maintenanceRequest->update($validated);
 
@@ -108,27 +131,48 @@ class MaintenanceController extends Controller
         return redirect()->route('maintenance.list');
     }
 
-    public function follow_up()
+    public function follow_up(Request $request)
     {
         $userId = auth()->id();
+        $selectedStatus = $request->get('status', 'در حال پیگیری');
+        $allowedStatuses = ['در حال پیگیری', 'تکمیل شده', 'رد شد'];
+
+        if (!in_array($selectedStatus, $allowedStatuses, true)) {
+            $selectedStatus = 'در حال پیگیری';
+        }
+
+        $statusValues = match ($selectedStatus) {
+            'در حال پیگیری' => ['جدید', 'در حال پیگیری', 'در حال بررسی'],
+            'تکمیل شده' => ['تکمیل شده'],
+            'رد شد' => ['رد شد'],
+            default => ['جدید', 'در حال پیگیری', 'در حال بررسی'],
+        };
 
         $maintenanceRequests = MaintenanceRequest::with(['user', 'requestType', 'room'])
-            ->where('is_active', true)
             ->when($userId, function ($query, $userId) {
                 $query->where('user_id', $userId);
             }, function ($query) {
                 $query->whereRaw('1 = 0');
             })
+            ->whereIn('status', $statusValues)
+            ->when($selectedStatus === 'در حال پیگیری', function ($query) {
+                $query->where('is_active', true);
+            }, function ($query) {
+                $query->where(function ($innerQuery) {
+                    $innerQuery->where('is_active', true)
+                        ->orWhereIn('status', ['تکمیل شده', 'رد شد']);
+                });
+            })
             ->orderByDesc('created_at')
             ->get();
 
         $stats = [
-            'all' => $maintenanceRequests->count(),
-            'pending' => $maintenanceRequests->where('status', 'در حال بررسی')->count(),
-            'in_progress' => $maintenanceRequests->where('status', 'در حال پیگیری')->count(),
-            'done' => $maintenanceRequests->whereIn('status', ['تکمیل شده', 'تأیید شد'])->count(),
+            'all' => MaintenanceRequest::where('user_id', $userId)->count(),
+            'in_progress' => MaintenanceRequest::where('user_id', $userId)->whereIn('status', ['جدید', 'در حال پیگیری', 'در حال بررسی'])->where('is_active', true)->count(),
+            'done' => MaintenanceRequest::where('user_id', $userId)->where('status', 'تکمیل شده')->count(),
+            'rejected' => MaintenanceRequest::where('user_id', $userId)->where('status', 'رد شد')->count(),
         ];
 
-        return view('maintenance.follow_up_request', compact('maintenanceRequests', 'stats'));
+        return view('maintenance.follow_up_request', compact('maintenanceRequests', 'stats', 'selectedStatus'));
     }
 }

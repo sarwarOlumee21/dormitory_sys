@@ -1,8 +1,15 @@
 @extends('layouts.generalLayouts')
 @section('content')
-<!-- <div class="row"><div class="col-12"><div class="card shadow-sm border-0">
+<div class="row"><div class="col-12"><div class="card shadow-sm border-0">
 <div class="card-content collapse show"><div class="card-body">
 <div class="text-left mb-3"><a href="{{ route('announcements.register') }}" class="btn btn-primary btn-sm"><i class="la la-plus"></i> اعلان جدید</a></div>
+@if(session('success'))<div class="alert alert-success">{{ session('success') }}</div>@endif
+@forelse($announcements as $announcement)
+<div class="card border mb-2"><div class="card-body py-2"><div class="d-flex justify-content-between align-items-start flex-wrap"><div class="flex-grow-1"><h6 class="font-weight-bold mb-1">{{ $announcement->title }}</h6><p class="text-muted font-small-3 mb-1">{{ $announcement->content }}</p><small class="text-muted"><i class="la la-calendar"></i> {{ optional($announcement->publish_date)->format('Y/m/d') }}</small></div><div class="text-left mt-1 mt-md-0"><span class="badge badge-info">{{ $announcement->category ?: 'عمومی' }}</span><span class="badge badge-success">{{ $announcement->status }}</span></div></div></div></div>
+@empty
+<p class="text-muted">اعلانی ثبت نشده است.</p>
+@endforelse
+{{ $announcements->links() }}
 @foreach([
     ['title'=>'پرداخت اجاره ماه حمل','cat'=>'پرداخت','date'=>'1404/03/01','status'=>'فعال','text'=>'لطفاً تا تاریخ ۱۵ حمل اجاره خود را پرداخت کنید.'],
     ['title'=>'ساعت ورود مهمان','cat'=>'قوانین','date'=>'1404/02/20','status'=>'فعال','text'=>'ورود مهمان فقط بین ساعت ۸ صبح تا ۸ شب مجاز است.'],
@@ -29,8 +36,5 @@
 </div>
 </div>
 @endforeach
-</div></div></div></div></div> -->
-<div>
-    <h1>for future</h1>
-</div>
+</div></div></div></div></div>
 @endsection

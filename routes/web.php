@@ -68,9 +68,11 @@ Route::get('/request', [MaintenanceController::class, 'maintenanceRequest'])
 });
 Route::prefix('announcements')->name('announcements.')->group(function () {
     Route::get('/register', [AnnouncementController::class, 'register'])->name('register')->middleware(['auth', 'role:admin,manager,staff']);
+    Route::post('/store', [AnnouncementController::class, 'store'])->name('store')->middleware(['auth', 'role:admin,manager,staff']);
     Route::get('/list', [AnnouncementController::class, 'list'])->name('list')->middleware(['auth', 'role:admin,manager,staff']);
 });
 Route::get('/reports', [ReportController::class, 'index'])->name('reports.index')->middleware(['auth', 'role:admin,manager,staff']);
+Route::get('/reports/payments', [ReportController::class, 'index'])->name('report.payments_general')->middleware(['auth', 'role:admin,manager,staff']);
 Route::get('/login', [AuthenticationController::class, 'showLoginForm'])->name('login');
 Route::post('/resident/store', [ResidentController::class, 'store'])->name('resident.store')->middleware(['auth', 'role:admin,manager,staff']);
 Route::post('/rooms/store', [RoomController::class, 'store'])->name('rooms.store')->middleware(['auth', 'role:admin,manager,staff']);
@@ -90,3 +92,4 @@ Route::post('/mealFoods/store', [KitchenController::class, 'storeMealFood'])->na
 Route::post('/registerMealPlan/store', [KitchenController::class, 'registerMealPlans'])->name('registerMealPlan/store')->middleware(['auth', 'role:admin,manager,staff']);
 Route::get('report.resident_report', [ReportController::class, 'residentReport'])->name('report.resident_report')->middleware(['auth', 'role:admin,manager,staff']);
 Route::get('reports.index', [ReportController::class, 'index'])->name('report.index')->middleware(['auth', 'role:admin,manager,staff']);
+Route::get('reports/payment-history', [ReportController::class, 'paymentHistory'])->name('report.payments_history')->middleware(['auth', 'role:admin,manager,staff']);

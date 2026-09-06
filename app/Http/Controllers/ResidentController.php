@@ -6,12 +6,53 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Resident;
 use App\Models\Room;
+use App\Models\ContractRegister;
+use App\Models\MaintenanceRequest;
+use App\Models\Visitors;
+use App\Models\payment;
 
 class ResidentController extends Controller
 {
     public function index()
     {
-        return view('home');
+        $residentCount = Resident::count();
+        $roomCount = Room::count();
+        $totalCapacity = (int) Room::sum('capacity');
+        $occupiedCount = Resident::whereNotNull('room_id')->count();
+        $availableCapacity = max($totalCapacity - $occupiedCount, 0);
+        $capacityPercentage = $totalCapacity > 0
+            ? min((int) round(($occupiedCount / $totalCapacity) * 100), 100)
+            : 0;
+        $activeContractCount = ContractRegister::where('contract_status', 'فعال')->count();
+        $paymentCount = payment::count();
+        $paymentTotal = (float) payment::sum('amount');
+        $visitorCount = Visitors::where('attendance_status', 'داخل خوابگاه')
+            ->whereNull('check_out_at')
+            ->count();
+        $openMaintenanceCount = MaintenanceRequest::where('is_active', true)->count();
+
+        $recentRequests = MaintenanceRequest::with(['requestType', 'room', 'user'])
+            ->when(auth()->user()->role === 'user', function ($query) {
+                $query->where('user_id', auth()->id());
+            })
+            ->latest()
+            ->take(5)
+            ->get();
+
+        return view('home', compact(
+            'recentRequests',
+            'residentCount',
+            'roomCount',
+            'totalCapacity',
+            'occupiedCount',
+            'availableCapacity',
+            'capacityPercentage',
+            'activeContractCount',
+            'paymentCount',
+            'paymentTotal',
+            'visitorCount',
+            'openMaintenanceCount'
+        ));
     }
 
     public function ResidentRegister()

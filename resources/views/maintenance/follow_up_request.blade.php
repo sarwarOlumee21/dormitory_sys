@@ -44,58 +44,8 @@
         {{-- خلاصه وضعیت درخواست‌ها --}}
         <div class="row mb-4">
 
-            {{-- کل درخواست‌ها --}}
-            <div class="col-md-3 mb-3">
-                <div class="card custom-card h-100">
-                    <div class="card-body d-flex align-items-center">
-
-                        <div class="banner-icon ml-3"
-                             style="background: rgba(0, 123, 255, .1);">
-                            <i class="la la-list text-primary"></i>
-                        </div>
-
-                        <div>
-                            <small class="text-muted d-block">
-                                کل درخواست‌ها
-                            </small>
-
-                            <h4 class="font-weight-bold mb-0">
-                                {{ $stats['all'] ?? 0 }}
-                            </h4>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-
-            {{-- در حال بررسی --}}
-            <div class="col-md-3 mb-3">
-                <div class="card custom-card h-100">
-                    <div class="card-body d-flex align-items-center">
-
-                        <div class="banner-icon ml-3"
-                             style="background: rgba(255, 193, 7, .1);">
-                            <i class="la la-hourglass-half text-warning"></i>
-                        </div>
-
-                        <div>
-                            <small class="text-muted d-block">
-                                در حال بررسی
-                            </small>
-
-                            <h4 class="font-weight-bold mb-0">
-                                {{ $stats['pending'] ?? 0 }}
-                            </h4>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-
             {{-- در حال پیگیری --}}
-            <div class="col-md-3 mb-3">
+            <div class="col-md-4 mb-3">
                 <div class="card custom-card h-100">
                     <div class="card-body d-flex align-items-center">
 
@@ -120,7 +70,7 @@
 
 
             {{-- تکمیل شده --}}
-            <div class="col-md-3 mb-3">
+            <div class="col-md-4 mb-3">
                 <div class="card custom-card h-100">
                     <div class="card-body d-flex align-items-center">
 
@@ -143,8 +93,59 @@
                 </div>
             </div>
 
+            {{-- رد شده --}}
+            <div class="col-md-4 mb-3">
+                <div class="card custom-card h-100">
+                    <div class="card-body d-flex align-items-center">
+
+                        <div class="banner-icon ml-3"
+                             style="background: rgba(220, 53, 69, .1);">
+                            <i class="la la-times-circle text-danger"></i>
+                        </div>
+
+                        <div>
+                            <small class="text-muted d-block">
+                                رد شده
+                            </small>
+
+                            <h4 class="font-weight-bold mb-0">
+                                {{ $stats['rejected'] ?? 0 }}
+                            </h4>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
         </div>
 
+
+        <div class="card custom-card mb-3">
+            <div class="card-body">
+                <form method="GET" action="{{ route('maintenance.follow_up_request') }}" class="row align-items-end">
+                    <div class="col-md-4 mb-2">
+                        <label class="font-small-3 text-muted mb-1">وضعیت درخواست</label>
+                        <select name="status" class="form-control form-control-sm">
+                            <option value="در حال پیگیری" {{ $selectedStatus == 'در حال پیگیری' ? 'selected' : '' }}>در حال پیگیری</option>
+                            <option value="تکمیل شده" {{ $selectedStatus == 'تکمیل شده' ? 'selected' : '' }}>تکمیل شده</option>
+                            <option value="رد شد" {{ $selectedStatus == 'رد شد' ? 'selected' : '' }}>رد شد</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-2 mb-2">
+                        <button type="submit" class="btn btn-primary btn-sm w-100">
+                            <i class="la la-filter ml-1"></i> اعمال فیلتر
+                        </button>
+                    </div>
+
+                    <div class="col-md-2 mb-2">
+                        <a href="{{ route('maintenance.follow_up_request') }}" class="btn btn-outline-secondary btn-sm w-100">
+                            <i class="la la-refresh ml-1"></i> حذف
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
 
         {{-- جدول درخواست‌های کاربر --}}
         <div class="card custom-card">
@@ -233,10 +234,10 @@
                                         $statusStyle = '';
                                         $status = $request->status ?? 'نامشخص';
 
-                                        if (in_array($status, ['در حال پیگیری', 'در حال پیگیری'])) {
+                                        if ($status == 'در حال پیگیری') {
                                             $statusClass = 'badge';
                                             $statusStyle = 'background: #dff6ff; color: #087990;';
-                                        } elseif (in_array($status, ['تکمیل شده', 'تأیید شد'])) {
+                                        } elseif ($status == 'تکمیل شده') {
                                             $statusClass = 'badge';
                                             $statusStyle = 'background: #d4edda; color: #155724;';
                                         } elseif ($status == 'رد شد') {

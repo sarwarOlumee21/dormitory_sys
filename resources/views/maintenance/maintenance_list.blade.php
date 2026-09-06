@@ -29,6 +29,33 @@
 
         {{-- styles moved to public/css/maintenance.css --}}
 
+        <div class="card custom-card mb-3">
+            <div class="card-body">
+                <form method="GET" action="{{ route('maintenance.list') }}" class="row align-items-end">
+                    <div class="col-md-4 mb-2">
+                        <label class="font-small-3 text-muted mb-1">وضعیت درخواست</label>
+                        <select name="status" class="form-control form-control-sm">
+                            <option value="در حال پیگیری" {{ $selectedStatus == 'در حال پیگیری' ? 'selected' : '' }}>در حال پیگیری</option>
+                            <option value="تکمیل شده" {{ $selectedStatus == 'تکمیل شده' ? 'selected' : '' }}>تکمیل شده</option>
+                            <option value="رد شد" {{ $selectedStatus == 'رد شد' ? 'selected' : '' }}>رد شد</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-2 mb-2">
+                        <button type="submit" class="btn btn-primary btn-sm w-100">
+                            <i class="la la-filter ml-1"></i> اعمال فیلتر
+                        </button>
+                    </div>
+
+                    <div class="col-md-2 mb-2">
+                        <a href="{{ route('maintenance.list') }}" class="btn btn-outline-secondary btn-sm w-100">
+                            <i class="la la-refresh ml-1"></i> حذف
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
         {{-- جدول نمایش داده‌ها درون کارد مینیمال --}}
         <div class="card custom-card">
             <div class="table-responsive">

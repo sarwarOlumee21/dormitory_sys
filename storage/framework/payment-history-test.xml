@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="Tests\Feature\PaymentHistoryDemoTest" file="C:\xampp8\htdocs\laravel\dormitory\tests\Feature\PaymentHistoryDemoTest.php" tests="3" assertions="13" errors="0" failures="0" skipped="0" time="1.222611">
+    <testcase name="test_authorized_staff_can_view_historical_payment_report_from_database" file="C:\xampp8\htdocs\laravel\dormitory\tests\Feature\PaymentHistoryDemoTest.php" line="17" class="Tests\Feature\PaymentHistoryDemoTest" classname="Tests.Feature.PaymentHistoryDemoTest" assertions="6" time="1.127572"/>
+    <testcase name="test_payment_history_can_switch_to_another_resident" file="C:\xampp8\htdocs\laravel\dormitory\tests\Feature\PaymentHistoryDemoTest.php" line="50" class="Tests\Feature\PaymentHistoryDemoTest" classname="Tests.Feature.PaymentHistoryDemoTest" assertions="4" time="0.050688"/>
+    <testcase name="test_payment_history_requires_management_access" file="C:\xampp8\htdocs\laravel\dormitory\tests\Feature\PaymentHistoryDemoTest.php" line="71" class="Tests\Feature\PaymentHistoryDemoTest" classname="Tests.Feature.PaymentHistoryDemoTest" assertions="3" time="0.044351"/>
+  </testsuite>
+</testsuites>

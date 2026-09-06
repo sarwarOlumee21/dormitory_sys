@@ -173,12 +173,12 @@
             <a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
               <span class="mr-1">
                 <span
-                  class="user-name text-bold-700">{{ auth()->user()->name ?? auth()->user()->username ?? auth()->user()->email }}</span>
+                  class="user-name text-bold-700">{{ auth()->user()?->name ?? auth()->user()?->username ?? auth()->user()?->email ?? 'کاربر' }}</span>
               </span>
               <span class="avatar avatar-online">
                 <img
-                  src="{{ auth()->user()->profile_image_url ? asset('storage/' . auth()->user()->profile_image_url) : asset('app-assets/images/portrait/small/avatar-s-19.png') }}"
-                  alt="{{ auth()->user()->name ?? 'avatar' }}"><i></i></span>
+                  src="{{ auth()->user()?->profile_image_url ? asset('storage/' . auth()->user()->profile_image_url) : asset('app-assets/images/portrait/small/avatar-s-19.png') }}"
+                  alt="{{ auth()->user()?->name ?? 'avatar' }}"><i></i></span>
             </a>
             <div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item" href="#"><i class="ft-user"></i>
                 Edit Profile</a>

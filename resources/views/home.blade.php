@@ -226,14 +226,52 @@
                 z-index: 2;
             }
 
-            .alert-demo-custom {
-                background: linear-gradient(135deg, #eff6ff 0%, #e0e7ff 100%);
-                color: #1e40af;
-                border: 1px solid #bfdbfe;
-                border-radius: 16px;
+            .dashboard-image-card {
+                position: relative;
+                min-height: 190px;
+                overflow: hidden;
+                border-radius: 20px;
+                background: linear-gradient(135deg, #172554 0%, #0f766e 100%);
+            }
+
+            .dashboard-image-card img {
+                width: 100%;
+                height: 100%;
+                min-height: 190px;
+                display: block;
+                object-fit: cover;
+                opacity: 0.9;
+            }
+
+            .dashboard-image-card::after {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(90deg, rgba(15, 23, 42, 0.82), rgba(15, 23, 42, 0.05));
+            }
+
+            .dashboard-image-caption {
+                position: absolute;
+                right: 24px;
+                bottom: 22px;
+                z-index: 1;
+                color: #fff;
             }
         </style>
 
+        @php
+            $isRegularUser = auth()->check() && auth()->user()->role === 'user';
+        @endphp
+
+        <div class="dashboard-image-card mb-4">
+            <img src="{{ asset('images/dashboard-image.jpg') }}" alt="تصویر داشبورد" onerror="this.style.display='none';">
+            <div class="dashboard-image-caption">
+                <h5 class="text-white mb-1">فضای آرام و منظم خوابگاه</h5>
+                <p class="mb-0" style="color: rgba(255,255,255,0.82);">تصویر داشبورد را در مسیر images/dashboard-image.jpg قرار دهید.</p>
+            </div>
+        </div>
+
+        @if(!$isRegularUser)
         {{-- ۱. بنر خوش‌آمدگویی بالا (دقیقاً بدون تغییر) --}}
         <div class="dashboard-banner mb-4">
             <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
@@ -255,7 +293,7 @@
                 </div>
             </div>
         </div>
-
+@endif
         {{-- ۲. کارت‌های شش‌گانه آمار پیشرفته --}}
         <div class="row g-3 mb-4">
             {{-- ساکنین --}}
@@ -268,12 +306,12 @@
                                 <i class="la la-users"></i>
                             </div>
                         </div>
-                        <div class="stat-value mb-1">۴۸</div>
+                        <div class="stat-value mb-1">{{ number_format($residentCount) }}</div>
                         <div class="progress custom-progress mb-2">
-                            <div class="progress-bar" style="width: 80%; background-color: var(--color-primary);"></div>
+                            <div class="progress-bar" style="width: {{ $totalCapacity > 0 ? $capacityPercentage : 0 }}%; background-color: var(--color-primary);"></div>
                         </div>
                         <small class="text-success font-weight-600 font-small-2 d-flex align-items-center gap-1">
-                            <i class="la la-arrow-up"></i> ۱۲٪ رشد ماهانه
+                            <i class="la la-home"></i> {{ number_format($occupiedCount) }} نفر دارای اتاق
                         </small>
                     </div>
                 </a>
@@ -281,7 +319,7 @@
 
             {{-- اتاق‌ها --}}
             <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6 mb-3">
-                <a href="#" class="stat-card-link">
+                <a href="{{ route('rooms.list') }}" class="stat-card-link">
                     <div class="card stat-card-custom theme-success">
                         <div class="d-flex align-items-center justify-content-between mb-3">
                             <span class="text-muted font-small-3 font-weight-600">کل اتاق‌ها</span>
@@ -289,18 +327,18 @@
                                 <i class="la la-home"></i>
                             </div>
                         </div>
-                        <div class="stat-value mb-1">۲۴</div>
+                        <div class="stat-value mb-1">{{ number_format($roomCount) }}</div>
                         <div class="progress custom-progress mb-2">
-                            <div class="progress-bar" style="width: 66%; background-color: var(--color-success);"></div>
+                            <div class="progress-bar" style="width: {{ $totalCapacity > 0 ? $capacityPercentage : 0 }}%; background-color: var(--color-success);"></div>
                         </div>
-                        <small class="text-muted font-weight-600 font-small-2">۸ اتاق خالی باقی‌مانده</small>
+                        <small class="text-muted font-weight-600 font-small-2">{{ number_format($availableCapacity) }} ظرفیت خالی</small>
                     </div>
                 </a>
             </div>
 
             {{-- قراردادها --}}
             <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6 mb-3">
-                <a href="#" class="stat-card-link">
+                <a href="{{ route('contracts.list') }}" class="stat-card-link">
                     <div class="card stat-card-custom theme-info">
                         <div class="d-flex align-items-center justify-content-between mb-3">
                             <span class="text-muted font-small-3 font-weight-600">قرارداد فعال</span>
@@ -308,37 +346,37 @@
                                 <i class="la la-file-text"></i>
                             </div>
                         </div>
-                        <div class="stat-value mb-1">۴۵</div>
+                        <div class="stat-value mb-1">{{ number_format($activeContractCount) }}</div>
                         <div class="progress custom-progress mb-2">
                             <div class="progress-bar" style="width: 75%; background-color: var(--color-info);"></div>
                         </div>
-                        <small class="text-muted font-weight-600 font-small-2">درآمد: ۱۲۵M افغانی</small>
+                        <small class="text-muted font-weight-600 font-small-2">قرارداد فعال</small>
                     </div>
                 </a>
             </div>
 
             {{-- پرداخت معوق --}}
             <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6 mb-3">
-                <a href="#" class="stat-card-link">
+                <a href="{{ route('report.payments_history') }}" class="stat-card-link">
                     <div class="card stat-card-custom theme-warning">
                         <div class="d-flex align-items-center justify-content-between mb-3">
-                            <span class="text-muted font-small-3 font-weight-600">معوقات</span>
+                            <span class="text-muted font-small-3 font-weight-600">پرداخت‌ها</span>
                             <div class="stat-icon-box" style="background: rgba(245, 158, 11, 0.1); color: var(--color-warning);">
                                 <i class="la la-money"></i>
                             </div>
                         </div>
-                        <div class="stat-value mb-1" style="color: var(--color-warning);">۳</div>
+                        <div class="stat-value mb-1" style="color: var(--color-warning);">{{ number_format($paymentCount) }}</div>
                         <div class="progress custom-progress mb-2">
-                            <div class="progress-bar" style="width: 30%; background-color: var(--color-warning);"></div>
+                            <div class="progress-bar" style="width: {{ $paymentCount > 0 ? 100 : 0 }}%; background-color: var(--color-warning);"></div>
                         </div>
-                        <small class="text-danger font-weight-600 font-small-2">۴.۵M افغانی بدهی</small>
+                        <small class="text-danger font-weight-600 font-small-2">مجموع: {{ number_format($paymentTotal, 0) }} افغانی</small>
                     </div>
                 </a>
             </div>
 
             {{-- مهمانان --}}
             <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6 mb-3">
-                <a href="#" class="stat-card-link">
+                <a href="{{ route('visitors.list') }}" class="stat-card-link">
                     <div class="card stat-card-custom theme-purple">
                         <div class="d-flex align-items-center justify-content-between mb-3">
                             <span class="text-muted font-small-3 font-weight-600">مهمانان داخل</span>
@@ -346,18 +384,18 @@
                                 <i class="la la-user-plus"></i>
                             </div>
                         </div>
-                        <div class="stat-value mb-1">۲</div>
+                        <div class="stat-value mb-1">{{ number_format($visitorCount) }}</div>
                         <div class="progress custom-progress mb-2">
-                            <div class="progress-bar" style="width: 20%; background-color: var(--color-purple);"></div>
+                            <div class="progress-bar" style="width: {{ min($visitorCount * 10, 100) }}%; background-color: var(--color-purple);"></div>
                         </div>
-                        <small class="text-muted font-weight-600 font-small-2">۳ ثبت ورود امروز</small>
+                        <small class="text-muted font-weight-600 font-small-2">مهمان حاضر در خوابگاه</small>
                     </div>
                 </a>
             </div>
 
             {{-- درخواست تعمیرات --}}
             <div class="col-xl-2 col-lg-4 col-md-4 col-sm-6 mb-3">
-                <a href="#" class="stat-card-link">
+                <a href="{{ route('maintenance.list') }}" class="stat-card-link">
                     <div class="card stat-card-custom theme-danger">
                         <div class="d-flex align-items-center justify-content-between mb-3">
                             <span class="text-muted font-small-3 font-weight-600">خرابی باز</span>
@@ -365,11 +403,11 @@
                                 <i class="la la-wrench"></i>
                             </div>
                         </div>
-                        <div class="stat-value mb-1" style="color: var(--color-danger);">۵</div>
+                        <div class="stat-value mb-1" style="color: var(--color-danger);">{{ number_format($openMaintenanceCount) }}</div>
                         <div class="progress custom-progress mb-2">
-                            <div class="progress-bar" style="width: 50%; background-color: var(--color-danger);"></div>
+                            <div class="progress-bar" style="width: {{ min($openMaintenanceCount * 10, 100) }}%; background-color: var(--color-danger);"></div>
                         </div>
-                        <small class="text-danger font-weight-600 font-small-2">۲ مورد اولویت بالا</small>
+                        <small class="text-danger font-weight-600 font-small-2">درخواست فعال تعمیرات</small>
                     </div>
                 </a>
             </div>
@@ -432,11 +470,12 @@
                         <div class="p-3" style="background: #f8fafc; border-radius: 14px; border: 1px solid #e2e8f0;">
                             <div class="d-flex justify-content-between align-items-center mb-2">
                                 <span class="font-small-3 font-weight-bold text-dark">وضعیت تکمیل ظرفیت خوابگاه</span>
-                                <span class="badge bg-primary text-white px-2 py-1" style="border-radius: 6px; font-size: 12px;">۷۵٪ تکمیل</span>
+                                <span class="badge bg-primary text-white px-2 py-1" style="border-radius: 6px; font-size: 12px;">{{ $capacityPercentage }}٪ تکمیل</span>
                             </div>
                             <div class="progress custom-progress" style="height: 8px !important;">
-                                <div class="progress-bar bg-primary" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar bg-primary" role="progressbar" style="width: {{ $capacityPercentage }}%;" aria-valuenow="{{ $capacityPercentage }}" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
+                            <small class="text-muted d-block mt-2">{{ number_format($occupiedCount) }} نفر از {{ number_format($totalCapacity) }} ظرفیت استفاده شده است.</small>
                         </div>
 
                     </div>
@@ -451,58 +490,30 @@
                             <i class="la la-bell text-primary" style="font-size:22px;"></i>
                             <span>آخرین فعالیت‌ها</span>
                         </div>
-                        <a href="#" class="font-small-2 text-primary font-weight-600 text-decoration-none">مشاهده همه</a>
+                        <a href="{{ auth()->user()->role === 'user' ? route('maintenance.follow_up_request') : route('maintenance.list') }}" class="font-small-2 text-primary font-weight-600 text-decoration-none">مشاهده همه</a>
                     </div>
                     <div class="card-body p-4">
                         <div class="activity-stream">
-
-                            <div class="activity-item-modern">
-                                <div class="activity-dot" style="border-color: var(--color-success);"></div>
-                                <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <strong class="font-small-3 text-dark">ثبت قرارداد جدید</strong>
-                                    <span class="text-muted font-small-2">۱۰ دقیقه پیش</span>
+                            @forelse($recentRequests as $request)
+                                <div class="activity-item-modern">
+                                    <div class="activity-dot" style="border-color: {{ $request->status === 'تکمیل شده' ? 'var(--color-success)' : ($request->status === 'رد شد' ? 'var(--color-danger)' : 'var(--color-warning)') }};"></div>
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <strong class="font-small-3 text-dark">{{ optional($request->requestType)->name ?: 'درخواست تعمیرات' }}</strong>
+                                        <span class="text-muted font-small-2">{{ $request->created_at->diffForHumans() }}</span>
+                                    </div>
+                                    <p class="mb-0 text-muted font-small-2">
+                                        {{ $request->description ?: 'بدون توضیحات' }}
+                                        <span class="d-block mt-1">اتاق: {{ optional($request->room)->room_number ?: 'نامشخص' }} | وضعیت: {{ $request->status }}</span>
+                                    </p>
                                 </div>
-                                <p class="mb-0 text-muted font-small-2">قرارداد برای ساکن «احمد امیری» تنظیم شد.</p>
-                            </div>
-
-                            <div class="activity-item-modern">
-                                <div class="activity-dot" style="border-color: var(--color-warning);"></div>
-                                <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <strong class="font-small-3 text-dark">درخواست تعمیرات</strong>
-                                    <span class="text-muted font-small-2">۱ ساعت پیش</span>
-                                </div>
-                                <p class="mb-0 text-muted font-small-2">خرابی لوله‌کشی اتاق ۲۰۳ گزارش شد.</p>
-                            </div>
-
-                            <div class="activity-item-modern">
-                                <div class="activity-dot" style="border-color: var(--color-info);"></div>
-                                <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <strong class="font-small-3 text-dark">ورود مهمان جدید</strong>
-                                    <span class="text-muted font-small-2">۲ ساعت پیش</span>
-                                </div>
-                                <p class="mb-0 text-muted font-small-2">مهمان آقای «محمودی» ثبت گردید.</p>
-                            </div>
-
-                            <div class="activity-item-modern">
-                                <div class="activity-dot" style="border-color: var(--color-primary);"></div>
-                                <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <strong class="font-small-3 text-dark">ثبت ساکن جدید</strong>
-                                    <span class="text-muted font-small-2">۴ ساعت پیش</span>
-                                </div>
-                                <p class="mb-0 text-muted font-small-2">اطلاعات پرونده «محمد رضایی» تکمیل شد.</p>
-                            </div>
-
+                            @empty
+                                <p class="mb-0 text-muted font-small-2">هنوز درخواستی ثبت نشده است.</p>
+                            @endforelse
                         </div>
                     </div>
                 </div>
             </div>
 
-        </div>
-
-        {{-- ۴. بنر هشدار نسخه دیمو --}}
-        <div class="alert alert-demo-custom p-3 font-small-3 d-flex align-items-center shadow-sm">
-            <i class="la la-info-circle ml-2" style="font-size: 24px;"></i>
-            <span>این صفحه در حال حاضر در حالت <strong>پیش‌نمایش (Demo)</strong> قرار دارد. داده‌های درون کارت‌ها تستی بوده و پس از فراخوانی متغیرهای لاراول به‌روزرسانی می‌شوند.</span>
         </div>
 
     </div>
