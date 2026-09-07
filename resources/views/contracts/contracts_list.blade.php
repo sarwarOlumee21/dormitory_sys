@@ -9,7 +9,7 @@
         <div class="top-banner mb-4" style="border-radius: 12px; padding: 20px; color: #ffffff;">
             <div class="d-flex flex-wrap align-items-center justify-content-between">
                 <div class="d-flex align-items-center mb-2 mb-md-0">
-                    <div class="banner-icon ml-3" style="background: rgba(255,255,255,0.2); width: 45px; height: 45px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                    <div class="banner-icon ml-3 mr-1" style="background: rgba(255,255,255,0.2); width: 45px; height: 45px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
                         <i class="la la-file-text text-white" style="font-size:22px;"></i>
                     </div>
                     <div>
@@ -46,16 +46,6 @@
                     </select>
                 </div>
                 <div class="col-lg-2 col-md-6 form-group mb-3 mb-md-0">
-                    <label class="flabel" for="filterCity">
-                        <i class="la la-map-marker text-primary"></i> شهر
-                    </label>
-                    <select id="filterCity" class="form-control">
-                        <option value="">همه شهرها</option>
-                        <option value="کابل">کابل</option>
-                        <option value="هرات">هرات</option>
-                    </select>
-                </div>
-                <div class="col-lg-2 col-md-6 form-group mb-3 mb-md-0">
                     <label class="flabel" for="filterRoom">
                         <i class="la la-home text-primary"></i> نمبر اتاق
                     </label>
@@ -76,7 +66,6 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>کد قرارداد</th>
                             <th>نام کامل</th>
                             <th>نمبر اتاق</th>
                             <th>تاریخ قرارداد</th>
@@ -88,9 +77,8 @@
                     </thead>
                     <tbody id="contractsBody">
                         @forelse($contracts as $index => $contract)
-                            <tr data-code="{{ $contract->id }}" data-name="{{ $contract->resident->name ?? '' }}" data-room="{{ $contract->resident->room->room_number ?? '' }}" data-status="{{ $contract->contract_status ?? '' }}">
+                            <tr data-code="{{ $contract->id }}" data-name="{{ $contract->resident->name ?? '' }}" data-room="{{ $contract->resident->room->room_number ?? '' }}" data-phone="{{ $contract->resident->phone_number ?? '' }}" data-city="{{ $contract->resident->city_name ?? '' }}" data-status="{{ $contract->contract_status ?? '' }}">
                                 <td>{{ $index + 1 }}</td>
-                                <td>{{ $contract->id }}</td>
                                 <td>{{ $contract->resident->name ?? '—' }}</td>
                                 <td>{{ $contract->resident->room->room_number ?? '—' }}</td>
                                 <td>{{ \Carbon\Carbon::parse($contract->contract_date)->format('Y-m-d') }}</td>
@@ -118,7 +106,7 @@
                             </tr>
                         @empty
                             <tr id="emptyFilterRow">
-                                <td colspan="8" class="text-center text-muted py-4">
+                                <td colspan="9" class="text-center text-muted py-4">
                                     <i class="la la-inbox font-large-2 d-block mb-1 text-primary"></i> هیچ قراردادی یافت نشد
                                 </td>
                             </tr>
@@ -127,7 +115,7 @@
                 </table>
             </div>
             <div class="card-footer bg-light d-flex align-items-center justify-content-between flex-wrap py-3" style="border-top: 1px solid #e2e8f0;">
-                <span class="text-muted font-small-3" id="tableInfo">نمایش ۳ قرارداد</span>
+                <span class="text-muted font-small-3" id="tableInfo">نمایش {{ $contracts->count() }} قرارداد</span>
                 <span class="text-muted font-small-3">
                     <i class="la la-info-circle text-primary"></i> برای مدیریت سریع‌تر از فیلترهای بالا استفاده کنید.
                 </span>
@@ -153,7 +141,7 @@
                 <div class="mb-3" style="border-radius: 12px; background: #eef8f2; padding: 14px; border: 1px solid #c8ebd6;">
                     <div class="font-weight-bold mb-1" style="color: #047857;">اطلاعات پرداخت</div>
                     <div class="text-muted" style="font-size: 13px; margin-bottom: 4px;">مبلغ قرارداد: <span id="paymentContractAmount" style="font-weight: 700; color: #1f2937;">۰</span> افغانی</div>
-                    <div class="text-muted" style="font-size: 13px; margin-bottom: 4px;">پرداخت شده این ماه: <span id="paymentResidentPaidTotal" style="font-weight: 700; color: #047857;">۰</span> افغانی</div>
+                    <div class="text-muted" style="font-size: 13px; margin-bottom: 4px;">مجموع پرداخت‌شده: <span id="paymentResidentPaidTotal" style="font-weight: 700; color: #047857;">۰</span> افغانی</div>
                     <div class="text-muted" style="font-size: 13px;">مانده: <span id="paymentRemainingAmount" style="font-weight: 700; color: #dc2626;">۰</span> افغانی</div>
                 </div>
                 <div class="form-group mb-3">
@@ -205,6 +193,52 @@
         const contractIdInput = document.getElementById('contractIdInput');
         const paymentModalClose = document.getElementById('paymentModalClose');
         const paymentModalCancel = document.getElementById('paymentModalCancel');
+        const filterSearch = document.getElementById('filterSearch');
+        const filterStatus = document.getElementById('filterStatus');
+        const filterCity = document.getElementById('filterCity');
+        const filterRoom = document.getElementById('filterRoom');
+        const btnFilter = document.getElementById('btnFilter');
+        const tableInfo = document.getElementById('tableInfo');
+        const contractRows = Array.from(document.querySelectorAll('#contractsBody tr[data-code]'));
+
+        function normalizeText(value) {
+            return String(value || '').trim().toLocaleLowerCase('fa-IR');
+        }
+
+        function applyContractFilters() {
+            const search = normalizeText(filterSearch.value);
+            const status = normalizeText(filterStatus.value);
+            const city = filterCity ? normalizeText(filterCity.value) : '';
+            const room = normalizeText(filterRoom.value);
+            let visibleCount = 0;
+
+            contractRows.forEach(function (row) {
+                const searchableText = normalizeText([
+                    row.dataset.code,
+                    row.dataset.name,
+                    row.dataset.room,
+                    row.dataset.phone,
+                    row.dataset.city
+                ].join(' '));
+                const matches = (!search || searchableText.includes(search))
+                    && (!status || normalizeText(row.dataset.status) === status)
+                    && (!city || normalizeText(row.dataset.city) === city)
+                    && (!room || normalizeText(row.dataset.room).includes(room));
+
+                row.style.display = matches ? '' : 'none';
+                if (matches) visibleCount++;
+            });
+
+            let emptyRow = document.getElementById('emptyFilterRow');
+            if (!emptyRow) {
+                emptyRow = document.createElement('tr');
+                emptyRow.id = 'emptyFilterRow';
+                emptyRow.innerHTML = '<td colspan="9" class="text-center text-muted py-4">هیچ قراردادی با این فیلترها یافت نشد</td>';
+                document.getElementById('contractsBody').appendChild(emptyRow);
+            }
+            emptyRow.style.display = visibleCount ? 'none' : '';
+            if (tableInfo) tableInfo.textContent = 'نمایش ' + visibleCount.toLocaleString('fa-IR') + ' قرارداد';
+        }
 
         function openPaymentModal(residentId, residentName, contractAmount, paidAmount) {
             if (!paymentModal || !paymentModalOverlay) return;
@@ -239,6 +273,23 @@
                 openPaymentModal(residentId, residentName, contractAmount, paidAmount);
             });
         });
+
+        if (btnFilter) btnFilter.addEventListener('click', applyContractFilters);
+        [filterSearch, filterStatus, filterCity, filterRoom].forEach(function (filter) {
+            if (filter) filter.addEventListener('input', applyContractFilters);
+            if (filter && filter.tagName === 'SELECT') filter.addEventListener('change', applyContractFilters);
+        });
+
+        if (paymentForm) {
+            paymentForm.addEventListener('submit', function (event) {
+                const amount = parseFloat(document.getElementById('paymentAmountInput').value);
+                const paymentDate = document.getElementById('paymentDateInput').value.trim();
+                if (!amount || amount <= 0 || !paymentDate || !contractIdInput.value) {
+                    event.preventDefault();
+                    alert('لطفاً مبلغ، تاریخ و قرارداد را به‌درستی وارد کنید.');
+                }
+            });
+        }
 
         if (paymentModalClose) paymentModalClose.addEventListener('click', closePaymentModal);
         if (paymentModalCancel) paymentModalCancel.addEventListener('click', closePaymentModal);

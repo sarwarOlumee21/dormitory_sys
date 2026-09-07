@@ -19,7 +19,7 @@
         {{-- بنر بالایی صفحه با استایل مدرن، یکپارچه و آبی سازمانی --}}
         <div class="top-banner mb-4">
             <div class="d-flex align-items-center">
-                <div class="banner-icon ml-3">
+                <div class="banner-icon ml-3 mr-1">
                     <i class="la la-user-plus text-white"></i>
                 </div>
                 <div>

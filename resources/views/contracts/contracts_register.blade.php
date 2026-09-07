@@ -18,7 +18,7 @@
             {{-- بنر بالایی صفحه با استایل مدرن و یکپارچه --}}
             <div class="top-banner mb-4" style="border-radius: 12px; padding: 20px; color: #ffffff;">
                 <div class="d-flex align-items-center">
-                    <div class="banner-icon ml-3"
+                    <div class="banner-icon ml-3 mr-1"
                         style="background: rgba(255,255,255,0.2); width: 45px; height: 45px; border-radius: 10px; d-flex: flex; align-items: center; justify-content: center; text-align: center; line-height: 45px;">
                         <i class="la la-file-text text-white" style="font-size:22px; vertical-align: middle;"></i>
                     </div>

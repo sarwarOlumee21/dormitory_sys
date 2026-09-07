@@ -23,7 +23,7 @@
           <i class="fas fa-user-circle"></i>
           ورود
         </h2>
-        <p>با مشخصات خود وارد داشبورد شوید</p>
+        <p>با مشخصات خود وارد سیستم شوید</p>
       </div>
       
   @if ($errors->any())
@@ -67,9 +67,6 @@
           <i class="fas fa-arrow-left"></i>
         </button>
 
-        <div class="signup-hint">
-          حساب کاربری ندارید؟ <a href="#">ایجاد کنید</a>
-        </div>
       </form>
     </div>
     <!-- سمت چپ : وکتور / تصویر -->

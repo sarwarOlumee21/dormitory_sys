@@ -22,8 +22,8 @@
                 <div class="banner-icon">
                     <i class="la la-user-plus text-white" style="font-size:22px;"></i>
                 </div>
-                <h5 class="text-white mb-1 font-weight-bold" style="direction:rtl;">ثبت ساکن جدید</h5>
-                <p class="mb-0" style="color:rgba(255,255,255,.75);font-size:13px;direction:rtl;">لطفاً اطلاعات ساکن را با
+                <h5 class="text-white mb-1 font-weight-bold" style="direction:rtl;">ثبت کاربر جدید</h5>
+                <p class="mb-0" style="color:rgba(255,255,255,.75);font-size:13px;direction:rtl;">لطفاً اطلاعات کاربر را با
                     دقت پُر کنید</p>
             </div>
 

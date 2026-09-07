@@ -48,10 +48,7 @@ class ContractsController extends Controller
     {
         $contracts = ContractRegister::with('resident.room')->simplePaginate(10);
 
-        $startOfMonth = now()->startOfMonth()->toDateString();
-        $endOfMonth = now()->endOfMonth()->toDateString();
-
-        $paymentQuery = payment::query()->whereBetween('payment_date', [$startOfMonth, $endOfMonth]);
+        $paymentQuery = payment::query();
 
         if (Schema::hasColumn('payments', 'residents_id') && Schema::hasColumn('payments', 'resident_id')) {
             $paymentQuery->selectRaw("CASE WHEN residents_id IS NOT NULL THEN residents_id ELSE resident_id END as resident_key, SUM(amount) as total_amount")

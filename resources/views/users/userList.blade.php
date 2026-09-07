@@ -10,7 +10,7 @@
             <div class="banner-icon">
                 <i class="la la-users text-white"></i>
             </div>
-            <h5 class="mb-1 font-weight-bold" style="direction:rtl;">لیست ساکنین</h5>
+            <h5 class="mb-1 font-weight-bold" style="direction:rtl; color: white;">لیست ساکنین</h5>
             <p class="mb-0 text-white-75" style="direction:rtl;">تمام ساکنین، اطلاعات اتاق و وضعیت قرارداد را در یک نگاه ببینید.</p>
         </div>
 

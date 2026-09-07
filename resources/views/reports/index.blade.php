@@ -15,7 +15,7 @@
 
                     <div class="d-flex align-items-center">
 
-                        <div class="banner-icon ml-3"
+                        <div class="banner-icon ml-3 mr-1"
                             style="background: rgba(255,255,255,0.18); width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
 
                             <i class="la la-money text-white" style="font-size:24px;"></i>

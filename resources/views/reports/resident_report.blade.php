@@ -11,7 +11,7 @@
             <div class="top-banner mb-4">
                 <div class="d-flex align-items-center justify-content-between flex-wrap">
                     <div class="d-flex align-items-center">
-                        <div class="banner-icon ml-3">
+                        <div class="banner-icon ml-3 mr-1">
                             <i class="la la-building text-white"></i>
                         </div>
 
